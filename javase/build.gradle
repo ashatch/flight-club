@@ -7,5 +7,5 @@ targetCompatibility = 16
 mainClassName = 'org.flightclub.XCGameFrame'
 
 dependencies {
-    project(':core')
+    implementation(project(':core'))
 }
