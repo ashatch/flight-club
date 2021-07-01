@@ -40,7 +40,14 @@ public class Tools3d {
   }
 
   /* get points for unit square in given plane */
-  static Vector square(int face, float bottom, float left, float top, float right, float d) {
+  static Vector<Vector3d> square(
+      int face,
+      float bottom,
+      float left,
+      float top,
+      float right,
+      float d
+  ) {
     Vector<Vector3d> sq = new Vector<>();
     Vector3d[] ps = new Vector3d[5];
 
@@ -124,7 +131,7 @@ public class Tools3d {
     return sq;
   }
 
-  static Vector unitSquare(int face, float d) {
+  static Vector<Vector3d> unitSquare(int face, float d) {
     float dx = (float) 0.5;
     return square(face, -dx, -dx, dx, dx, d);
   }
