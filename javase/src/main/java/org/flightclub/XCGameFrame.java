@@ -15,7 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class XCGameFrame extends Frame {
-    final XCGame app = new XCGame();
+    final XcGame app = new XcGame();
 
     public XCGameFrame(String title, int w, int h) {
         super(title);

@@ -1,6 +1,10 @@
+repositories {
+    mavenCentral()
+}
+
 plugins {
-    id("checkstyle")
-    id("java")
+    checkstyle
+    java
 }
 
 java {

@@ -1,9 +1,8 @@
 /**
- This code is covered by the GNU General Public License
- detailed at http://www.gnu.org/copyleft/gpl.html
-
- Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
- Dan Burton , Nov 2001
+ * This code is covered by the GNU General Public License
+ * detailed at http://www.gnu.org/copyleft/gpl.html
+ * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
+ * Dan Burton , Nov 2001
  */
 
 package org.flightclub;
@@ -12,100 +11,103 @@ import org.flightclub.compat.Color;
 import org.flightclub.compat.Graphics;
 
 public class PolyLine {
-    final int numPoints;
-    final int[] points;
-    int nextIndex = 0;
-    final Object3d object3d;
+  final int numPoints;
+  final int[] points;
+  int nextIndex = 0;
+  final Object3d object3d;
 
-    // true color
-    Color c;
+  Color trueColor;
+  Color apparentColor;
 
-    // apparent color
-    Color c_;
+  boolean isSolid = false;
+  boolean isVisible = false;
 
-    boolean isSolid = false;
-    boolean isVisible = false;
+  Vector3d normal;
 
-    Vector3d normal;
+  public PolyLine(Object3d o, int inNumPoints, Color inColor) {
+    numPoints = inNumPoints;
+    points = new int[numPoints];
+    object3d = o;
+    trueColor = inColor;
+    apparentColor = inColor;
+  }
 
-    public PolyLine(Object3d o, int inNumPoints, Color inColor) {
-        numPoints = inNumPoints;
-        points = new int[numPoints];
-        object3d = o;
-        c = inColor;
-        c_ = inColor;
+  public void addPoint(int point) {
+    points[nextIndex] = point;
+    nextIndex++;
+  }
+
+  boolean isBackFace(Vector3d eye) {
+    if (normal == null) {
+      return false;
     }
 
-    public void addPoint(int point) {
-        points[nextIndex] = point;
-        nextIndex++;
+    setNormal();    //now ???
+
+    Vector3d p = object3d.points.elementAt(points[0]);
+    Vector3d ray = p.minus(eye);
+
+    return normal.dot(ray) >= 0;
+  }
+
+  void setNormal() {
+    if (numPoints < 3) {
+      return;
     }
 
-    boolean isBackFace(Vector3d eye) {
-        if (normal == null) return false;
-
-        setNormal();    //now ???
-
-        Vector3d p = object3d.points.elementAt(points[0]);
-        Vector3d ray = p.minus(eye);
-
-        return normal.dot(ray) >= 0;
+    Vector3d[] ps = new Vector3d[3];
+    for (int i = 0; i < 3; i++) {
+      ps[i] = object3d.points.elementAt(points[i]);
     }
 
-    void setNormal() {
-        if (numPoints < 3)
-            return;
+    Vector3d e1 = ps[0].minus(ps[1]);
+    Vector3d e2 = ps[2].minus(ps[1]);
 
-        Vector3d[] ps = new Vector3d[3];
-        for (int i = 0; i < 3; i++)
-            ps[i] = object3d.points.elementAt(points[i]);
+    normal = new Vector3d(e1).cross(e2).makeUnit();
 
-        Vector3d e1 = ps[0].minus(ps[1]);
-        Vector3d e2 = ps[2].minus(ps[1]);
+    calcLight();
+  }
 
-        normal = new Vector3d(e1).cross(e2).makeUnit();
+  void calcLight() {
+    int r = trueColor.getRed();
+    int g = trueColor.getGreen();
+    int b = trueColor.getBlue();
 
-        calcLight();
+    float light = object3d.app.cameraMan.surfaceLight(normal);
+    r *= light;
+    g *= light;
+    b *= light;
+
+    apparentColor = new Color(r, g, b);
+  }
+
+  public void draw(Graphics g) {
+    Vector3d a;
+    Vector3d b;
+
+    if (numPoints <= 1) {
+      return;
     }
+    g.setColor(this.getColor());
 
-    void calcLight() {
-        int r = c.getRed();
-        int g = c.getGreen();
-        int b = c.getBlue();
+    for (int i = 0; i < numPoints - 1; i++) {
+      a = object3d.pointsPrime.elementAt(points[i]);
+      b = object3d.pointsPrime.elementAt(points[i + 1]);
 
-        float light = object3d.app.cameraMan.surfaceLight(normal);
-        r *= light;
-        g *= light;
-        b *= light;
+      Boolean inFieldOfView1 = object3d.flagsInFieldOfView.elementAt(points[i]);
+      Boolean inFieldOfView2 = object3d.flagsInFieldOfView.elementAt(points[i + 1]);
 
-        c_ = new Color(r, g, b);
+      //System.out.println(inFOV1.booleanValue() && inFOV2.booleanValue());
+
+      if (inFieldOfView1 && inFieldOfView2) {
+        g.drawLine((int) a.posY, (int) a.posZ, (int) b.posY, (int) b.posZ);
+      }
     }
+  }
 
-    public void draw(Graphics g) {
-        Vector3d a;
-        Vector3d b;
-
-        if (numPoints <= 1) return;
-        g.setColor(this.getColor());
-
-        for (int i = 0; i < numPoints - 1; i++) {
-            a = object3d.points_.elementAt(points[i]);
-            b = object3d.points_.elementAt(points[i + 1]);
-
-            Boolean inFOV1 = object3d.inFOVs.elementAt(points[i]);
-            Boolean inFOV2 = object3d.inFOVs.elementAt(points[i + 1]);
-
-            //System.out.println(inFOV1.booleanValue() && inFOV2.booleanValue());
-
-            if (inFOV1 && inFOV2) {
-                g.drawLine((int) a.y, (int) a.z, (int) b.y, (int) b.z);
-            }
-        }
-    }
-
-    Color getColor() {
-        //fogging
-        Vector3d p = object3d.points_.elementAt(points[0]);
-        return object3d.app.cameraMan.foggyColor(p.x, c_);
-    }
+  Color getColor() {
+    //fogging
+    Vector3d p = object3d.pointsPrime.elementAt(points[0]);
+    return object3d.app.cameraMan.foggyColor(p.posX, apparentColor);
+  }
 }
