@@ -1,6 +1,11 @@
+repositories {
+    mavenCentral()
+}
+
 plugins {
-    id("application")
-    id("java")
+    application
+    java
+    checkstyle
 }
 
 java {
@@ -9,7 +14,7 @@ java {
 }
 
 application {
-    mainClass.set("org.flightclub.XCGameFrame")
+    mainClass.set("org.flightclub.XcGameFrame")
 }
 
 dependencies {
