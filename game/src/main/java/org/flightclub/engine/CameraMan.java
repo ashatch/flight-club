@@ -74,8 +74,8 @@ public class CameraMan {
     app = theApp;
 
     //get the canvas size
-    screenWidth = app.envDesktopEnvironment.getWindowSize().width;
-    screenHeight = app.envDesktopEnvironment.getWindowSize().height;
+    screenWidth = app.envGameEnvironment.windowSize().width;
+    screenHeight = app.envGameEnvironment.windowSize().height;
     theScale = screenHeight * (float) 1.1; //defines lens angle - smaller num -> wider angle
 
     //starting position and light

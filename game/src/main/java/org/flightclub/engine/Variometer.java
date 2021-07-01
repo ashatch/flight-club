@@ -53,7 +53,7 @@ public class Variometer {
 
     String filename = filenameForLift(lift);
     if (filename != null) {
-      app.envDesktopEnvironment.playSoundResource(filename);
+      app.envGameEnvironment.audioPlayer().play(filename);
     }
   }
 

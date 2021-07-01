@@ -22,9 +22,22 @@ public class XcGame implements EventManager.Interface, Clock.Observer {
 
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
-  protected float timePerFrame = TIME_PER_FRAME;
+
+  public final Clock clock = new Clock(1000 / FRAME_RATE);
+  public final EventManager eventManager = new EventManager();
+  public final Obj3dManager obj3dManager = new Obj3dManager();
+  public final CameraMan cameraMan;
 
   public float time = 0.0f;
+  public Landscape landscape;
+  public Sky sky;
+  public GameEnvironment envGameEnvironment;
+  public float timeMultiplier = 1.0f;
+  public Mode mode;
+  public String textMessage;
+
+  protected float timePerFrame = TIME_PER_FRAME;
+
   private Vector<Glider> gaggle;
   private GliderUser gliderUser;
   private JetTrail jet1;
@@ -35,20 +48,8 @@ public class XcGame implements EventManager.Interface, Clock.Observer {
   private DataSlider slider = null;
   private Variometer vario;
 
-  final public Clock clock = new Clock(1000 / FRAME_RATE);
-  final public EventManager eventManager = new EventManager();
-  final public Obj3dManager obj3dManager = new Obj3dManager();
-
-  public Landscape landscape;
-  public Sky sky;
-  final public CameraMan cameraMan;
-  public DesktopEnvironment envDesktopEnvironment;
-  public float timeMultiplier = 1.0f;
-  public Mode mode;
-  public String textMessage;
-
-  public XcGame(DesktopEnvironment envDesktopEnvironment) {
-    this.envDesktopEnvironment = envDesktopEnvironment;
+  public XcGame(GameEnvironment envGameEnvironment) {
+    this.envGameEnvironment = envGameEnvironment;
     clock.addObserver(this);
 
     cameraMan = new CameraMan(this);
@@ -151,8 +152,8 @@ public class XcGame implements EventManager.Interface, Clock.Observer {
   }
 
   void createInstruments() {
-    final int gameWidth = envDesktopEnvironment.getWindowSize().width;
-    final int gameHeight = envDesktopEnvironment.getWindowSize().height;
+    final int gameWidth = envGameEnvironment.windowSize().width;
+    final int gameHeight = envGameEnvironment.windowSize().height;
 
     if (compass == null) {
       compass = new Compass(25, gameWidth - 30, gameHeight - 15);

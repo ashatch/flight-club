@@ -1,15 +1,14 @@
-package org.flightclub.game;
+package org.flightclub.awt;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AudioPlayerImpl implements AudioPlayer {
   private static final Logger LOG = LoggerFactory.getLogger(AudioPlayerImpl.class);

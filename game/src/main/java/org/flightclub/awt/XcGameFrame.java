@@ -5,18 +5,19 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.game;
+package org.flightclub.awt;
 
-import org.flightclub.engine.ModelCanvas;
-import org.flightclub.engine.XcGame;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import org.flightclub.engine.GameEnvironment;
+import org.flightclub.engine.ModelCanvas;
+import org.flightclub.engine.XcGame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class XcGameFrame extends Frame {
   private static final Logger LOG = LoggerFactory.getLogger(XcGameFrame.class);
@@ -28,7 +29,7 @@ public class XcGameFrame extends Frame {
     super(title);
 
     final XcGame app = new XcGame(
-        new DesktopEnvironmentImpl(windowSize, new AudioPlayerImpl())
+        new GameEnvironment(windowSize, new AudioPlayerImpl())
     );
 
     final ModelCanvas modelCanvas = new ModelCanvas(app);
