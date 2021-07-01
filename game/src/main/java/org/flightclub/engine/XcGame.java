@@ -9,6 +9,7 @@ package org.flightclub.engine;
 
 import java.awt.event.KeyEvent;
 import java.util.Vector;
+import org.flightclub.awt.EventManager;
 
 public class XcGame implements EventManager.Interface, Clock.Observer {
 

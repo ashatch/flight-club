@@ -297,7 +297,7 @@ public class CameraMan {
   /*
    * rotate eye about z axis by xy radians and up/down by z
    */
-  void rotateEyeAboutFocus(float dtheta) {
+  public void rotateEyeAboutFocus(float dtheta) {
     Vector3d ray = eye.minus(focus);
 
     //transform ray
@@ -308,7 +308,7 @@ public class CameraMan {
     eye.set(focus).add(ray);
   }
 
-  void translateZ(float dz) {
+  public void translateZ(float dz) {
     Vector3d ray = eye.minus(focus);
 
     ray.posZ += distance * dz;

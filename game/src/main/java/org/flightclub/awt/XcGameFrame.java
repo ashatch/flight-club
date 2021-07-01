@@ -14,7 +14,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.engine.GameEnvironment;
 import org.flightclub.engine.IntPair;
-import org.flightclub.engine.ModelCanvas;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

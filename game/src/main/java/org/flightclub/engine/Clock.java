@@ -29,11 +29,11 @@ public class Clock implements Runnable {
     sleepTime = t;
   }
 
-  void addObserver(Observer observer) {
+  public void addObserver(Observer observer) {
     observers.addElement(observer);
   }
 
-  void removeObserver(Observer observer) {
+  public void removeObserver(Observer observer) {
     observers.removeElement(observer);
   }
 

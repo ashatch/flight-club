@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.awt;
 
 
 import java.awt.Canvas;
@@ -18,6 +18,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import org.flightclub.awt.AwtGraphics;
+import org.flightclub.engine.Clock;
+import org.flightclub.engine.MouseTracker;
+import org.flightclub.engine.XcGame;
 
 /*
  * canvas manager - draws world, dragging on canvas moves camera
@@ -27,8 +30,8 @@ import org.flightclub.awt.AwtGraphics;
  */
 public class ModelCanvas extends Canvas implements Clock.Observer {
   public final Color backColor = Color.white;
+  protected final XcGame app;
   private Image imgBuffer;
-  protected XcGame app = null;
   private Graphics graphicsBuffer;
   private MouseTracker mouseTracker = new MouseTracker();
 

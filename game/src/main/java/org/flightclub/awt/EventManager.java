@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.awt;
 
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;

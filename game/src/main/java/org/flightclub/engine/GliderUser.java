@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import java.awt.event.KeyEvent;
+import org.flightclub.awt.EventManager;
 
 /*
  * a glider that the user may control
