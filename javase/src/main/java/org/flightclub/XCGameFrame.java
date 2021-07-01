@@ -49,6 +49,6 @@ public class XCGameFrame extends Frame {
     }
 
     public static void main(String s[]) {
-        new XCGameFrame("Flight Club", 640, 490);
+        new XCGameFrame("Flight Club", 1000, 600);
     }
 }
