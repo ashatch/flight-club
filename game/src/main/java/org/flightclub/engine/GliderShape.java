@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
 
 public class GliderShape extends Object3dWithShadow {
   public static final Color DEFAULT_COLOR = new Color(170, 170, 180);

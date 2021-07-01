@@ -7,9 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Graphics;
-
 public class PolyLine {
   final int numPoints;
   final int[] points;
@@ -69,16 +66,8 @@ public class PolyLine {
   }
 
   void calcLight() {
-    int r = trueColor.getRed();
-    int g = trueColor.getGreen();
-    int b = trueColor.getBlue();
-
     float light = object3d.app.cameraMan.surfaceLight(normal);
-    r *= light;
-    g *= light;
-    b *= light;
-
-    apparentColor = new Color(r, g, b);
+    apparentColor = trueColor.mul(light);
   }
 
   public void draw(Graphics g) {

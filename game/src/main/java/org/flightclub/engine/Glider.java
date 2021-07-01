@@ -7,8 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-
 /*
  * a glider that sniffs out lift
  */

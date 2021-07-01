@@ -7,13 +7,13 @@
 
 package org.flightclub.awt;
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.engine.GameEnvironment;
+import org.flightclub.engine.IntPair;
 import org.flightclub.engine.ModelCanvas;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class XcGameFrame extends Frame {
 
   public XcGameFrame(
       final String title,
-      final Dimension windowSize
+      final IntPair windowSize
   ) {
     super(title);
 
@@ -34,7 +34,7 @@ public class XcGameFrame extends Frame {
 
     final ModelCanvas modelCanvas = new ModelCanvas(app);
     add(modelCanvas, "Center");
-    setSize(windowSize);
+    setSize(windowSize.x(), windowSize.y());
     setVisible(true);
     modelCanvas.init();
 
@@ -63,7 +63,7 @@ public class XcGameFrame extends Frame {
 
   public static void main(final String ...args) {
     LOG.info("Flight Club");
-    final Dimension windowSize =  new Dimension(1000, 600);
+    final IntPair windowSize =  new IntPair(1000, 600);
     new XcGameFrame("Flight Club", windowSize);
   }
 }

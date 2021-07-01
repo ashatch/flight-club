@@ -8,8 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Graphics;
 
 /*
  * Three new methods added to object3d...

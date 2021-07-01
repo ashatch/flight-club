@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import org.flightclub.compat.AwtGraphics;
+import org.flightclub.awt.AwtGraphics;
 
 /*
  * canvas manager - draws world, dragging on canvas moves camera

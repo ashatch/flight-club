@@ -1,8 +1,6 @@
-package org.flightclub.compat;
+package org.flightclub.engine;
 
-public class Font {
-  private java.awt.Font font;
-
+public record Font(String name, int style, int size) {
   /**
    * The plain style constant.
    */
@@ -19,16 +17,4 @@ public class Font {
    * style constants (except PLAIN) for mixed styles.
    */
   public static final int ITALIC = 2;
-
-  public Font(String name, int style, int size) {
-    this(new java.awt.Font(name, style, size));
-  }
-
-  public Font(java.awt.Font font) {
-    this.font = font;
-  }
-
-  public java.awt.Font getFont() {
-    return font;
-  }
 }

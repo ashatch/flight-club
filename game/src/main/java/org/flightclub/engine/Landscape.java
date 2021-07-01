@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
 
 /*
  * Some hills, triggers and a road arranged onto tiles

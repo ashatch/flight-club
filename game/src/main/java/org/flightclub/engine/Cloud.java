@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
 
 public class Cloud implements CameraSubject, Clock.Observer {
   final XcGame app;

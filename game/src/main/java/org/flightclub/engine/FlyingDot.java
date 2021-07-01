@@ -7,8 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-
 /*
   a dot with a position and velocity. also...
   - a local coord system (v points along +y, z has roll effect)

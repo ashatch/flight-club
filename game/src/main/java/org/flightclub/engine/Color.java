@@ -1,9 +1,6 @@
-package org.flightclub.compat;
+package org.flightclub.engine;
 
-public class Color {
-  private final java.awt.Color color;
-
-
+public record Color(int r, int g, int b) {
   /**
    * The color white.  In the default sRGB space.
    */
@@ -69,23 +66,7 @@ public class Color {
    */
   public static final Color BLUE = new Color(0, 0, 255);
 
-  public Color(int r, int g, int b) {
-    this.color = new java.awt.Color(r, g, b);
-  }
-
-  public java.awt.Color getColor() {
-    return color;
-  }
-
-  public int getRed() {
-    return color.getRed();
-  }
-
-  public int getGreen() {
-    return color.getGreen();
-  }
-
-  public int getBlue() {
-    return color.getBlue();
+  public Color mul(final float scale) {
+    return new Color((int)(r * scale), (int)(g * scale), (int)(b * scale));
   }
 }

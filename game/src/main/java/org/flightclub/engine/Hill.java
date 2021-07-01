@@ -7,8 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-
 /*
  * a spine running parallel to x axis or y axis (orientation 0 or 1)
  * has a circuit for ridge soaring

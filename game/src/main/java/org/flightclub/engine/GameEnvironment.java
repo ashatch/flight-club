@@ -7,10 +7,7 @@
 
 package org.flightclub.engine;
 
-import java.awt.Dimension;
-import org.flightclub.awt.AudioPlayer;
-
 public record GameEnvironment(
-    Dimension windowSize,
+    IntPair windowSize,
     AudioPlayer audioPlayer
 ) {}

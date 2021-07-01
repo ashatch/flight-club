@@ -7,8 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-
 /*
   todo - seperate into two classes
   - generic 3d framework camera functionality
@@ -74,8 +72,8 @@ public class CameraMan {
     app = theApp;
 
     //get the canvas size
-    screenWidth = app.envGameEnvironment.windowSize().width;
-    screenHeight = app.envGameEnvironment.windowSize().height;
+    screenWidth = app.envGameEnvironment.windowSize().x();
+    screenHeight = app.envGameEnvironment.windowSize().y();
     theScale = screenHeight * (float) 1.1; //defines lens angle - smaller num -> wider angle
 
     //starting position and light
@@ -375,9 +373,9 @@ public class CameraMan {
     }
 
     float f = x / DEPTH_OF_VISION;
-    int r = (int) (c.getRed() + f * (BACKGROUND_R - c.getRed()));
-    int g = (int) (c.getGreen() + f * (BACKGROUND_G - c.getGreen()));
-    int b = (int) (c.getBlue() + f * (BACKGROUND_B - c.getBlue()));
+    int r = (int) (c.r() + f * (BACKGROUND_R - c.r()));
+    int g = (int) (c.g() + f * (BACKGROUND_G - c.g()));
+    int b = (int) (c.b() + f * (BACKGROUND_B - c.b()));
 
     return new Color(r, g, b);
   }

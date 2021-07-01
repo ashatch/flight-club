@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.awt.event.KeyEvent;
-import org.flightclub.compat.Color;
 
 /*
  * a glider that the user may control

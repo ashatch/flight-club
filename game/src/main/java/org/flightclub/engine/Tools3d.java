@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
 
 /*
  * static methods for 3d geometry

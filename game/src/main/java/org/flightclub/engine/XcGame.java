@@ -9,9 +9,6 @@ package org.flightclub.engine;
 
 import java.awt.event.KeyEvent;
 import java.util.Vector;
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Font;
-import org.flightclub.compat.Graphics;
 
 public class XcGame implements EventManager.Interface, Clock.Observer {
 
@@ -152,8 +149,8 @@ public class XcGame implements EventManager.Interface, Clock.Observer {
   }
 
   void createInstruments() {
-    final int gameWidth = envGameEnvironment.windowSize().width;
-    final int gameHeight = envGameEnvironment.windowSize().height;
+    final int gameWidth = envGameEnvironment.windowSize().x();
+    final int gameHeight = envGameEnvironment.windowSize().y();
 
     if (compass == null) {
       compass = new Compass(25, gameWidth - 30, gameHeight - 15);

@@ -1,4 +1,8 @@
-package org.flightclub.compat;
+package org.flightclub.awt;
+
+import org.flightclub.engine.Color;
+import org.flightclub.engine.Font;
+import org.flightclub.engine.Graphics;
 
 public class AwtGraphics implements Graphics {
 
@@ -10,7 +14,7 @@ public class AwtGraphics implements Graphics {
 
   @Override
   public void setColor(Color color) {
-    gfx.setColor(color.getColor());
+    gfx.setColor(new java.awt.Color(color.r(), color.g(), color.b()));
   }
 
   @Override
@@ -20,7 +24,7 @@ public class AwtGraphics implements Graphics {
 
   @Override
   public void setFont(Font font) {
-    gfx.setFont(font.getFont());
+    gfx.setFont(toAwtFont(font));
   }
 
   @Override
@@ -36,5 +40,9 @@ public class AwtGraphics implements Graphics {
   @Override
   public void fillCircle(int x, int y, int diameter) {
     gfx.fillOval(x, y, diameter, diameter);
+  }
+
+  private java.awt.Font toAwtFont(Font f) {
+    return new java.awt.Font(f.name(), f.style(), f.size());
   }
 }

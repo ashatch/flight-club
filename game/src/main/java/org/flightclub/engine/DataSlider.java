@@ -7,10 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Font;
-import org.flightclub.compat.Graphics;
-
 /*
  * a dot on a line - use for eg vario
  * minimal design - cf toshiba scan of fred

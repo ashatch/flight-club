@@ -7,10 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Font;
-import org.flightclub.compat.Graphics;
-
 /*
  * a simple compass
  */

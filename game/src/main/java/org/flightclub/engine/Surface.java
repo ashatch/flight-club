@@ -7,9 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-import org.flightclub.compat.Graphics;
-
 public class Surface extends PolyLine {
 
   final int[] xs;

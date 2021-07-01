@@ -7,8 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.compat.Color;
-
 /*
  * a jet in the upper atmosphere - leaves a long trail
  */

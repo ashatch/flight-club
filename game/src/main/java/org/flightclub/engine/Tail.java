@@ -8,7 +8,6 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.compat.Color;
 
 /*
  * a tail of length n may be attached to a flying dot
