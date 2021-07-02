@@ -18,6 +18,8 @@ import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.flightclub.awt.KeyEventMapper.toEngineKeyEvent;
+
 public class XcGameFrame extends Frame {
   private static final Logger LOG = LoggerFactory.getLogger(XcGameFrame.class);
 
@@ -50,15 +52,17 @@ public class XcGameFrame extends Frame {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(final KeyEvent e) {
-        app.eventManager.addEvent(e);
+        app.eventManager.addEvent(toEngineKeyEvent(e));
       }
 
       @Override
       public void keyReleased(final KeyEvent e) {
-        app.eventManager.addEvent(e);
+        app.eventManager.addEvent(toEngineKeyEvent(e));
       }
     });
   }
+
+
 
   public static void main(final String ...args) {
     LOG.info("Flight Club");

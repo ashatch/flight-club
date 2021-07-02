@@ -5,9 +5,8 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.awt;
+package org.flightclub.engine;
 
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -62,9 +61,9 @@ public class EventManager {
     }
 
     for (Interface i : subscribers) {
-      if (e.getID() == KeyEvent.KEY_RELEASED) {
+      if (e.type() == KeyEvent.TYPE_KEY_RELEASED) {
         i.keyReleased(e);
-      } else if (e.getID() == KeyEvent.KEY_PRESSED) {
+      } else if (e.type() == KeyEvent.TYPE_KEY_PRESSED) {
         i.keyPressed(e);
       }
     }

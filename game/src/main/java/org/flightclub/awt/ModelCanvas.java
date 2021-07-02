@@ -22,6 +22,8 @@ import org.flightclub.engine.Clock;
 import org.flightclub.engine.MouseTracker;
 import org.flightclub.engine.XcGame;
 
+import static org.flightclub.awt.KeyEventMapper.toEngineKeyEvent;
+
 /*
  * canvas manager - draws world, dragging on canvas moves camera
  *
@@ -68,12 +70,12 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        app.eventManager.addEvent(e);
+        app.eventManager.addEvent(toEngineKeyEvent(e));
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
-        app.eventManager.addEvent(e);
+        app.eventManager.addEvent(toEngineKeyEvent(e));
       }
     });
   }

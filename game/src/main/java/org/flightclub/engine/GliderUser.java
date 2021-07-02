@@ -7,9 +7,6 @@
 
 package org.flightclub.engine;
 
-import java.awt.event.KeyEvent;
-import org.flightclub.awt.EventManager;
-
 /*
  * a glider that the user may control
  */
@@ -51,7 +48,7 @@ public class GliderUser extends Glider implements EventManager.Interface {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    int key = e.getKeyCode();
+    int key = e.code();
     switch (key) {
       case KeyEvent.VK_A:
       case KeyEvent.VK_LEFT:
@@ -86,7 +83,7 @@ public class GliderUser extends Glider implements EventManager.Interface {
 
   @Override
   public void keyReleased(KeyEvent e) {
-    int key = e.getKeyCode();
+    int key = e.code();
     switch (key) {
       case KeyEvent.VK_A:
       case KeyEvent.VK_LEFT:
