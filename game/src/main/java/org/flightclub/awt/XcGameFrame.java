@@ -18,7 +18,7 @@ import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.flightclub.awt.KeyEventMapper.toEngineKeyEvent;
+import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
 
 public class XcGameFrame extends Frame {
   private static final Logger LOG = LoggerFactory.getLogger(XcGameFrame.class);
@@ -30,7 +30,7 @@ public class XcGameFrame extends Frame {
     super(title);
 
     final XcGame app = new XcGame(
-        new GameEnvironment(windowSize, new AudioPlayerImpl())
+        new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );
 
     final ModelCanvas modelCanvas = new ModelCanvas(app);

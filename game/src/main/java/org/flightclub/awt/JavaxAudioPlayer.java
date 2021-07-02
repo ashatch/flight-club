@@ -1,3 +1,10 @@
+/**
+ * This code is covered by the GNU General Public License
+ * detailed at http://www.gnu.org/copyleft/gpl.html
+ * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
+ * Dan Burton , Nov 2001
+ */
+
 package org.flightclub.awt;
 
 import java.net.URL;
@@ -11,8 +18,8 @@ import org.flightclub.engine.AudioPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AudioPlayerImpl implements AudioPlayer {
-  private static final Logger LOG = LoggerFactory.getLogger(AudioPlayerImpl.class);
+public class JavaxAudioPlayer implements AudioPlayer {
+  private static final Logger LOG = LoggerFactory.getLogger(JavaxAudioPlayer.class);
 
   private final Map<String, Clip> resourceToClip = new HashMap<>();
 

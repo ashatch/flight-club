@@ -14,28 +14,18 @@ import java.util.Vector;
 public class EventManager {
   private static final int MAX_QUEUE_LENGTH = 20;
 
-  /*
-   * interface to be implemented by objects (eg actors) that respond
-   *to user pressing keys
-   */
-  public interface Interface {
-    void keyPressed(KeyEvent e);
-
-    void keyReleased(KeyEvent e);
-  }
-
-  private final Vector<Interface> subscribers = new Vector<>();
+  private final Vector<KeyEventHandler> subscribers = new Vector<>();
   private final Queue<KeyEvent> events = new LinkedList<>();
 
   /*
    * add an object to the list of objects to be
    * notified when an event happens
    */
-  public void subscribe(Interface i) {
+  public void subscribe(KeyEventHandler i) {
     subscribers.add(i);
   }
 
-  public void unsubscribe(Interface i) {
+  public void unsubscribe(KeyEventHandler i) {
     subscribers.remove(i);
   }
 
@@ -60,7 +50,7 @@ public class EventManager {
       return;
     }
 
-    for (Interface i : subscribers) {
+    for (KeyEventHandler i : subscribers) {
       if (e.type() == KeyEvent.TYPE_KEY_RELEASED) {
         i.keyReleased(e);
       } else if (e.type() == KeyEvent.TYPE_KEY_PRESSED) {

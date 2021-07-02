@@ -10,7 +10,7 @@ package org.flightclub.engine;
 /*
  * a glider that the user may control
  */
-public class GliderUser extends Glider implements EventManager.Interface {
+public class GliderUser extends Glider implements KeyEventHandler {
 
   public static final int TAIL_LENGTH = 60;
   public static final Color TAIL_COLOR = new Color(120, 120, 120);

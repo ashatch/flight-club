@@ -17,12 +17,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import org.flightclub.awt.AwtGraphics;
 import org.flightclub.engine.Clock;
 import org.flightclub.engine.MouseTracker;
 import org.flightclub.engine.XcGame;
 
-import static org.flightclub.awt.KeyEventMapper.toEngineKeyEvent;
+import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
 
 /*
  * canvas manager - draws world, dragging on canvas moves camera

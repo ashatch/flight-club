@@ -7,6 +7,12 @@
 
 package org.flightclub.engine;
 
-public interface AudioPlayer {
-  void play(String resourceName);
+/*
+ * interface to be implemented by objects (eg actors) that respond
+ *to user pressing keys
+ */
+public interface KeyEventHandler {
+  void keyPressed(KeyEvent e);
+
+  void keyReleased(KeyEvent e);
 }

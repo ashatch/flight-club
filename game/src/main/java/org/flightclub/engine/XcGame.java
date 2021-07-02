@@ -9,7 +9,7 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 
-public class XcGame implements EventManager.Interface, Clock.Observer {
+public class XcGame implements KeyEventHandler, Clock.Observer {
 
   public enum Mode {
     DEMO,
