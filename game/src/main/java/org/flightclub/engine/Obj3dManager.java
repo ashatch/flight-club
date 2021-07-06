@@ -27,12 +27,12 @@ public class Obj3dManager {
     }
   }
 
-  public void addObj(Object3d o, int layer) {
-    layers.get(layer).add(o);
+  public void addObj(Object3d o) {
+    layers.get(o.layer).add(o);
   }
 
-  public void removeObj(Object3d o, int layer) {
-    layers.get(layer).remove(o);
+  public void removeObj(Object3d o) {
+    layers.get(o.layer).remove(o);
   }
 
   /* sort each layer so furthest away obj is first in list */

@@ -42,11 +42,11 @@ public class Object3d {
   }
 
   public void destroyMe() {
-    app.obj3dManager.removeObj(this, layer);
+    app.obj3dManager.removeObj(this);
   }
 
   void registerObject3d() {
-    app.obj3dManager.addObj(this, layer);
+    app.obj3dManager.addObj(this);
   }
 
   public void draw(Graphics g) {
