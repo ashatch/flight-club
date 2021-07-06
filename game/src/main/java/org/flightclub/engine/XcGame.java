@@ -11,11 +11,6 @@ import java.util.Vector;
 
 public class XcGame implements KeyEventHandler, Clock.Observer {
 
-  public enum Mode {
-    DEMO,
-    USER,
-  }
-
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
 

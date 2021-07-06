@@ -32,7 +32,7 @@ public class Surface extends PolyLine {
     g.setColor(getColor());
 
     for (int i = 0; i < numPoints; i++) {
-      Vector3d a = object3d.pointsPrime.elementAt(points[i]);
+      Vector3d a = object3d.cameraSpacePoints.elementAt(points[i]);
       xs[i] = (int) (a.posY);
       ys[i] = (int) (a.posZ);
 

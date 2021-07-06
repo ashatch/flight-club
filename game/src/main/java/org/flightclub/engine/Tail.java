@@ -30,7 +30,7 @@ public class Tail extends Object3d {
 
   public Tail(XcGame theApp, int length, Color color, int layer) {
     /*
-    as aboove but add to a specific layer
+    as above but add to a specific layer
     eg zero for long jet tails, roads...
     */
     super(theApp, true, layer);
@@ -81,5 +81,4 @@ public class Tail extends Object3d {
       tail[i].set(newP);
     }
   }
-
 }

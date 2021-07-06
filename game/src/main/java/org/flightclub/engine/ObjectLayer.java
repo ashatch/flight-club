@@ -18,23 +18,20 @@ public class ObjectLayer extends Vector<Object3d> {
     Collections.sort(this, COMPARATOR);
   }
 
-  public static final Comparator<Object3d> COMPARATOR = new Comparator<Object3d>() {
-    @Override
-    public int compare(Object3d o1, Object3d o2) {
-      if (o1.pointsPrime.size() == 0 || o2.pointsPrime.size() == 0) {
-        return 0;
-      }
+  public static final Comparator<Object3d> COMPARATOR = (o1, o2) -> {
+    if (o1.cameraSpacePoints.size() == 0 || o2.cameraSpacePoints.size() == 0) {
+      return 0;
+    }
 
-      Vector3d p1 = o1.pointsPrime.get(0);
-      Vector3d p2 = o2.pointsPrime.get(0);
+    final Vector3d p1 = o1.cameraSpacePoints.get(0);
+    final Vector3d p2 = o2.cameraSpacePoints.get(0);
 
-      if (p1.posX > p2.posX) {
-        return 1;
-      } else if (p1.posX < p2.posX) {
-        return -1;
-      } else {
-        return 0;
-      }
+    if (p1.posX > p2.posX) {
+      return 1;
+    } else if (p1.posX < p2.posX) {
+      return -1;
+    } else {
+      return 0;
     }
   };
 }

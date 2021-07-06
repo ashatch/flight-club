@@ -35,20 +35,8 @@ public class Obj3dManager {
     layers.get(layer).remove(o);
   }
 
-  public void removeAll() {
-    for (ObjectLayer layer : layers) {
-      layer.clear();
-    }
-  }
-
-  //public Object3d obj(int i){return (Object3d) os.elementAt(i);}
-
-  //public int size(){return os.size();}
-
   /* sort each layer so furthest away obj is first in list */
   public void sortObjects() {
-    for (ObjectLayer layer : layers) {
-      layer.sort();
-    }
+    layers.forEach(ObjectLayer::sort);
   }
 }

@@ -11,10 +11,10 @@ import java.util.Vector;
 
 
 public class Object3d {
-  protected XcGame app = null;
+  protected XcGame app;
 
   final Vector<Vector3d> points = new Vector<>();
-  final Vector<Vector3d> pointsPrime = new Vector<>();
+  final Vector<Vector3d> cameraSpacePoints = new Vector<>();
   final Vector<PolyLine> wires = new Vector<>();
 
   // list of flags - is point within field of view
@@ -72,7 +72,7 @@ public class Object3d {
 
     for (int i = 0; i < points.size(); i++) {
       vector = points.elementAt(i);
-      vectorPrime = pointsPrime.elementAt(i);
+      vectorPrime = cameraSpacePoints.elementAt(i);
 
       //translate, rotate and project (only if visible)
       vectorPrime.set(vector).subtract(camera.getFocus());
@@ -116,7 +116,7 @@ public class Object3d {
       return index;
     } else {
       points.addElement(p);
-      pointsPrime.addElement(new Vector3d());
+      cameraSpacePoints.addElement(new Vector3d());
       flagsInFieldOfView.addElement(false);
       return points.size() - 1;
     }

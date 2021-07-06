@@ -10,16 +10,16 @@ package org.flightclub.engine;
 public class PolyLine {
   final int numPoints;
   final int[] points;
-  int nextIndex = 0;
   final Object3d object3d;
 
   Color trueColor;
   Color apparentColor;
 
   boolean isSolid = false;
-  boolean isVisible = false;
 
   Vector3d normal;
+
+  private int nextIndex = 0;
 
   public PolyLine(Object3d o, int inNumPoints, Color inColor) {
     numPoints = inNumPoints;
@@ -80,13 +80,11 @@ public class PolyLine {
     g.setColor(this.getColor());
 
     for (int i = 0; i < numPoints - 1; i++) {
-      a = object3d.pointsPrime.elementAt(points[i]);
-      b = object3d.pointsPrime.elementAt(points[i + 1]);
+      a = object3d.cameraSpacePoints.elementAt(points[i]);
+      b = object3d.cameraSpacePoints.elementAt(points[i + 1]);
 
-      Boolean inFieldOfView1 = object3d.flagsInFieldOfView.elementAt(points[i]);
-      Boolean inFieldOfView2 = object3d.flagsInFieldOfView.elementAt(points[i + 1]);
-
-      //System.out.println(inFOV1.booleanValue() && inFOV2.booleanValue());
+      boolean inFieldOfView1 = object3d.flagsInFieldOfView.elementAt(points[i]);
+      boolean inFieldOfView2 = object3d.flagsInFieldOfView.elementAt(points[i + 1]);
 
       if (inFieldOfView1 && inFieldOfView2) {
         g.drawLine((int) a.posY, (int) a.posZ, (int) b.posY, (int) b.posZ);
@@ -96,7 +94,7 @@ public class PolyLine {
 
   Color getColor() {
     //fogging
-    Vector3d p = object3d.pointsPrime.elementAt(points[0]);
+    Vector3d p = object3d.cameraSpacePoints.elementAt(points[0]);
     return object3d.app.cameraMan.foggyColor(p.posX, apparentColor);
   }
 }

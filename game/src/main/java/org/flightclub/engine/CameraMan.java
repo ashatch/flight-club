@@ -105,7 +105,7 @@ public class CameraMan {
     if (mode == Mode.PLAN) {
 
       //hack - should extend generic cameraman
-      boolean user = (app.mode == XcGame.Mode.USER);
+      boolean user = (app.mode == org.flightclub.engine.Mode.USER);
 
       if (subject1 != null && user) {
         focus = subject1.getFocus();
