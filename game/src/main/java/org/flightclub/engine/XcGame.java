@@ -10,16 +10,17 @@ package org.flightclub.engine;
 import java.util.Vector;
 
 public class XcGame implements KeyEventHandler, Clock.Observer {
-
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
+
+  private final Font font = new Font("SansSerif", Font.PLAIN, 10);
 
   public final Clock clock = new Clock(1000 / FRAME_RATE);
   public final EventManager eventManager = new EventManager();
   public final Obj3dManager obj3dManager = new Obj3dManager();
   public final CameraMan cameraMan;
 
-  public float time = 0.0f;
+  private float time = 0.0f;
   public Landscape landscape;
   public Sky sky;
   public GameEnvironment envGameEnvironment;
@@ -39,11 +40,13 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   private DataSlider slider = null;
   private Variometer vario;
 
-  public XcGame(GameEnvironment envGameEnvironment) {
+  public XcGame(
+      GameEnvironment envGameEnvironment
+  ) {
     this.envGameEnvironment = envGameEnvironment;
     clock.addObserver(this);
 
-    cameraMan = new CameraMan(this);
+    cameraMan = new CameraMan(this, envGameEnvironment.windowSize());
 
     eventManager.subscribe(this);
 
@@ -83,7 +86,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     cameraMan.setFocus(0, 0, 0);
 
     launchGaggle();
-    cameraMan.setMode(CameraMan.Mode.GAGGLE);
+    cameraMan.setMode(CameraMode.GAGGLE);
     textMessage = "Demo mode";
     mode = Mode.DEMO;
     toggleFastForward();
@@ -128,7 +131,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     cameraMan.setEye(Landscape.TILE_WIDTH / 2, -Landscape.TILE_WIDTH / 4, 6);
     cameraMan.setFocus(0, 0, 0);
 
-    cameraMan.setMode(CameraMan.Mode.SELF);
+    cameraMan.setMode(CameraMode.SELF);
     createInstruments();
 
     jet1.buzzThis = gliderUser;
@@ -163,23 +166,31 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   }
 
   @Override
-  public void tick(float delta) {
+  public void tick(final float delta) {
     time += delta * timeMultiplier / 2.0f;
 
     eventManager.processEvent();
     cameraMan.tick();
 
-    if (compass != null) {
-      compass.setArrow(gliderUser.vector.posX, gliderUser.vector.posY);
-    }
-    //if (slider!=null) slider.setValue(gliderUser.v.z * 150);
+    updateCompass();
+    updateSlider(delta);
+    updateVario(delta);
+  }
 
-    //convert v from dist per frame  to dist per unit time
+  private void updateVario(float delta) {
+    vario.tick(delta);
+  }
+
+  private void updateSlider(float delta) {
     if (slider != null) {
       slider.setValue(2.0f * gliderUser.vector.posZ / (delta * timeMultiplier));
     }
+  }
 
-    vario.tick(delta);
+  private void updateCompass() {
+    if (compass != null) {
+      compass.setArrow(gliderUser.vector.posX, gliderUser.vector.posY);
+    }
   }
 
   /*
@@ -199,8 +210,6 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
 
   @Override
   public void keyPressed(KeyEvent e) {
-
-    //System.out.println(key);
     int key = e.code();
     switch (key) {
       case KeyEvent.VK_P:
@@ -237,16 +246,16 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
         return;
 
       case KeyEvent.VK_1:
-        cameraMan.setMode(CameraMan.Mode.SELF);
+        cameraMan.setMode(CameraMode.SELF);
         return;
       case KeyEvent.VK_2:
-        cameraMan.setMode(CameraMan.Mode.GAGGLE);
+        cameraMan.setMode(CameraMode.GAGGLE);
         return;
       case KeyEvent.VK_3:
-        cameraMan.setMode(CameraMan.Mode.PLAN);
+        cameraMan.setMode(CameraMode.PLAN);
         return;
       case KeyEvent.VK_4:
-        cameraMan.setMode(CameraMan.Mode.TILE);
+        cameraMan.setMode(CameraMode.TILE);
         return;
 
       default:
@@ -254,43 +263,50 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   }
 
   @Override
-  public void keyReleased(KeyEvent e) {
+  public void keyReleased(final KeyEvent e) {
   }
 
-  public void draw(Graphics g, int width, int height) {
+  public void draw(final Graphics g, final int width, final int height) {
     //TODO optimize - build vector of objs in FOV, need only draw these
     cameraMan.setMatrix();
 
-    obj3dManager.sortObjects();
-    for (ObjectLayer layer : obj3dManager.layers) {
-      for (Object3d object : layer) {
-        object.film(cameraMan);
-        object.draw(g);
-      }
-    }
+    obj3dManager.sortObjects()
+        .forEach(layer ->
+            layer.forEach(obj -> {
+              obj.film(cameraMan);
+              obj.draw(g);
+            })
+        );
 
-    //Text
-    if (textMessage != null) {
-      Font font = new Font("SansSerif", Font.PLAIN, 10);
-      g.setFont(font);
-      g.setColor(Color.LIGHT_GRAY);
+    renderTextMessage(g, height);
+    renderCompass(g);
+    renderSlider(g);
+  }
 
-      String s;
-      if (!clock.paused) {
-        s = textMessage;
-      } else {
-        s = textMessage + " [ paused ]";
-      }
-      g.drawString(s, 15, height - 15);
-    }
-
+  private void renderCompass(final Graphics g) {
     if (compass != null) {
       compass.draw(g);
     }
+  }
 
+  private void renderSlider(final Graphics g) {
     if (slider != null) {
       slider.draw(g);
     }
+  }
+
+  private void renderTextMessage(final Graphics g, final int height) {
+    if (textMessage != null) {
+      g.setFont(font);
+      g.setColor(Color.LIGHT_GRAY);
+
+      final String msg = clock.paused ? textMessage + " [ paused ]" : textMessage;
+      g.drawString(msg, 15, height - 15);
+    }
+  }
+
+  public float getTime() {
+    return time;
   }
 }
 

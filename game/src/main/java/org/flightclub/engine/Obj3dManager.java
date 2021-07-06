@@ -36,7 +36,8 @@ public class Obj3dManager {
   }
 
   /* sort each layer so furthest away obj is first in list */
-  public void sortObjects() {
+  public Vector<ObjectLayer> sortObjects() {
     layers.forEach(ObjectLayer::sort);
+    return layers;
   }
 }

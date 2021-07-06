@@ -231,7 +231,7 @@ public class Glider extends FlyingBody {
   }
 
   @Override
-  public void tick(float delta) {
+  public void tick(final float delta) {
     if (isUser) {
       if (demoMode) {
         return;
@@ -241,7 +241,7 @@ public class Glider extends FlyingBody {
         app.textMessage = "Well done ! You have reached goal. You flew "
             + (int) (vectorP.posY / 2)
             + "km in "
-            + (int) app.time / 2
+            + (int) app.getTime() / 2
             + " mins. Press <y> to fly again.";
       } else if (landed) {
         app.textMessage = "You have landed - you flew "
@@ -250,7 +250,7 @@ public class Glider extends FlyingBody {
       } else {
         app.textMessage = "D: "
             + (int) (vectorP.posY / 2)
-            + "km  T: " + (int) app.time / 2
+            + "km  T: " + (int) app.getTime() / 2
             + "mins  H: "
             + (int) ((vectorP.posZ / 2) * 1500) + "m ";
       }
@@ -343,7 +343,7 @@ public class Glider extends FlyingBody {
     gotoNextLiftSource();
 
     if (isUser) {
-      app.cameraMan.setMode(CameraMan.Mode.SELF);
+      app.cameraMan.setMode(CameraMode.SELF);
       demoMode = false;
     }
   }

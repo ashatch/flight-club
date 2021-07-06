@@ -42,14 +42,7 @@ public class CameraMan {
   CameraSubject subject1;
   CameraSubject subject2;
 
-  public enum Mode {
-    SELF,
-    GAGGLE,
-    PLAN,
-    TILE,
-  }
-
-  Mode mode = Mode.SELF;
+  private CameraMode mode = CameraMode.SELF;
 
   int cutCount = 0;
   int cut2Count = 0;
@@ -68,12 +61,15 @@ public class CameraMan {
   static final int PLAN_H = 20;
   static final int PLAN_Y_OFFSET = 4;
 
-  CameraMan(XcGame theApp) {
+  CameraMan(
+      XcGame theApp,
+      IntPair windowSize
+  ) {
     app = theApp;
 
     //get the canvas size
-    screenWidth = app.envGameEnvironment.windowSize().x();
-    screenHeight = app.envGameEnvironment.windowSize().y();
+    screenWidth = windowSize.x();
+    screenHeight = windowSize.y();
     theScale = screenHeight * (float) 1.1; //defines lens angle - smaller num -> wider angle
 
     //starting position and light
@@ -86,23 +82,23 @@ public class CameraMan {
   }
 
   @SuppressWarnings("SuspiciousNameCombination")
-  void setMode(Mode mode) {
+  void setMode(CameraMode mode) {
     this.mode = mode;
 
-    if (mode == Mode.SELF && subject1 != null) {
+    if (mode == CameraMode.SELF && subject1 != null) {
       cutCount = 0;
       cutSetup(subject1, true);
       return;
     }
 
-    if (mode == Mode.GAGGLE && subject2 != null) {
+    if (mode == CameraMode.GAGGLE && subject2 != null) {
       cutCount = 0;
       cut2Count = 0;
       cutSetup(subject2, false);
       return;
     }
 
-    if (mode == Mode.PLAN) {
+    if (mode == CameraMode.PLAN) {
 
       //hack - should extend generic cameraman
       boolean user = (app.mode == org.flightclub.engine.Mode.USER);
@@ -128,10 +124,10 @@ public class CameraMan {
     }
 
 
-    if (mode == Mode.TILE && app.landscape != null) {
+    if (mode == CameraMode.TILE && this.app.landscape != null) {
       cutCount = 0;
       cut2Count = 0;
-      cutSetup(app.landscape, true);
+      cutSetup(this.app.landscape, true);
     }
   }
 
@@ -171,7 +167,7 @@ public class CameraMan {
 
   void followSubject() {
     //add in movement of our subject
-    if (mode != Mode.PLAN) {
+    if (mode != CameraMode.PLAN) {
       Vector3d eyeVector = cameraSubject.getEye();
       Vector3d focusVector = cameraSubject.getFocus();
 
@@ -200,22 +196,22 @@ public class CameraMan {
    * @param isUser true: call from user glider, false: one of the gagggle
    */
   void cutSetup(CameraSubject subject, boolean isUser) {
-    if (mode == Mode.PLAN) {
+    if (mode == CameraMode.PLAN) {
       return;
     }
 
-    if (cutCount > 0 && mode == Mode.GAGGLE) {
+    if (cutCount > 0 && mode == CameraMode.GAGGLE) {
       //ignore this call if already doing a cut
       return;
     }
 
-    if (!isUser && mode != Mode.GAGGLE) {
+    if (!isUser && mode != CameraMode.GAGGLE) {
       //filter out all calls from sniffers unless watching gaggle
       return;
     }
 
     //gaggle mode too jumpy
-    if (mode == Mode.GAGGLE && cut2Count > 0) {
+    if (mode == CameraMode.GAGGLE && cut2Count > 0) {
       return;
     }
 
