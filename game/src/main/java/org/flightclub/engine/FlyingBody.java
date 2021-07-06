@@ -18,7 +18,8 @@ public class FlyingBody extends FlyingDot {
 
   public void init(Object3dWithShadow inBody, Vector3d inP) {
     body0 = inBody;    //the base object should not be registered
-    body1 = new Object3dWithShadow(app);
+    body1 = new Object3dWithShadow();
+    app.obj3dManager.add(body1);
     Object3dWithShadow.clone(body0, body1);
 
     super.init(inP);
@@ -36,7 +37,7 @@ public class FlyingBody extends FlyingDot {
 
     rotateBody();
     translateBody();
-    body1.updateShadow();
+    body1.updateShadow(app.landscape);
   }
 
   public void rotateBody() {

@@ -102,7 +102,8 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x, y - hair, 0));
     wire.addElement(new Vector3d(x, y + hair, 0));
 
-    Object3d o = new Object3d(app, true, 0);    //layer zero !!
+    Object3d o = new Object3d(0);    //layer zero !!
+    app.obj3dManager.add(o);
     o.addWire(wire, new Color(230, 230, 230), false, false);
 
     wire = new Vector<>();
@@ -118,7 +119,8 @@ public class Landscape implements CameraSubject {
   static void road() {
     float atom = 2;
 
-    Object3d o = new Object3d(app, true, 0);    //layer zero !!
+    Object3d o = new Object3d(0);    //layer zero !!
+    app.obj3dManager.add(o);
     Vector<Vector3d> wire;
 
     for (int i = 0; i < MAX_TILES * TILE_WIDTH; i += atom * 1) {
@@ -146,7 +148,8 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x1, y0, 0));
     wire.addElement(new Vector3d(x2, y0, 0));
 
-    Object3d o = new Object3d(app, true, 0);    //layer zero !!
+    Object3d o = new Object3d(0);    //layer zero !!
+    app.obj3dManager.add(o);
     o.addWire(wire, new Color(220, 220, 100), false, false);
 
     wire = new Vector<>();

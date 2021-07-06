@@ -274,7 +274,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
         .forEach(layer ->
             layer.forEach(obj -> {
               obj.film(cameraMan);
-              obj.draw(g);
+              obj.draw(g, cameraMan);
             })
         );
 

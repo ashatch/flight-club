@@ -22,14 +22,14 @@ public class Surface extends PolyLine {
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void draw(Graphics g, CameraMan cameraMan) {
     boolean inFieldOfView = true;
 
     if (numPoints <= 1) {
       return;
     }
 
-    g.setColor(getColor());
+    g.setColor(getColor(cameraMan));
 
     for (int i = 0; i < numPoints; i++) {
       Vector3d a = object3d.cameraSpacePoints.elementAt(points[i]);

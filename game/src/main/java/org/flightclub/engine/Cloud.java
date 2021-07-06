@@ -43,7 +43,8 @@ public class Cloud implements CameraSubject, Clock.Observer {
 
   public Cloud(XcGame inApp, float x, float y, int inDuration, int inStrength) {
     app = inApp;
-    object3d = new Object3dWithShadow(app);
+    object3d = new Object3dWithShadow();
+    inApp.obj3dManager.add(object3d);
 
     for (int i = 0; i < 8; i++) {
       corners[i] = new Vector3d();
@@ -196,7 +197,7 @@ public class Cloud implements CameraSubject, Clock.Observer {
     projection.posY += Sky.getWind() * delta * app.timeMultiplier / 2.0f;
     projection.posZ = Sky.getCloudBase();
     setCorners();
-    object3d.updateShadow();
+    object3d.updateShadow(app.landscape);
   }
 
   float getRadius() {

@@ -63,7 +63,8 @@ public class Hill implements CameraSubject {
     phase = inPhase;
     h0 = inH0;
     face = inFace;
-    object3d = new Object3d(app);
+    object3d = new Object3d(1);
+    app.obj3dManager.add(object3d);
     color = new Color(255, 255, 255);
 
     // higher resolution/sample rate if

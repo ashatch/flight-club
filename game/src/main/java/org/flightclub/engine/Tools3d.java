@@ -137,7 +137,8 @@ public class Tools3d {
   }
 
   static Object3d unitCube(XcGame theApp, boolean isSolid) {
-    Object3d cube = new Object3d(theApp);
+    Object3d cube = new Object3d(1);
+    theApp.obj3dManager.add(cube);
     float d = (float) 0.5;
     Color c = Color.GREEN;
 

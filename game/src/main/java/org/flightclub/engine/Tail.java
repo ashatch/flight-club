@@ -23,7 +23,8 @@ public class Tail extends Object3d {
     // a tail has a parent who IS registered with the manager
     //  and is responsible for drawing and ticking its tail
     // ...er no
-    super(theApp, true);
+    super(1);
+    theApp.obj3dManager.add(this);
     this.length = length;
     this.color = color;
   }
@@ -33,7 +34,8 @@ public class Tail extends Object3d {
     as above but add to a specific layer
     eg zero for long jet tails, roads...
     */
-    super(theApp, true, layer);
+    super(layer);
+    theApp.obj3dManager.add(this);
     this.length = length;
     this.color = color;
   }

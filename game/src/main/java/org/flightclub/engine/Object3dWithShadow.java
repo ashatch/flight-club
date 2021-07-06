@@ -27,13 +27,8 @@ public class Object3dWithShadow extends Object3d {
   final Surface[] shadows = new Surface[MAX_SHADOWS];
   int numShadows = 0;
 
-  Object3dWithShadow(XcGame theApp) {
-    super(theApp);
-    initShadow();
-  }
-
-  Object3dWithShadow(XcGame theApp, boolean register) {
-    super(theApp, register);
+  Object3dWithShadow() {
+    super(1);
     initShadow();
   }
 
@@ -79,7 +74,7 @@ public class Object3dWithShadow extends Object3d {
     }
   }
 
-  public void updateShadow() {
+  public void updateShadow(Landscape landscape) {
     /*
     keep shadow under object.
     the owner/creator of this object should
@@ -99,8 +94,8 @@ public class Object3dWithShadow extends Object3d {
         //float doff = p.z/2;
         //q.x -= doff;
         //q.y += 0;;
-        if (app.landscape != null) {
-          q.posZ = app.landscape.getHeight(q.posX, q.posY);
+        if (landscape != null) {
+          q.posZ = landscape.getHeight(q.posX, q.posY);
         } else {
           q.posZ = 0;
         }
@@ -108,23 +103,23 @@ public class Object3dWithShadow extends Object3d {
     }
   }
 
-  public void drawShadow(Graphics g) {
+  public void drawShadow(Graphics g, CameraMan cameraMan) {
     for (int i = 0; i < MAX_SHADOWS; i++) {
       if (shadowCasters[i] == -1) {
         return;
       }
 
-      if (!shadows[i].isBackFace(app.cameraMan.getEye())) {
-        shadows[i].draw(g);
+      if (!shadows[i].isBackFace(cameraMan.getEye())) {
+        shadows[i].draw(g, cameraMan);
       }
     }
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void draw(Graphics g, CameraMan cameraMan) {
     // tmp - not doing z order yet
-    drawShadow(g);
-    super.draw(g);
+    drawShadow(g, cameraMan);
+    super.draw(g, cameraMan);
   }
 
   public static void clone(Object3dWithShadow from, Object3dWithShadow to) {

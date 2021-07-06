@@ -61,23 +61,16 @@ public class PolyLine {
     Vector3d e2 = ps[2].minus(ps[1]);
 
     normal = new Vector3d(e1).cross(e2).makeUnit();
-
-    calcLight();
   }
 
-  void calcLight() {
-    float light = object3d.app.cameraMan.surfaceLight(normal);
-    apparentColor = trueColor.mul(light);
-  }
-
-  public void draw(Graphics g) {
+  public void draw(Graphics g, CameraMan cameraMan) {
     Vector3d a;
     Vector3d b;
 
     if (numPoints <= 1) {
       return;
     }
-    g.setColor(this.getColor());
+    g.setColor(this.getColor(cameraMan));
 
     for (int i = 0; i < numPoints - 1; i++) {
       a = object3d.cameraSpacePoints.elementAt(points[i]);
@@ -92,9 +85,15 @@ public class PolyLine {
     }
   }
 
-  Color getColor() {
+  Color getColor(CameraMan cameraMan) {
+    if (normal == null) {
+      return trueColor;
+    }
+    float light = cameraMan.surfaceLight(normal);
+    apparentColor = trueColor.mul(light);
+
     //fogging
     Vector3d p = object3d.cameraSpacePoints.elementAt(points[0]);
-    return object3d.app.cameraMan.foggyColor(p.posX, apparentColor);
+    return cameraMan.foggyColor(p.posX, apparentColor);
   }
 }
