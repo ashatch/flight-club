@@ -476,7 +476,7 @@ public class Landscape implements CameraSubject {
     }
 
     for (Hill hill : tiles[tileNum].hills) {
-      hill.destroyMe();
+      app.obj3dManager.remove(hill.object3d);
     }
 
     for (ThermalTrigger trigger : tiles[tileNum].triggers) {

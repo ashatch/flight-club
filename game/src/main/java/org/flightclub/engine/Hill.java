@@ -333,8 +333,4 @@ public class Hill implements CameraSubject {
       return 0;
     }
   }
-
-  public void destroyMe() {
-    object3d.destroyMe();
-  }
 }

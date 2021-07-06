@@ -13,13 +13,14 @@ import java.util.Vector;
  * manager for 3d objects
  */
 public class Obj3dManager {
+  static final int MAX_LAYERS = 3;
+
   /*
       13/10/2001 - add layers (cf photoshop)...
           0 - at the back
           1 - default layer (used if none specified when adding an object3d)
   */
   final Vector<ObjectLayer> layers = new Vector<>(MAX_LAYERS);
-  static final int MAX_LAYERS = 3;
 
   public Obj3dManager() {
     for (int i = 0; i < MAX_LAYERS; i++) {

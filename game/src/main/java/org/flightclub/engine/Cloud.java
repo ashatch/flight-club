@@ -90,7 +90,7 @@ public class Cloud implements CameraSubject, Clock.Observer {
   }
 
   void destroyMe() {
-    object3d.destroyMe();
+    app.obj3dManager.remove(object3d);
     if (inForeGround) {
       app.sky.removeCloud(this);
     }
