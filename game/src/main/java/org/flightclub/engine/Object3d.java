@@ -23,7 +23,7 @@ public class Object3d {
   boolean inFov = false;
 
   // default layer 1
-  int layer;
+  private int layer;
 
   Object3d(XcGame theApp) {
     this(theApp, true);
@@ -42,11 +42,15 @@ public class Object3d {
   }
 
   public void destroyMe() {
-    app.obj3dManager.removeObj(this);
+    app.obj3dManager.remove(this);
   }
 
   void registerObject3d() {
-    app.obj3dManager.addObj(this);
+    app.obj3dManager.add(this);
+  }
+
+  public int getLayer() {
+    return layer;
   }
 
   public void draw(Graphics g) {

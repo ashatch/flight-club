@@ -270,7 +270,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     //TODO optimize - build vector of objs in FOV, need only draw these
     cameraMan.setMatrix();
 
-    obj3dManager.sortObjects()
+    obj3dManager.sort()
         .forEach(layer ->
             layer.forEach(obj -> {
               obj.film(cameraMan);
