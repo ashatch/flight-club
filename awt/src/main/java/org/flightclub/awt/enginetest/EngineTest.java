@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import org.flightclub.awt.JavaxAudioPlayer;
 import org.flightclub.awt.ModelCanvas;
 import org.flightclub.engine.GameEnvironment;
+import org.flightclub.engine.GameMode;
+import org.flightclub.engine.GameModelHolder;
 import org.flightclub.engine.IntPair;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
@@ -32,6 +34,7 @@ public class EngineTest extends Frame {
     super(title);
 
     final XcGame app = new XcGame(
+        new GameModelHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );
 

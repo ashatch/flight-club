@@ -14,8 +14,9 @@ package org.flightclub.engine;
 */
 
 public class CameraMan {
-  final XcGame app;
   public final Vector3d lightRay;
+  private final GameModelHolder gameModeHolder;
+  private final Landscape landscape;
   public float zoom = 1;
 
   private float distance = 0;
@@ -62,10 +63,12 @@ public class CameraMan {
   static final int PLAN_Y_OFFSET = 4;
 
   CameraMan(
-      XcGame theApp,
-      IntPair windowSize
+      final GameModelHolder gameModelHolder,
+      final Landscape landscape,
+      final IntPair windowSize
   ) {
-    app = theApp;
+    this.gameModeHolder = gameModelHolder;
+    this.landscape = landscape;
 
     //get the canvas size
     screenWidth = windowSize.x();
@@ -82,7 +85,7 @@ public class CameraMan {
   }
 
   @SuppressWarnings("SuspiciousNameCombination")
-  void setMode(CameraMode mode) {
+  void setMode(final CameraMode mode) {
     this.mode = mode;
 
     if (mode == CameraMode.SELF && subject1 != null) {
@@ -101,7 +104,7 @@ public class CameraMan {
     if (mode == CameraMode.PLAN) {
 
       //hack - should extend generic cameraman
-      boolean user = (app.gameMode == GameMode.USER);
+      boolean user = (this.gameModeHolder.getMode() == GameMode.USER);
 
       if (subject1 != null && user) {
         focus = subject1.getFocus();
@@ -124,10 +127,10 @@ public class CameraMan {
     }
 
 
-    if (mode == CameraMode.TILE && this.app.landscape != null) {
+    if (mode == CameraMode.TILE && this.landscape != null) {
       cutCount = 0;
       cut2Count = 0;
-      cutSetup(this.app.landscape, true);
+      cutSetup(this.landscape, true);
     }
   }
 

@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.engine.GameEnvironment;
+import org.flightclub.engine.GameMode;
+import org.flightclub.engine.GameModelHolder;
 import org.flightclub.engine.IntPair;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
@@ -61,6 +63,7 @@ public class XcGameFrame extends Frame {
 
     final IntPair windowSize = new IntPair(1000, 600);
     final XcGame game = new XcGame(
+        new GameModelHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );
 

@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -30,28 +30,29 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
 
   protected float timePerFrame = TIME_PER_FRAME;
 
-  private Vector<Glider> gaggle;
-  private GliderUser gliderUser;
-  private JetTrail jet1;
-  private JetTrail jet2;
+  private final Vector<Glider> gaggle;
+  private final GliderUser gliderUser;
+  private final JetTrail jet1;
+  private final JetTrail jet2;
 
   private boolean fastForward = true;
   private Compass compass = null;
   private DataSlider slider = null;
-  private Variometer vario;
+  private final Variometer vario;
 
   public XcGame(
+      GameModelHolder gameModelHolder,
       GameEnvironment envGameEnvironment
   ) {
     this.envGameEnvironment = envGameEnvironment;
     clock.addObserver(this);
 
-    cameraMan = new CameraMan(this, envGameEnvironment.windowSize());
+    sky = new Sky();
+    landscape = new Landscape(this);
+    cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
 
     eventManager.subscribe(this);
 
-    sky = new Sky();
-    landscape = new Landscape(this);
 
     gliderUser = new GliderUser(this, new Vector3d(0, 0, 0));
     gliderUser.landed();
@@ -88,9 +89,8 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     launchGaggle();
     cameraMan.setMode(CameraMode.GAGGLE);
     textMessage = "Demo mode";
-    gameMode = GameMode.DEMO;
+    gameModelHolder.setMode(GameMode.DEMO);
     toggleFastForward();
-
   }
 
   void launchGaggle() {
@@ -111,10 +111,6 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
 
   public void start() {
     clock.start();
-  }
-
-  public void stop() {
-    clock.stop();
   }
 
   void startPlay() {
@@ -309,4 +305,3 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     return time;
   }
 }
-
