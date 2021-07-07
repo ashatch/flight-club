@@ -72,7 +72,6 @@ public class XcGameFrame extends Frame {
     );
 
     new XcGameFrame(game, "Flight Club", windowSize);
-
-    game.start();
+    game.gameLoop();
   }
 }

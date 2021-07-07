@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.awt.JavaxAudioPlayer;
-import org.flightclub.awt.ModelCanvas;
 import org.flightclub.engine.GameEnvironment;
 import org.flightclub.engine.GameMode;
 import org.flightclub.engine.GameModelHolder;
@@ -47,7 +46,7 @@ public class EngineTest extends Frame {
     setSize(windowSize.x(), windowSize.y());
     setVisible(true);
 //    modelCanvas.init();
-    app.start();
+    app.gameLoop();
 
     this.addWindowListener(new WindowAdapter() {
       @Override

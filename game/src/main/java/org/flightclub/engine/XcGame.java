@@ -111,8 +111,10 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     clock.paused = !clock.paused;
   }
 
-  public void start() {
-    clock.start();
+  public void gameLoop() {
+    do {
+      clock.tick();
+    } while (true);
   }
 
   void startPlay() {
