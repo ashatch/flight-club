@@ -11,6 +11,9 @@ import java.util.Vector;
 
 
 public class Object3d {
+  private final int layer;
+  private boolean inFov = false;
+
   final Vector<Vector3d> points = new Vector<>();
   final Vector<Vector3d> cameraSpacePoints = new Vector<>();
   final Vector<PolyLine> wires = new Vector<>();
@@ -18,14 +21,8 @@ public class Object3d {
   // list of flags - is point within field of view
   final Vector<Boolean> flagsInFieldOfView = new Vector<>();
 
-  boolean inFov = false;
-
-  // default layer 1
-  private int layer;
-
-
-  Object3d(int inLayer) {
-    layer = inLayer;
+  Object3d(int layer) {
+    this.layer = layer;
   }
 
   public int getLayer() {
@@ -47,7 +44,7 @@ public class Object3d {
   }
 
   /* use camera to get from 3d to 2d */
-  void film(CameraMan camera) {
+  void film(final CameraMan camera) {
     Vector3d vector;
     Vector3d vectorPrime;
 
@@ -66,19 +63,14 @@ public class Object3d {
       flagsInFieldOfView.setElementAt(rc, i);
       camera.scaleToScreen(vectorPrime);
     }
-
   }
 
-  public void scaleBy(float s) {
-    for (Vector3d v : points) {
-      v.scaleBy(s);
-    }
+  public void scaleBy(final float s) {
+    points.forEach(v -> v.scaleBy(s));
   }
 
-  public void setColor(Color c) {
-    for (PolyLine wire : wires) {
-      wire.trueColor = c;
-    }
+  public void setColor(final Color color) {
+    wires.forEach(wire -> wire.setTrueColor(color));
   }
 
   protected int addPoint(Vector3d p) {
@@ -103,11 +95,6 @@ public class Object3d {
       flagsInFieldOfView.addElement(false);
       return points.size() - 1;
     }
-  }
-
-  public int addWire(Vector<Vector3d> wirePoints, Color c) {
-    //default - solid and has normal (ie only one side of surface is visible)
-    return addWire(wirePoints, c, true, true);
   }
 
   public int addWire(Vector<Vector3d> wirePoints, Color c, boolean isSolid) {
@@ -183,7 +170,6 @@ public class Object3d {
 
   public static void clone(Object3d from, Object3d to) {
     for (PolyLine fromWire : from.wires) {
-
       Vector<Vector3d> toWire = new Vector<>();
       for (int k : fromWire.points) {
         Vector3d v = from.points.elementAt(k);
@@ -191,7 +177,7 @@ public class Object3d {
       }
 
       boolean hasNorm = (fromWire.normal != null);
-      to.addWire(toWire, fromWire.trueColor, fromWire.isSolid, hasNorm);
+      to.addWire(toWire, fromWire.getTrueColor(), fromWire.isSolid, hasNorm);
     }
   }
 
@@ -203,9 +189,7 @@ public class Object3d {
 
       wires.setElementAt(wire2, i);
       wires.setElementAt(wire1, j);
-
     }
   }
-
 }
 

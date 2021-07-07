@@ -12,7 +12,7 @@ public class PolyLine {
   final int[] points;
   final Object3d object3d;
 
-  Color trueColor;
+  private Color trueColor;
   Color apparentColor;
 
   boolean isSolid = false;
@@ -27,6 +27,14 @@ public class PolyLine {
     object3d = o;
     trueColor = inColor;
     apparentColor = inColor;
+  }
+
+  public Color getTrueColor() {
+    return trueColor;
+  }
+
+  public void setTrueColor(Color trueColor) {
+    this.trueColor = trueColor;
   }
 
   public void addPoint(int point) {

@@ -137,7 +137,7 @@ public class Object3dWithShadow extends Object3d {
           toWire.addElement(q);
         }
         boolean hasNorm = (fromWire.normal != null);
-        to.addWireWithShadow(toWire, fromWire.trueColor, fromWire.isSolid, hasNorm);
+        to.addWireWithShadow(toWire, fromWire.getTrueColor(), fromWire.isSolid, hasNorm);
       }
     }
   }
