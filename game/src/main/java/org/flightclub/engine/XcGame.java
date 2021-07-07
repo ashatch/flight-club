@@ -64,6 +64,17 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     gliderUser.landed();
     cameraMan.subject1 = gliderUser;
 
+    compass = new Compass(25, envGameEnvironment.windowSize().x() - 30, envGameEnvironment.windowSize().y() - 35);
+    float vmax = -2 * Glider.SINK_RATE;
+    slider = new DataSlider(
+        "vario",
+        -vmax,
+        vmax,
+        30,
+        envGameEnvironment.windowSize().x() - 60,
+        envGameEnvironment.windowSize().y() - 35
+    );
+
     vario = new Variometer(this, gliderUser);
 
     jet1 = new JetTrail(this, sky, -JetTrail.TURN_RADIUS, -JetTrail.TURN_RADIUS);
@@ -89,7 +100,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
       //glider.triggerLoading = true;//????
     }
 
-    cameraMan.setEye(Landscape.TILE_WIDTH / 2, -Landscape.TILE_WIDTH / 4, 6);
+    cameraMan.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
     cameraMan.setFocus(0, 0, 0);
 
     launchGaggle();
@@ -160,11 +171,10 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     launchUser();
     launchGaggle();
 
-    cameraMan.setEye(Landscape.TILE_WIDTH / 2, -Landscape.TILE_WIDTH / 4, 6);
+    cameraMan.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
     cameraMan.setFocus(0, 0, 0);
 
     cameraMan.setMode(CameraMode.SELF);
-    createInstruments();
 
     jet1.buzzThis = gliderUser;
     jet2.buzzThis = gliderUser;
@@ -177,25 +187,6 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     }
   }
 
-  void createInstruments() {
-    final int gameWidth = envGameEnvironment.windowSize().x();
-    final int gameHeight = envGameEnvironment.windowSize().y();
-
-    if (compass == null) {
-      compass = new Compass(25, gameWidth - 30, gameHeight - 35);
-    }
-    if (slider == null) {
-      float vmax = -2 * Glider.SINK_RATE;
-      slider = new DataSlider(
-          "vario",
-          -vmax,
-          vmax,
-          30,
-          gameWidth - 60,
-          gameHeight - 35
-      );
-    }
-  }
 
   @Override
   public void update(final UpdateContext context) {
