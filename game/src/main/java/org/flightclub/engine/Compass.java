@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -12,42 +12,41 @@ package org.flightclub.engine;
  */
 public class Compass {
   // head of arrow
-  final int[] hxs = {0, 2, -2};
-  final int[] hys = {5, 2, 2};
+  private final int[] hxs = {0, 2, -2};
+  private final int[] hys = {5, 2, 2};
 
   // tail
-  final int[] txs = {0, 0};
-  final int[] tys = {1, -5};
+  private final int[] txs = {0, 0};
+  private final int[] tys = {1, -5};
 
   // rotate and translate above points
-  final int[] hxsPrime = new int[3];
-  final int[] hysPrime = new int[3];
-  final int[] txsPrime = new int[2];
-  final int[] tysPrime = new int[2];
+  private final int[] hxsPrime = new int[3];
+  private final int[] hysPrime = new int[3];
+  private final int[] txsPrime = new int[2];
+  private final int[] tysPrime = new int[2];
 
-  final int theR;
-  final int x0;
-  final int y0;
+  private final int theR;
+  private final int x;
+  private final int y;
+  private final Font font;
 
   // vector determines arrow direction - start pointing north
   private float vx = 0;
   private float vy = 1;
 
-  final float[][] matrix = new float[2][2];
+  private final float[][] matrix = new float[2][2];
 
-  // default radius of 10
-  static final int SIZE_DEFAULT = 20;
-
-  static final int H_NUM = 3;
-  static final int T_NUM = 2;
+  private static final int H_NUM = 3;
+  private static final int T_NUM = 2;
 
   // pixel space for label at bottom
-  static final int dy = 10;
+  private static final int dy = 10;
 
-  public Compass(int inSize, int inX0, int inY0) {
-    theR = inSize / 2;
-    x0 = inX0;
-    y0 = inY0;
+  public Compass(int size, int x, int y) {
+    theR = size / 2;
+    this.x = x;
+    this.y = y;
+    this.font = new Font("SansSerif", Font.PLAIN, 10);
     init();
   }
 
@@ -85,16 +84,14 @@ public class Compass {
     updateArrow();
   }
 
-  public void draw(Graphics g) {
-
+  public void draw(final Graphics g) {
     g.setColor(Color.LIGHT_GRAY);
     g.drawLine(txsPrime[0], tysPrime[0], txsPrime[1], tysPrime[1]);
 
-    Font font = new Font("SansSerif", Font.PLAIN, 10);
     g.setFont(font);
     g.setColor(Color.LIGHT_GRAY);
-    g.drawString("N", x0 - 3, y0 - theR * 2 - dy);
-    g.drawString("S", x0 - 3, y0);
+    g.drawString("N", x - 3, y - theR * 2 - dy);
+    g.drawString("S", x - 2, y);
 
     g.setColor(Color.GRAY);
     g.fillPolygon(hxsPrime, hysPrime, hxsPrime.length);
@@ -109,13 +106,13 @@ public class Compass {
 
     // transform
     for (int i = 0; i < H_NUM; i++) {
-      hxsPrime[i] = (int) (matrix[0][0] * hxs[i] + matrix[0][1] * hys[i] + x0);
-      hysPrime[i] = (int) (matrix[1][0] * hxs[i] + matrix[1][1] * hys[i] + y0 - dy - theR);
+      hxsPrime[i] = (int) (matrix[0][0] * hxs[i] + matrix[0][1] * hys[i] + x);
+      hysPrime[i] = (int) (matrix[1][0] * hxs[i] + matrix[1][1] * hys[i] + y - dy - theR);
     }
 
     for (int i = 0; i < T_NUM; i++) {
-      txsPrime[i] = (int) (matrix[0][0] * txs[i] + matrix[0][1] * tys[i] + x0);
-      tysPrime[i] = (int) (matrix[1][0] * txs[i] + matrix[1][1] * tys[i] + y0 - dy - theR);
+      txsPrime[i] = (int) (matrix[0][0] * txs[i] + matrix[0][1] * tys[i] + x);
+      tysPrime[i] = (int) (matrix[1][0] * txs[i] + matrix[1][1] * tys[i] + y - dy - theR);
     }
   }
 

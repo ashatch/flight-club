@@ -150,18 +150,18 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     final int gameHeight = envGameEnvironment.windowSize().y();
 
     if (compass == null) {
-      compass = new Compass(25, gameWidth - 30, gameHeight - 15);
+      compass = new Compass(25, gameWidth - 30, gameHeight - 35);
     }
     if (slider == null) {
       float vmax = -2 * Glider.SINK_RATE;
       slider = new DataSlider(
+          "vario",
           -vmax,
           vmax,
           30,
           gameWidth - 60,
-          gameHeight - 15
+          gameHeight - 35
       );
-      slider.label = "vario";
     }
   }
 
