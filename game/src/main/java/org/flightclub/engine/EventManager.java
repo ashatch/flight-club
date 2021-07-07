@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -21,18 +21,14 @@ public class EventManager {
    * add an object to the list of objects to be
    * notified when an event happens
    */
-  public void subscribe(KeyEventHandler i) {
-    subscribers.add(i);
-  }
-
-  public void unsubscribe(KeyEventHandler i) {
-    subscribers.remove(i);
+  public void subscribe(final KeyEventHandler handler) {
+    subscribers.add(handler);
   }
 
   /*
    * add event to queue
    */
-  public boolean addEvent(KeyEvent e) {
+  public boolean addEvent(final KeyEvent e) {
     if (events.size() >= MAX_QUEUE_LENGTH) {
       return false;
     }
@@ -45,17 +41,18 @@ public class EventManager {
    * process event at head of the queue
    */
   public void processEvent() {
-    KeyEvent e = events.poll();
-    if (e == null) {
+    final KeyEvent keyEvent = events.poll();
+
+    if (keyEvent == null) {
       return;
     }
 
-    for (KeyEventHandler i : subscribers) {
-      if (e.type() == KeyEvent.TYPE_KEY_RELEASED) {
-        i.keyReleased(e);
-      } else if (e.type() == KeyEvent.TYPE_KEY_PRESSED) {
-        i.keyPressed(e);
+    subscribers.forEach(subscriber -> {
+      if (keyEvent.type() == KeyEvent.TYPE_KEY_RELEASED) {
+        subscriber.keyReleased(keyEvent);
+      } else if (keyEvent.type() == KeyEvent.TYPE_KEY_PRESSED) {
+        subscriber.keyPressed(keyEvent);
       }
-    }
+    });
   }
 }

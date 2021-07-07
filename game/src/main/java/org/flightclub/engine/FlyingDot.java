@@ -73,9 +73,9 @@ public class FlyingDot implements Clock.Observer, CameraSubject {
 
   public void init(Vector3d inP) {
     vectorP = new Vector3d(inP);
+    moveManager = new MovementManager(app, this);
     setLocalFrame();
     createTail();
-    createMoveManager();
   }
 
   protected void createTail() {
@@ -87,10 +87,6 @@ public class FlyingDot implements Clock.Observer, CameraSubject {
     //call eg if user moved to faster point on the polar
     speed = s;
     ds = speed * app.timePerFrame;
-  }
-
-  protected void createMoveManager() {
-    moveManager = new MovementManager(app, this);
   }
 
   /*

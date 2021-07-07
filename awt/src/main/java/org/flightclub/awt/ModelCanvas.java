@@ -20,6 +20,8 @@ import java.awt.event.MouseMotionAdapter;
 import org.flightclub.engine.Clock;
 import org.flightclub.engine.MouseTracker;
 import org.flightclub.engine.XcGame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
 
@@ -30,6 +32,8 @@ import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
  * 'Java Games Programming' by Niel Bartlett
  */
 public class ModelCanvas extends Canvas implements Clock.Observer {
+  private Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
+
   public final Color backColor = Color.white;
   protected final XcGame app;
   private Image imgBuffer;
@@ -69,12 +73,16 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        if (!app.eventManager.addEvent(toEngineKeyEvent(e))) {
+          LOG.warn("Did not register keyPressed " + e);
+        }
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        if (!app.eventManager.addEvent(toEngineKeyEvent(e))) {
+          LOG.warn("Did not register keyReleased " + e);
+        }
       }
     });
   }
