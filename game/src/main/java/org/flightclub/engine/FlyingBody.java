@@ -12,8 +12,8 @@ public class FlyingBody extends FlyingDot {
   private Object3dWithShadow body1;
   protected float bodyHeight;
 
-  public FlyingBody(XcGame theApp, float speed, float inTurnRadius, boolean isUser) {
-    super(theApp, speed, inTurnRadius, isUser);
+  public FlyingBody(XcGame theApp, Sky sky, float speed, float inTurnRadius, boolean isUser) {
+    super(theApp, sky, speed, inTurnRadius, isUser);
   }
 
   public void init(Object3dWithShadow inBody, Vector3d inP) {

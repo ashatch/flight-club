@@ -17,6 +17,7 @@ package org.flightclub.engine;
 
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
+  protected final Sky sky;
   Vector3d vector;
   Vector3d vectorP = new Vector3d();
   float speed;
@@ -56,8 +57,9 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     }
   }
 
-  public FlyingDot(XcGame theApp, float inSpeed, float inTurnRadius) {
+  public FlyingDot(XcGame theApp, final Sky sky, float inSpeed, float inTurnRadius) {
     app = theApp;
+    this.sky = sky;
     app.addGameObject(this);
 
     speed = inSpeed;
@@ -66,8 +68,8 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     myTurnRadius = inTurnRadius;
   }
 
-  public FlyingDot(XcGame theApp, float inSpeed, float inTurnRadius, boolean inIsUser) {
-    this(theApp, inSpeed, inTurnRadius);
+  public FlyingDot(XcGame theApp, final Sky sky, float inSpeed, float inTurnRadius, boolean inIsUser) {
+    this(theApp, sky, inSpeed, inTurnRadius);
     isUser = inIsUser;
   }
 
@@ -95,7 +97,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   @Override
   public void update(final UpdateContext context) {
     vectorP.add(vector);
-    vectorP.posY += Sky.getWind() * app.timePerFrame;
+    vectorP.posY += this.sky.getWind() * app.timePerFrame;
 
     //hack - may have changed game speed (otherwise ds is constant)
     ds = speed * app.timePerFrame;

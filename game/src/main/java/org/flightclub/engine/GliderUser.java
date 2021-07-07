@@ -15,10 +15,10 @@ public class GliderUser extends Glider implements KeyEventHandler {
   public static final int TAIL_LENGTH = 60;
   public static final Color TAIL_COLOR = new Color(120, 120, 120);
 
-  public GliderUser(XcGame app, Vector3d p) {
+  public GliderUser(XcGame app, Sky sky, Vector3d p) {
     //set flag so camera will follow my cuts when in mode 1
     //(see glider.gotoNextLiftSource)
-    super(app, p, true);
+    super(app, sky, p, true);
     app.eventManager.subscribe(this);
   }
 

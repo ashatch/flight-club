@@ -54,30 +54,30 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     this.obj3dManager = obj3dManager;
     this.envGameEnvironment = envGameEnvironment;
     this.sky = sky;
-    landscape = new Landscape(this);
+    landscape = new Landscape(this, this.sky);
     cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
 
     eventManager.subscribe(this);
     addGameObject(this);
 
-    gliderUser = new GliderUser(this, new Vector3d(0, 0, 0));
+    gliderUser = new GliderUser(this, this.sky, new Vector3d(0, 0, 0));
     gliderUser.landed();
     cameraMan.subject1 = gliderUser;
 
     vario = new Variometer(this, gliderUser);
 
-    jet1 = new JetTrail(this, -JetTrail.TURN_RADIUS, -JetTrail.TURN_RADIUS);
-    jet2 = new JetTrail(this, 0, JetTrail.TURN_RADIUS);
+    jet1 = new JetTrail(this, sky, -JetTrail.TURN_RADIUS, -JetTrail.TURN_RADIUS);
+    jet2 = new JetTrail(this, sky, 0, JetTrail.TURN_RADIUS);
     jet2.makeFlyX();
 
     gaggle = new Vector<>();
     for (int i = 0; i < 10; i++) {
       Glider glider;
       if (i != 3 && i != 7) {
-        glider = new Glider(this, new Vector3d());
+        glider = new Glider(this, this.sky, new Vector3d());
       } else {
         //pink ones
-        glider = new Glider(this, new Vector3d(), false, true);
+        glider = new Glider(this, this.sky, new Vector3d(), false, true);
       }
       gaggle.addElement(glider);
       if (i == 5) {

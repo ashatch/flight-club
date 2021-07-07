@@ -12,6 +12,7 @@ import java.util.Vector;
 public class Cloud implements CameraSubject, UpdatableGameObject {
   final XcGame app;
   final Object3dWithShadow object3d;
+  private final Sky sky;
   Vector3d projection = new Vector3d();
   float radius;
   final float maxRadius;
@@ -41,8 +42,16 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   static final int CLOUD_COLOR = 230;
   static final int CLOUD_COLOR_STEP = 20; //how much darker are strong clouds
 
-  public Cloud(XcGame inApp, float x, float y, int inDuration, int inStrength) {
+  public Cloud(
+      XcGame inApp,
+      Sky sky,
+      float x,
+      float y,
+      int inDuration,
+      int inStrength
+  ) {
     app = inApp;
+    this.sky = sky;
     object3d = new Object3dWithShadow();
     inApp.obj3dManager.add(object3d);
 
@@ -58,7 +67,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     age = (float) 0.1; //small but non zero
     //ds = Sky.getWind()/app.getFrameRate();
     myRnd = (float) (Tools3d.rnd(0, 1)); //for camera angle
-    projection = new Vector3d(x, y, Sky.getCloudBase());
+    projection = new Vector3d(x, y, sky.getCloudBase());
 
     /*
      * cloud strength measured in multiples of glider (min) sink rate
@@ -194,8 +203,8 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
       return;
     }
 
-    projection.posY += Sky.getWind() * context.deltaTime() * app.timeMultiplier / 2.0f;
-    projection.posZ = Sky.getCloudBase();
+    projection.posY += this.sky.getWind() * context.deltaTime() * app.timeMultiplier / 2.0f;
+    projection.posZ = this.sky.getCloudBase();
     setCorners();
     object3d.updateShadow(app.landscape);
   }
@@ -328,7 +337,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   }
 
   float getY(float z) {
-    float d = Sky.getCloudBase() - z;
+    float d = this.sky.getCloudBase() - z;
     return projection.posY - d * windSlope;
   }
 
@@ -340,7 +349,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     float r = (float) Math.sqrt(dx * dx + dy * dy);
     float lift;
 
-    if (inP.posZ > Sky.getCloudBase()) {
+    if (inP.posZ > this.sky.getCloudBase()) {
       return 0;
     }
     //if (age > t_nose + t_mature) return 1;

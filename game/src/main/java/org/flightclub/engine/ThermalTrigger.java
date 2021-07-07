@@ -13,6 +13,7 @@ public class ThermalTrigger implements UpdatableGameObject {
   final XcGame app;
   final int positionX;
   final int positionY;
+  private final Sky sky;
   float time;
 
   /* 0, 1 or 2 - stop clouds overlapping */
@@ -34,16 +35,17 @@ public class ThermalTrigger implements UpdatableGameObject {
   static final int CLOUD_DURATION = 10;
   static final int MAX_WAIT = 7;
 
-  public ThermalTrigger(XcGame theApp, int inX, int inY) {
-    this(theApp, inX, inY, 1, 1, 1);
+  public ThermalTrigger(XcGame theApp, Sky sky, int inX, int inY) {
+    this(theApp, sky, inX, inY, 1, 1, 1);
   }
 
-  public ThermalTrigger(XcGame theApp, int inX, int inY, int inCloudStrenth) {
-    this(theApp, inX, inY, inCloudStrenth, 1, 1);
+  public ThermalTrigger(XcGame theApp, Sky sky, int inX, int inY, int inCloudStrenth) {
+    this(theApp, sky, inX, inY, inCloudStrenth, 1, 1);
   }
 
   public ThermalTrigger(
       XcGame theApp,
+      Sky sky,
       int inX,
       int inY,
       int inCloudStrenth,
@@ -51,6 +53,7 @@ public class ThermalTrigger implements UpdatableGameObject {
       float inCloudDuration
   ) {
     app = theApp;
+    this.sky = sky;
     theApp.addGameObject(this);
     positionX = inX;
     positionY = inY;
@@ -118,7 +121,7 @@ public class ThermalTrigger implements UpdatableGameObject {
     }
 
     float dx = (float) Tools3d.rnd(-SPREAD, SPREAD);
-    Cloud cloud = new Cloud(app, positionX + dx, positionY + dy, cloudDuration, cloudStrength);
+    Cloud cloud = new Cloud(app, this.sky,positionX + dx, positionY + dy, cloudDuration, cloudStrength);
     clouds.addElement(cloud);
     cloud.trigger = this;
   }

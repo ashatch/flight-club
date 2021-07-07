@@ -19,9 +19,9 @@ public class Sky {
 
   // clouds in order from south to north
   private final Vector<Cloud> clouds = new Vector<>();
-  private static float cloudBase = BASE_LOW;
+  private float cloudBase = BASE_LOW;
 
-  static final float RANGE = 8;    //for next /prev - dist per unit height i.e. glide angle
+  final float RANGE = 8;    //for next /prev - dist per unit height i.e. glide angle
 
   void addCloud(Cloud cloud) {
     // TODO keep sorted list of clouds
@@ -104,13 +104,12 @@ public class Sky {
     return null;
   }
 
-  static float getCloudBase() {
+  float getCloudBase() {
     return cloudBase;
   }
 
-  static float getWind() {
+  float getWind() {
     // units of unit distance (km) per unit time (minute)
     return (float) 0.3;
   }
-
 }

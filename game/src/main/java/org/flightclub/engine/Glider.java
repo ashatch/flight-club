@@ -46,12 +46,12 @@ public class Glider extends FlyingBody {
   /*
    * default constructor - this glider is not being piloted by the user
    */
-  public Glider(XcGame app, Vector3d p) {
-    this(app, p, false);
+  public Glider(XcGame app, Sky sky, Vector3d p) {
+    this(app, sky, p, false);
   }
 
-  public Glider(XcGame app, Vector3d p, boolean isUser) {
-    super(app, SPEED, TURN_RADIUS, isUser);
+  public Glider(XcGame app, Sky sky, Vector3d p, boolean isUser) {
+    super(app, sky, SPEED, TURN_RADIUS, isUser);
 
     GliderShape gliderShape;
     if (!isUser) {
@@ -65,10 +65,11 @@ public class Glider extends FlyingBody {
     gotoNextLiftSource();
   }
 
-  public Glider(XcGame app, Vector3d p, boolean isUser, boolean isRigid) {
+  public Glider(XcGame app, Sky sky, Vector3d p, boolean isUser, boolean isRigid) {
     //hack to get a couple of faster pink machines
     //sailplane/rigid
-    super(app, SPEED * (float) 1.5, TURN_RADIUS * (float) 1.2, isUser);
+    super(app, sky,SPEED * (float) 1.5, TURN_RADIUS * (float) 1.2, isUser);
+
 
     GliderShape gliderShape = new GliderShape(Color.PINK);
 
@@ -182,7 +183,7 @@ public class Glider extends FlyingBody {
     if (app.sky != null) {
       Cloud cloud = app.sky.getCloudAt(vectorP);
       if (cloud != null) {
-        if (vectorP.posZ < Sky.getCloudBase() - this.getBodyHeight()) {
+        if (vectorP.posZ < this.sky.getCloudBase() - this.getBodyHeight()) {
           lift += cloud.getLift(vectorP);
         } else {
           //stick to base of cloud and f*** off downwind

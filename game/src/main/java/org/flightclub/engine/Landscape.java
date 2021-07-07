@@ -16,13 +16,15 @@ public class Landscape implements CameraSubject {
   // hills in order heading downwind
   final Tile[] tiles;
   static XcGame app;
+  private final Sky sky;
   int currentTile;
   // cycle through the different hill shapes
   static final int TILE_WIDTH = 20;
   static final int MAX_TILES = 10;
 
-  public Landscape(XcGame theApp) {
+  public Landscape(XcGame theApp, Sky sky) {
     app = theApp;
+    this.sky = sky;
     tiles = new Tile[MAX_TILES];
     for (int t = 0; t < MAX_TILES; t++) {
       tiles[t] = new Tile();
@@ -167,13 +169,13 @@ public class Landscape implements CameraSubject {
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
 
-    trigger = new ThermalTrigger(app, x0, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0, y0 + 15, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 2);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0, y0 + TILE_WIDTH + 2, 1, (float) 0.2, (float) 0.5);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + TILE_WIDTH + 2, 1, (float) 0.2, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
   }
 
@@ -186,22 +188,22 @@ public class Landscape implements CameraSubject {
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
 
-    trigger = new ThermalTrigger(app, x0, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0, y0 + 15, 1, 1, (float) 0.5);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 1, 1, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 + 5, y0 + 5);
+    trigger = new ThermalTrigger(app, this.sky, x0 + 5, y0 + 5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 + 5, y0 + 13, 2, (float) 0.5, (float) 0.5);
+    trigger = new ThermalTrigger(app, this.sky, x0 + 5, y0 + 13, 2, (float) 0.5, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 - 5, y0 + 5);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 - 5, y0 + 13);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 13);
     tiles[tile].triggers.addElement(trigger);
 
     loadBackTriggers(tile);
@@ -216,10 +218,10 @@ public class Landscape implements CameraSubject {
     ThermalTrigger trigger;
     int dx = TILE_WIDTH / 2 + 3;
 
-    trigger = new ThermalTrigger(app, x0 - dx, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0 - dx, y0 + 3, 2);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 + dx, y0 + 15, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0 + dx, y0 + 15, 2);
     tiles[tile].triggers.addElement(trigger);
   }
 
@@ -266,10 +268,10 @@ public class Landscape implements CameraSubject {
 
     int x0 = 0;
     //triggers
-    ThermalTrigger trigger = new ThermalTrigger(app, x0, y0 + 15, 1, 1, (float) 0.5);
+    ThermalTrigger trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 1, 1, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, 5, y0 + 5, 1, (float) 0.1, (float) 0.1);
+    trigger = new ThermalTrigger(app, this.sky, 5, y0 + 5, 1, (float) 0.1, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
 
     loadBackTriggers(tile);
@@ -315,10 +317,10 @@ public class Landscape implements CameraSubject {
 
     int x0 = 0;
     //triggers
-    ThermalTrigger trigger = new ThermalTrigger(app, x0, y0 + 10, 1, (float) 0.2, (float) 0.1);
+    ThermalTrigger trigger = new ThermalTrigger(app, this.sky, x0, y0 + 10, 1, (float) 0.2, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 - 4, y0 + 10, 1, (float) 0.2, (float) 0.1);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 4, y0 + 10, 1, (float) 0.2, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
 
     loadBackTriggers(tile);
@@ -332,7 +334,7 @@ public class Landscape implements CameraSubject {
     int y0 = tile * TILE_WIDTH;
 
     //trigger with half the cycle length and 3 times the cloud duration
-    trigger = new ThermalTrigger(app, -4, y0 + TILE_WIDTH / 4, 2, (float) 0.3, 3);
+    trigger = new ThermalTrigger(app, this.sky, -4, y0 + TILE_WIDTH / 4, 2, (float) 0.3, 3);
     tiles[tile].triggers.addElement(trigger);
   }
 
@@ -344,7 +346,7 @@ public class Landscape implements CameraSubject {
     ThermalTrigger trigger;
     int y0 = tile * TILE_WIDTH;
 
-    trigger = new ThermalTrigger(app, 0, y0 + TILE_WIDTH / 2, 1, 2, 1);
+    trigger = new ThermalTrigger(app, this.sky, 0, y0 + TILE_WIDTH / 2, 1, 2, 1);
     tiles[tile].triggers.addElement(trigger);
   }
 
@@ -389,10 +391,10 @@ public class Landscape implements CameraSubject {
 
     int x0 = 0;
     //triggers
-    ThermalTrigger trigger = new ThermalTrigger(app, x0, y0 + 15, 1, 1, (float) 0.5);
+    ThermalTrigger trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 1, 1, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 + 4, y0 + 10, 1, (float) 0.1, (float) 0.1);
+    trigger = new ThermalTrigger(app, this.sky, x0 + 4, y0 + 10, 1, (float) 0.1, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
 
     loadBackTriggers(tile);
@@ -440,10 +442,10 @@ public class Landscape implements CameraSubject {
 
     int x0 = 0;
     //triggers
-    ThermalTrigger trigger = new ThermalTrigger(app, x0 - 6, y0 + 10, 1, (float) 0.2, (float) 0.1);
+    ThermalTrigger trigger = new ThermalTrigger(app, this.sky, x0 - 6, y0 + 10, 1, (float) 0.2, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, x0 - 2, y0 + 10, 1, (float) 0.2, (float) 0.1);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 2, y0 + 10, 1, (float) 0.2, (float) 0.1);
     tiles[tile].triggers.addElement(trigger);
   }
 
