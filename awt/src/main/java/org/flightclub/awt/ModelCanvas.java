@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -6,7 +6,6 @@
  */
 
 package org.flightclub.awt;
-
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -32,17 +31,19 @@ import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
  * 'Java Games Programming' by Niel Bartlett
  */
 public class ModelCanvas extends Canvas implements Clock.Observer {
-  private Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
+  private final Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
 
-  public final Color backColor = Color.white;
-  protected final XcGame app;
+  private final Color backColor = Color.white;
+  private final MouseTracker mouseTracker = new MouseTracker();
+
+  protected final XcGame game;
   private Image imgBuffer;
   private Graphics graphicsBuffer;
-  private MouseTracker mouseTracker = new MouseTracker();
+  private org.flightclub.engine.Graphics gameGraphics;
 
-  public ModelCanvas(XcGame theApp) {
-    app = theApp;
-    app.clock.addObserver(this);
+  public ModelCanvas(final XcGame game) {
+    this.game = game;
+    this.game.clock.addObserver(this);
   }
 
   public void init() {
@@ -73,14 +74,14 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        if (!app.eventManager.addEvent(toEngineKeyEvent(e))) {
+        if (!game.eventManager.addEvent(toEngineKeyEvent(e))) {
           LOG.warn("Did not register keyPressed " + e);
         }
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
-        if (!app.eventManager.addEvent(toEngineKeyEvent(e))) {
+        if (!game.eventManager.addEvent(toEngineKeyEvent(e))) {
           LOG.warn("Did not register keyReleased " + e);
         }
       }
@@ -88,7 +89,7 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
   }
 
   @Override
-  public void tick(float delta) {
+  public void tick(final float delta) {
     if (mouseTracker.isDragging()) {
       //float dtheta = (float) dx/width;
       float dtheta = 0;
@@ -111,33 +112,36 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
         dz = -delta / 4;
       }
 
-      app.cameraMan.rotateEyeAboutFocus(-dtheta);
-      app.cameraMan.translateZ(-dz);
+      game.cameraMan.rotateEyeAboutFocus(-dtheta);
+      game.cameraMan.translateZ(-dz);
     }
 
     repaint();
   }
 
   @Override
-  public void paint(Graphics g) {
-    if (imgBuffer == null) {
+  public void paint(final Graphics g) {
+    if (this.imgBuffer == null) {
       return;
     }
 
-    updateImgBuffer(graphicsBuffer);
-    g.drawImage(imgBuffer, 0, 0, this);
+    if (this.gameGraphics == null) {
+      this.gameGraphics = new AwtGraphics(this.graphicsBuffer);
+    }
+
+    updateImgBuffer(this.graphicsBuffer);
+    g.drawImage(this.imgBuffer, 0, 0, this);
   }
 
   @Override
-  public void update(Graphics g) {
+  public void update(final Graphics g) {
     paint(g);
   }
 
-  public void updateImgBuffer(Graphics g) {
+  public void updateImgBuffer(final Graphics g) {
     g.setColor(backColor);
     g.fillRect(0, 0, getWidth(), getHeight());
 
-    app.draw(new AwtGraphics(g), getWidth(), getHeight());
+    this.game.draw(gameGraphics, getWidth(), getHeight());
   }
 }
-

@@ -24,23 +24,17 @@ public class XcGameFrame extends Frame {
   private static final Logger LOG = LoggerFactory.getLogger(XcGameFrame.class);
 
   public XcGameFrame(
+      final XcGame game,
       final String title,
       final IntPair windowSize
   ) {
     super(title);
 
-    final XcGame app = new XcGame(
-        new GameEnvironment(windowSize, new JavaxAudioPlayer())
-    );
-
-    final ModelCanvas modelCanvas = new ModelCanvas(app);
+    final ModelCanvas modelCanvas = new ModelCanvas(game);
     add(modelCanvas, "Center");
     setSize(windowSize.x(), windowSize.y());
     setVisible(true);
     modelCanvas.init();
-
-
-    app.start();
 
     this.addWindowListener(new WindowAdapter() {
       @Override
@@ -52,21 +46,26 @@ public class XcGameFrame extends Frame {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(final KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        game.eventManager.addEvent(toEngineKeyEvent(e));
       }
 
       @Override
       public void keyReleased(final KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        game.eventManager.addEvent(toEngineKeyEvent(e));
       }
     });
   }
 
-
-
   public static void main(final String ...args) {
     LOG.info("Flight Club");
-    final IntPair windowSize =  new IntPair(1000, 600);
-    new XcGameFrame("Flight Club", windowSize);
+
+    final IntPair windowSize = new IntPair(1000, 600);
+    final XcGame game = new XcGame(
+        new GameEnvironment(windowSize, new JavaxAudioPlayer())
+    );
+
+    new XcGameFrame(game, "Flight Club", windowSize);
+
+    game.start();
   }
 }
