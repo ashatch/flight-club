@@ -107,12 +107,6 @@ public class MovementManager {
     targetPoint = new Vector3d(t.posX, t.posY, t.posZ);
   }
 
-  void setCirclePoint(Vector3d c) {
-    //take a copy of c (otherwise it may move eg. flyingDot.p)
-    clearControllers();
-    circlePoint = new Vector3d(c.posX, c.posY, c.posZ);
-  }
-
   void setCloud(Cloud c) {
     clearControllers();
     cloud = c;
@@ -132,14 +126,6 @@ public class MovementManager {
     cloud = null;
     circuit = null;
     joinedCircuit = false;
-  }
-
-  Vector3d getCirclePoint() {
-    return circlePoint;
-  }
-
-  Circuit getCircuit() {
-    return circuit;
   }
 
   boolean joinedCircuit() {
@@ -279,14 +265,6 @@ public class MovementManager {
     }
   }
 
-  void toggleCirclePoint() {
-    if (circlePoint == null) {
-      setCirclePoint(flyingDot.vectorP);
-    } else {
-      circlePoint = null;
-    }
-  }
-
   void workLift() {
     /*
      * this replaces togglelift - after hugh's helpful comments
@@ -319,51 +297,6 @@ public class MovementManager {
     }
 
     // no cloud or ridge - do a wiggle
-    wiggleCount = wiggleSize * 4 + 1;
-  }
-
-  void toggleLift() {
-    //System.out.println("Toggle lift");
-    if (cloud != null) {
-      //System.out.println("set cloud to null");
-      cloud = null;
-      app.cameraMan.cutSetup(flyingDot, flyingDot.isUser);
-      return;
-    }
-
-    if (circuit != null) {
-      //System.out.println("set circuit to null");
-      circuit = null;
-      circuitPoint = null;
-      app.cameraMan.cutSetup(flyingDot, flyingDot.isUser);
-      return;
-    }
-
-    if (circlePoint != null) {
-      //System.out.println("set circle point to null");
-      circlePoint = null;
-      app.cameraMan.cutSetup(flyingDot, flyingDot.isUser);
-      return;
-    }
-
-    Cloud c = app.sky.getCloudAt(flyingDot.vectorP);
-    if (c != null) {
-      //System.out.println("set cloud !");
-      setCloud(c);
-      app.cameraMan.cutSetup(cloud, flyingDot.isUser);
-      return;
-    }
-
-    Hill h = app.landscape.getHillAt(flyingDot.vectorP);
-    if (h != null) {
-      //System.out.println("set hill !");
-      setCircuit(h.getCircuit());
-      app.cameraMan.cutSetup(h, flyingDot.isUser);
-      return;
-    }
-
-    //no cloud or ridge - do a wiggle
-    //System.out.println("no cloud or ridge, so circle !");
     wiggleCount = wiggleSize * 4 + 1;
   }
 
