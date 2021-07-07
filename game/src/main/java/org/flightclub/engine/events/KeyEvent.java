@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.events;
 
 public record KeyEvent(int type, int code) {
   public static final int TYPE_KEY_RELEASED = 100;

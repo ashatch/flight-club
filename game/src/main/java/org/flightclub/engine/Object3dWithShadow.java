@@ -8,6 +8,8 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.math.Vector3d;
 
 /*
  * Three new methods added to object3d...

@@ -7,6 +7,10 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.events.KeyEvent;
+import org.flightclub.engine.events.KeyEventHandler;
+import org.flightclub.engine.math.Vector3d;
+
 /*
  * a glider that the user may control
  */

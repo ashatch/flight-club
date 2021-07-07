@@ -8,6 +8,8 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.math.Vector3d;
 
 /*
  * Some hills, triggers and a road arranged onto tiles
@@ -19,8 +21,8 @@ public class Landscape implements CameraSubject {
   private final Sky sky;
   int currentTile;
   // cycle through the different hill shapes
-  static final int TILE_WIDTH = 20;
-  static final int MAX_TILES = 10;
+  public static final int TILE_WIDTH = 20;
+  public static final int MAX_TILES = 10;
 
   public Landscape(XcGame theApp, Sky sky) {
     app = theApp;

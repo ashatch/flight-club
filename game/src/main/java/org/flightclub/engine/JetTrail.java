@@ -7,6 +7,8 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.math.Vector3d;
+
 /*
  * a jet in the upper atmosphere - leaves a long trail
  */

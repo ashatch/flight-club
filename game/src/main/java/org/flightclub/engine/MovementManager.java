@@ -11,6 +11,8 @@ package org.flightclub.engine;
   Manage the motion of flying dots - thermalling, ridge soaring etc.
 */
 
+import org.flightclub.engine.math.Vector3d;
+
 public class MovementManager {
   final XcGame app;
   FlyingDot flyingDot = null;

@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.events;
 
 public class MouseTracker {
   private boolean dragging = false;

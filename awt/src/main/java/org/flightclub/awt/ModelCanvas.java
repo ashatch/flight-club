@@ -16,7 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import org.flightclub.engine.MouseTracker;
+import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.UpdatableGameObject;
 import org.flightclub.engine.UpdateContext;
 import org.flightclub.engine.XcGame;

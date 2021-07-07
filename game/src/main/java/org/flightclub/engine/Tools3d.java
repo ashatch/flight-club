@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.math.Vector3d;
 
 /*
  * static methods for 3d geometry

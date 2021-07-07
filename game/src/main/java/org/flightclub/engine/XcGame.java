@@ -8,6 +8,12 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.camera.CameraMode;
+import org.flightclub.engine.events.EventManager;
+import org.flightclub.engine.events.KeyEvent;
+import org.flightclub.engine.events.KeyEventHandler;
+import org.flightclub.engine.math.Vector3d;
 
 public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public static final int FRAME_RATE = 25;

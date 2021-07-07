@@ -15,6 +15,9 @@ package org.flightclub.engine;
   - ds (horizontal distance moved per tick)
 */
 
+import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.math.Vector3d;
+
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   protected final Sky sky;

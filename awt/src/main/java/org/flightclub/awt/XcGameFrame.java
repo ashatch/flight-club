@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 import org.flightclub.engine.GameEnvironment;
 import org.flightclub.engine.GameMode;
 import org.flightclub.engine.GameModelHolder;
-import org.flightclub.engine.IntPair;
+import org.flightclub.engine.math.IntPair;
 import org.flightclub.engine.Obj3dManager;
 import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;

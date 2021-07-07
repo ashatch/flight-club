@@ -10,6 +10,7 @@ package org.flightclub.engine;
 import java.util.Comparator;
 import java.util.Vector;
 import java.util.stream.IntStream;
+import org.flightclub.engine.math.Vector3d;
 
 /*
  * manager for 3d objects

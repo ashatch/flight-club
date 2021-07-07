@@ -7,6 +7,9 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.math.Vector3d;
+
 public class Surface extends PolyLine {
 
   final int[] xs;

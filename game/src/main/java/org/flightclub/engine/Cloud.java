@@ -8,6 +8,8 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.math.Vector3d;
 
 public class Cloud implements CameraSubject, UpdatableGameObject {
   final XcGame app;

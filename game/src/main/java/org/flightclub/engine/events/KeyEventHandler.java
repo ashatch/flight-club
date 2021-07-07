@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.events;
 
 /*
  * interface to be implemented by objects (eg actors) that respond

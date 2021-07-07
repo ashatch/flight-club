@@ -7,6 +7,8 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.math.Vector3d;
+
 /**
  * A list of points to fly round when ridge soaring.
  * Usually two points, unless ridge is snakey.

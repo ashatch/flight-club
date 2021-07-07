@@ -5,6 +5,6 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.math;
 
 public record IntPair(int x, int y) {}

@@ -10,11 +10,11 @@ package org.flightclub.awt;
 import java.awt.event.KeyEvent;
 
 public class AwtKeyEventMapper {
-  public static org.flightclub.engine.KeyEvent toEngineKeyEvent(final KeyEvent e) {
+  public static org.flightclub.engine.events.KeyEvent toEngineKeyEvent(final KeyEvent e) {
     int type = e.getID() == KeyEvent.KEY_PRESSED
-        ? org.flightclub.engine.KeyEvent.TYPE_KEY_PRESSED
-        : org.flightclub.engine.KeyEvent.TYPE_KEY_RELEASED;
+        ? org.flightclub.engine.events.KeyEvent.TYPE_KEY_PRESSED
+        : org.flightclub.engine.events.KeyEvent.TYPE_KEY_RELEASED;
 
-    return new org.flightclub.engine.KeyEvent(type, e.getKeyCode());
+    return new org.flightclub.engine.events.KeyEvent(type, e.getKeyCode());
   }
 }

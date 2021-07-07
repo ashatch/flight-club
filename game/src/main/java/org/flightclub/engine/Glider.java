@@ -7,6 +7,10 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.camera.CameraMode;
+import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.math.Vector3d;
+
 /*
  * a glider that sniffs out lift
  */

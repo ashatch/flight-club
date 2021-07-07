@@ -5,11 +5,12 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.camera;
 
-import org.flightclub.engine.math.IntPair;
+import org.flightclub.engine.math.Vector3d;
 
-public record GameEnvironment(
-    IntPair windowSize,
-    AudioPlayer audioPlayer
-) {}
+public interface CameraSubject {
+  Vector3d getEye();
+
+  Vector3d getFocus();
+}

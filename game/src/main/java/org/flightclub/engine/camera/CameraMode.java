@@ -1,4 +1,4 @@
-package org.flightclub.engine;
+package org.flightclub.engine.camera;
 
 public enum CameraMode {
   SELF,

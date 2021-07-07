@@ -7,6 +7,9 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.math.Vector3d;
+
 /*
  * a spine running parallel to x axis or y axis (orientation 0 or 1)
  * has a circuit for ridge soaring

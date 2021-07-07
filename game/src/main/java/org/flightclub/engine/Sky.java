@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.math.Vector3d;
 
 /*
  * Manages clouds and related met data
