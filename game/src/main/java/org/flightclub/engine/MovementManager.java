@@ -366,6 +366,6 @@ public class MovementManager {
   }
 
   float thermal() {
-    return circleAround(cloud.getX(flyingDot.vectorP.posZ), cloud.getY(flyingDot.vectorP.posZ));
+    return circleAround(cloud.getX(), cloud.getY(flyingDot.vectorP.posZ));
   }
 }

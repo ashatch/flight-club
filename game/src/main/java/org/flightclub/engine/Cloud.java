@@ -13,8 +13,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   final XcGame app;
   final Object3dWithShadow object3d;
   private final Sky sky;
-  Vector3d projection = new Vector3d();
-  float radius;
+  Vector3d projection;
   final float maxRadius;
   final boolean solid = true;
   final Color color;
@@ -35,7 +34,6 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   final float myRnd;    //see getEye
 
   final float windSlope = (float) 0.5; // 0.1 //lean towards +y due to wind (1 equals 45 degrees)
-  float ds;
 
   static final float LIFT_FN_OUTER = 1;
   static final float LIFT_FN_INNER = (float) 0.5;
@@ -76,12 +74,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
      */
     liftMax = -(1 + inStrength) * Glider.SINK_RATE;
     int c = CLOUD_COLOR - (inStrength - 1) * CLOUD_COLOR_STEP;
-    if (inStrength == 1) {
-      color = new Color(c, c, c);
-    } else {
-      //darker, but keep some blue
-      color = new Color(c, c, c);
-    }
+    color = new Color(c, c, c);
 
     maxRadius = inStrength;  // (float) Math.sqrt(inStrength); was 1
 
@@ -91,8 +84,8 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     app.addGameObject(this);
 
     //add to lift profile ?
-    inForeGround = (projection.posX < Landscape.TILE_WIDTH / 2
-        && projection.posX > -Landscape.TILE_WIDTH / 2);
+    inForeGround = (projection.posX < Landscape.TILE_WIDTH / 2f
+        && projection.posX > -Landscape.TILE_WIDTH / 2f);
 
     if (inForeGround) {
       this.sky.addCloud(this);
@@ -331,7 +324,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     }
   }
 
-  float getX(float z) {
+  float getX() {
     //no cross wind
     return projection.posX;
   }
