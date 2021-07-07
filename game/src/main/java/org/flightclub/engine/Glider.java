@@ -231,7 +231,7 @@ public class Glider extends FlyingBody {
   }
 
   @Override
-  public void update(final float delta) {
+  public void update(final UpdateContext context) {
     if (isUser) {
       if (demoMode) {
         return;
@@ -260,7 +260,7 @@ public class Glider extends FlyingBody {
       return;
     }
 
-    super.update(delta);
+    super.update(context);
 
     //delayed cut hack 5/10
     if (cutPending) {

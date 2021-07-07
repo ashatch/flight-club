@@ -183,8 +183,8 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   }
 
   @Override
-  public void update(float delta) {
-    age += delta * app.timeMultiplier / 2.0f;
+  public void update(final UpdateContext context) {
+    age += context.deltaTime() * app.timeMultiplier / 2.0f;
     if (age > mature + nose + tail * 0.5) {
       decaying = true;
     }
@@ -194,7 +194,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
       return;
     }
 
-    projection.posY += Sky.getWind() * delta * app.timeMultiplier / 2.0f;
+    projection.posY += Sky.getWind() * context.deltaTime() * app.timeMultiplier / 2.0f;
     projection.posZ = Sky.getCloudBase();
     setCorners();
     object3d.updateShadow(app.landscape);

@@ -56,8 +56,8 @@ public class JetTrail extends FlyingDot {
   }
 
   @Override
-  public void update(float delta) {
-    super.update(delta);
+  public void update(final UpdateContext context) {
+    super.update(context);
     checkBounds();
   }
 }

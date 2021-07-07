@@ -93,7 +93,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
    * update position, velocity and local frame
    */
   @Override
-  public void update(float delta) {
+  public void update(final UpdateContext context) {
     vectorP.add(vector);
     vectorP.posY += Sky.getWind() * app.timePerFrame;
 

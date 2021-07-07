@@ -126,7 +126,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
             we can change our POV and unpause */
         if (i == 0 || !paused) {
           UpdatableGameObject c = gameObjects.elementAt(i);
-          c.update(delta);
+          c.update(new UpdateContext(delta, this.obj3dManager));
         }
       }
 
@@ -198,15 +198,15 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   }
 
   @Override
-  public void update(final float delta) {
-    time += delta * timeMultiplier / 2.0f;
+  public void update(final UpdateContext context) {
+    time += context.deltaTime() * timeMultiplier / 2.0f;
 
     eventManager.processEvent();
     cameraMan.tick();
 
     updateCompass();
-    updateSlider(delta);
-    updateVario(delta);
+    updateSlider(context.deltaTime());
+    updateVario(context.deltaTime());
   }
 
   private void updateVario(float delta) {

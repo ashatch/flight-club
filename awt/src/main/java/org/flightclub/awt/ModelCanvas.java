@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import org.flightclub.engine.MouseTracker;
 import org.flightclub.engine.UpdatableGameObject;
+import org.flightclub.engine.UpdateContext;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,12 +90,12 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
   }
 
   @Override
-  public void update(final float delta) {
+  public void update(final UpdateContext context) {
     if (mouseTracker.isDragging()) {
       //float dtheta = (float) dx/width;
       float dtheta = 0;
       float dz = 0;
-      float unitStep = (float) Math.PI * delta / 8; //4 seconds to 90 - sloow!
+      float unitStep = (float) Math.PI * context.deltaTime() / 8; //4 seconds to 90 - sloow!
 
       if (mouseTracker.getDeltaX() > 20) {
         dtheta = -unitStep;
@@ -105,11 +106,11 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
       }
 
       if (mouseTracker.getDeltaY() > 20) {
-        dz = delta / 4;
+        dz = context.deltaTime() / 4;
       }
 
       if (mouseTracker.getDeltaY() < -20) {
-        dz = -delta / 4;
+        dz = -context.deltaTime() / 4;
       }
 
       game.cameraMan.rotateEyeAboutFocus(-dtheta);

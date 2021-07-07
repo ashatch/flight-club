@@ -79,7 +79,7 @@ public class ThermalTrigger implements UpdatableGameObject {
   }
 
   @Override
-  public void update(float delta) {
+  public void update(final UpdateContext context) {
 
     if (time == 0) {
       makeCloud();
@@ -87,7 +87,7 @@ public class ThermalTrigger implements UpdatableGameObject {
     //if (bubbles > 1) if (t == 7) makeCloud();
     //if (bubbles > 2) if (t == 14) makeCloud();
 
-    time += delta * app.timeMultiplier / 2.0f;
+    time += context.deltaTime() * app.timeMultiplier / 2.0f;
     if (time > cycleLength) {
       time = 0;
     }
