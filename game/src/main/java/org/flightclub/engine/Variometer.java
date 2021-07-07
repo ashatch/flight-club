@@ -35,11 +35,11 @@ public class Variometer {
     this.app = app;
   }
 
-  public void tick(float delta) {
-    time += delta;
+  public void tick(final UpdateContext context) {
+    time += context.deltaTime();
     if (time >= SECONDS_PER_BEEP) {
       time = 0.0f;
-      this.beep();
+      this.beep(context);
     }
   }
 
@@ -48,8 +48,8 @@ public class Variometer {
    * how strong the lift is. Note, we must convert v from
    * dist per frame to dist per unit time.
    */
-  private void beep() {
-    float lift = flyingDot.vector.posZ / (app.timeMultiplier * XcGame.TIME_PER_FRAME);
+  private void beep(final UpdateContext context) {
+    float lift = flyingDot.vector.posZ / (context.timeMultiplier() * XcGame.TIME_PER_FRAME);
 
     String filename = filenameForLift(lift);
     if (filename != null) {

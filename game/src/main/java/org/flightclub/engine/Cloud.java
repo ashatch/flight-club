@@ -95,14 +95,14 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
         && projection.posX > -Landscape.TILE_WIDTH / 2);
 
     if (inForeGround) {
-      app.sky.addCloud(this);
+      this.sky.addCloud(this);
     }
   }
 
   void destroyMe() {
     app.obj3dManager.remove(object3d);
     if (inForeGround) {
-      app.sky.removeCloud(this);
+      this.sky.removeCloud(this);
     }
     app.removeGameObject(this);
     if (trigger != null) {
@@ -193,7 +193,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
 
   @Override
   public void update(final UpdateContext context) {
-    age += context.deltaTime() * app.timeMultiplier / 2.0f;
+    age += context.deltaTime() * context.timeMultiplier() / 2.0f;
     if (age > mature + nose + tail * 0.5) {
       decaying = true;
     }
@@ -203,7 +203,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
       return;
     }
 
-    projection.posY += this.sky.getWind() * context.deltaTime() * app.timeMultiplier / 2.0f;
+    projection.posY += this.sky.getWind() * context.deltaTime() * context.timeMultiplier() / 2.0f;
     projection.posZ = this.sky.getCloudBase();
     setCorners();
     object3d.updateShadow(app.landscape);

@@ -90,7 +90,7 @@ public class ThermalTrigger implements UpdatableGameObject {
     //if (bubbles > 1) if (t == 7) makeCloud();
     //if (bubbles > 2) if (t == 14) makeCloud();
 
-    time += context.deltaTime() * app.timeMultiplier / 2.0f;
+    time += context.deltaTime() * context.timeMultiplier() / 2.0f;
     if (time > cycleLength) {
       time = 0;
     }

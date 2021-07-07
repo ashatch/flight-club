@@ -23,7 +23,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public Landscape landscape;
   public Sky sky;
   public GameEnvironment envGameEnvironment;
-  public float timeMultiplier = 1.0f;
+  private float timeMultiplier = 1.0f;
   public GameMode gameMode;
   public String textMessage;
 
@@ -126,7 +126,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
             we can change our POV and unpause */
         if (i == 0 || !paused) {
           UpdatableGameObject c = gameObjects.elementAt(i);
-          c.update(new UpdateContext(delta, this.obj3dManager));
+          c.update(new UpdateContext(delta, this.timeMultiplier, this.obj3dManager));
         }
       }
 
@@ -206,11 +206,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
 
     updateCompass();
     updateSlider(context.deltaTime());
-    updateVario(context.deltaTime());
-  }
-
-  private void updateVario(float delta) {
-    vario.tick(delta);
+    vario.tick(context);
   }
 
   private void updateSlider(float delta) {
