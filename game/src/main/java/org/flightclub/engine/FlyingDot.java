@@ -21,7 +21,7 @@ import org.flightclub.engine.math.Vector3d;
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   protected final Sky sky;
-  Vector3d vector;
+  public Vector3d vector;
   Vector3d vectorP = new Vector3d();
   float speed;
   float ds; //distance per frame - hack

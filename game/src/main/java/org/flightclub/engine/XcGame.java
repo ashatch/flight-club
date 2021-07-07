@@ -16,6 +16,7 @@ import org.flightclub.engine.events.KeyEventHandler;
 import org.flightclub.engine.instruments.Compass;
 import org.flightclub.engine.instruments.DataSlider;
 import org.flightclub.engine.instruments.TextMessage;
+import org.flightclub.engine.instruments.Variometer;
 import org.flightclub.engine.math.Vector3d;
 
 public class XcGame implements KeyEventHandler, UpdatableGameObject {

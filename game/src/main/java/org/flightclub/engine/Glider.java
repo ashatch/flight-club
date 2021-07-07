@@ -39,7 +39,7 @@ public class Glider extends FlyingBody {
   // units of dist (km) per time (minute)
   static final float SPEED = (float) 1;
   // i.e. glide angle of 8
-  static final float SINK_RATE = (float) (-1.0 / 8);
+  public static final float SINK_RATE = (float) (-1.0 / 8);
   static final float TURN_RADIUS = (float) 0.3;
   // polar curve
   static final float[][] POLAR = {{1, 1}, {(float) 1.5, (float) 2.1}};

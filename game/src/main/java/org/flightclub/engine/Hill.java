@@ -49,14 +49,14 @@ public class Hill implements CameraSubject {
   static final int FACE_CURVY = 1;
 
   public Hill(
-      XcGame theApp,
-      int inX,
-      int inY,
-      Orientation inOr,
-      int inSpineLength,
-      float inPhase,
-      float inH0,
-      int inFace
+      final XcGame theApp,
+      final int inX,
+      final int inY,
+      final Orientation inOr,
+      final int inSpineLength,
+      final float inPhase,
+      final float inH0,
+      final int inFace
   ) {
     app = theApp;
     x0 = inX;
@@ -72,8 +72,8 @@ public class Hill implements CameraSubject {
 
     // higher resolution/sample rate if
     // on central tile
-    if (x0 < Landscape.TILE_WIDTH / 2
-        && x0 > -Landscape.TILE_WIDTH / 2) {
+    if (x0 < Landscape.TILE_WIDTH / 2f
+        && x0 > -Landscape.TILE_WIDTH / 2f) {
       tileWidth = (float) 0.5;
     } else {
       tileWidth = 1;
@@ -81,7 +81,7 @@ public class Hill implements CameraSubject {
 
     tileHill();
 
-    inForeGround = (x0 < Landscape.TILE_WIDTH / 2 && x0 > -Landscape.TILE_WIDTH / 2);
+    inForeGround = (x0 < Landscape.TILE_WIDTH / 2f && x0 > -Landscape.TILE_WIDTH / 2f);
   }
 
   /*
@@ -196,9 +196,9 @@ public class Hill implements CameraSubject {
   @Override
   public Vector3d getFocus() {
     if (orientation == Orientation.X) {
-      return new Vector3d(x0 + (2 + spineLength) / 2, y0, h0 / 2);
+      return new Vector3d(x0 + (2 + spineLength) / 2f, y0, h0 / 2);
     } else {
-      return new Vector3d(x0, y0 + (2 + spineLength) / 2, h0 / 2);
+      return new Vector3d(x0, y0 + (2 + spineLength) / 2f, h0 / 2);
     }
   }
 
