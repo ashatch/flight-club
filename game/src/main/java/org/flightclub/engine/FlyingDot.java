@@ -58,7 +58,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
 
   public FlyingDot(XcGame theApp, float inSpeed, float inTurnRadius) {
     app = theApp;
-    app.addObserver(this);
+    app.addGameObject(this);
 
     speed = inSpeed;
     ds = speed * app.timePerFrame;

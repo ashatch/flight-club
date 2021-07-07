@@ -79,7 +79,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     setSphericals();
     setCorners();
     buildSurfaces();
-    app.addObserver(this);
+    app.addGameObject(this);
 
     //add to lift profile ?
     inForeGround = (projection.posX < Landscape.TILE_WIDTH / 2
@@ -95,7 +95,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     if (inForeGround) {
       app.sky.removeCloud(this);
     }
-    app.removeObserver(this);
+    app.removeGameObject(this);
     if (trigger != null) {
       trigger.clouds.removeElement(this);
     }

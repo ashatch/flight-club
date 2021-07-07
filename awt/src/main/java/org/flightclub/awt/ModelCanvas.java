@@ -43,7 +43,7 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
 
   public ModelCanvas(final XcGame game) {
     this.game = game;
-    this.game.addObserver(this);
+    this.game.addGameObject(this);
   }
 
   public void init() {

@@ -51,7 +51,7 @@ public class ThermalTrigger implements UpdatableGameObject {
       float inCloudDuration
   ) {
     app = theApp;
-    theApp.addObserver(this);
+    theApp.addGameObject(this);
     positionX = inX;
     positionY = inY;
 
@@ -124,7 +124,7 @@ public class ThermalTrigger implements UpdatableGameObject {
   }
 
   void destroyMe() {
-    app.removeObserver(this);
+    app.removeGameObject(this);
 
     // hurry up clouds
     for (int i = 0; i < clouds.size(); i++) {

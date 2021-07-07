@@ -39,7 +39,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   private DataSlider slider = null;
   private final Variometer vario;
 
-  final Vector<UpdatableGameObject> observers = new Vector<>();
+  final Vector<UpdatableGameObject> gameObjects = new Vector<>();
   final int sleepTime = 1000 / FRAME_RATE;
   public long last = 0;
   boolean paused = false;
@@ -58,7 +58,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
 
     eventManager.subscribe(this);
-    addObserver(this);
+    addGameObject(this);
 
     gliderUser = new GliderUser(this, new Vector3d(0, 0, 0));
     gliderUser.landed();
@@ -121,11 +121,11 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
       float delta = (now - last) / 1000.0f;
       last = now;
 
-      for (int i = 0; i < observers.size(); i++) {
+      for (int i = 0; i < gameObjects.size(); i++) {
         /* hack - when paused still tick the modelviewer so
             we can change our POV and unpause */
         if (i == 0 || !paused) {
-          UpdatableGameObject c = observers.elementAt(i);
+          UpdatableGameObject c = gameObjects.elementAt(i);
           c.update(delta);
         }
       }
@@ -141,12 +141,12 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     } while (true);
   }
 
-  public void addObserver(UpdatableGameObject observer) {
-    observers.addElement(observer);
+  public void addGameObject(UpdatableGameObject observer) {
+    gameObjects.addElement(observer);
   }
 
-  public void removeObserver(UpdatableGameObject observer) {
-    observers.removeElement(observer);
+  public void removeGameObject(UpdatableGameObject observer) {
+    gameObjects.removeElement(observer);
   }
 
   void startPlay() {
