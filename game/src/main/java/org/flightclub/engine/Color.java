@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -9,11 +9,6 @@ package org.flightclub.engine;
 
 public record Color(int r, int g, int b) {
   /**
-   * The color white.  In the default sRGB space.
-   */
-  public static final Color WHITE = new Color(255, 255, 255);
-
-  /**
    * The color light gray.  In the default sRGB space.
    */
   public static final Color LIGHT_GRAY = new Color(192, 192, 192);
@@ -22,16 +17,6 @@ public record Color(int r, int g, int b) {
    * The color gray.  In the default sRGB space.
    */
   public static final Color GRAY = new Color(128, 128, 128);
-
-  /**
-   * The color dark gray.  In the default sRGB space.
-   */
-  public static final Color DARK_GRAY = new Color(64, 64, 64);
-
-  /**
-   * The color black.  In the default sRGB space.
-   */
-  public static final Color BLACK = new Color(0, 0, 0);
 
   /**
    * The color red.  In the default sRGB space.
@@ -62,11 +47,6 @@ public record Color(int r, int g, int b) {
    * The color magenta.  In the default sRGB space.
    */
   public static final Color MAGENTA = new Color(255, 0, 255);
-
-  /**
-   * The color cyan.  In the default sRGB space.
-   */
-  public static final Color CYAN = new Color(0, 255, 255);
 
   /**
    * The color blue.  In the default sRGB space.
