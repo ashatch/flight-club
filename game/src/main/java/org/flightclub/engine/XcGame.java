@@ -25,7 +25,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   public Sky sky;
   public GameEnvironment envGameEnvironment;
   public float timeMultiplier = 1.0f;
-  public Mode mode;
+  public GameMode gameMode;
   public String textMessage;
 
   protected float timePerFrame = TIME_PER_FRAME;
@@ -88,7 +88,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     launchGaggle();
     cameraMan.setMode(CameraMode.GAGGLE);
     textMessage = "Demo mode";
-    mode = Mode.DEMO;
+    gameMode = GameMode.DEMO;
     toggleFastForward();
 
   }
@@ -118,7 +118,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   }
 
   void startPlay() {
-    mode = Mode.USER;
+    gameMode = GameMode.USER;
     landscape.removeAll();
 
     gliderUser.triggerLoading = true;

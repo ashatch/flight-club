@@ -1,6 +1,6 @@
 package org.flightclub.engine;
 
-public enum Mode {
+public enum GameMode {
   DEMO,
   USER,
 }
