@@ -13,6 +13,9 @@ import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.KeyEvent;
 import org.flightclub.engine.events.KeyEventHandler;
+import org.flightclub.engine.instruments.Compass;
+import org.flightclub.engine.instruments.DataSlider;
+import org.flightclub.engine.instruments.TextMessage;
 import org.flightclub.engine.math.Vector3d;
 
 public class XcGame implements KeyEventHandler, UpdatableGameObject {
@@ -31,7 +34,6 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public GameEnvironment envGameEnvironment;
   private float timeMultiplier = 1.0f;
   public GameMode gameMode;
-  public String textMessage;
 
   protected float timePerFrame = TIME_PER_FRAME;
 
@@ -43,6 +45,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   private boolean fastForward = true;
   private Compass compass = null;
   private DataSlider slider = null;
+  private TextMessage textMessage;
   private final Variometer vario;
 
   final Vector<UpdatableGameObject> gameObjects = new Vector<>();
@@ -70,6 +73,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     gliderUser.landed();
     cameraMan.subject1 = gliderUser;
 
+    textMessage = new TextMessage("Demo mode");
     compass = new Compass(25, envGameEnvironment.windowSize().x() - 30, envGameEnvironment.windowSize().y() - 35);
     float vmax = -2 * Glider.SINK_RATE;
     slider = new DataSlider(
@@ -111,9 +115,12 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
 
     launchGaggle();
     cameraMan.setMode(CameraMode.GAGGLE);
-    textMessage = "Demo mode";
     gameModelHolder.setMode(GameMode.DEMO);
     toggleFastForward();
+  }
+
+  public TextMessage getTextMessage() {
+    return textMessage;
   }
 
   void launchGaggle() {
@@ -324,9 +331,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     if (textMessage != null) {
       g.setFont(font);
       g.setColor(Color.LIGHT_GRAY);
-
-      final String msg = paused ? textMessage + " [ paused ]" : textMessage;
-      g.drawString(msg, 15, height - 15);
+      g.drawString(textMessage.getMessage(paused), 15, height - 15);
     }
   }
 

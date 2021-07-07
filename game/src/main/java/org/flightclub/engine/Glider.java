@@ -243,21 +243,21 @@ public class Glider extends FlyingBody {
       }
 
       if (reachedGoal) {
-        app.textMessage = "Well done ! You have reached goal. You flew "
+        app.getTextMessage().setMessage("Well done ! You have reached goal. You flew "
             + (int) (vectorP.posY / 2)
             + "km in "
             + (int) app.getTime() / 2
-            + " mins. Press <y> to fly again.";
+            + " mins. Press <y> to fly again.");
       } else if (landed) {
-        app.textMessage = "You have landed - you flew "
+        app.getTextMessage().setMessage("You have landed - you flew "
             + (int) (vectorP.posY / 2)
-            + "km. Press <y> to fly again.";
+            + "km. Press <y> to fly again.");
       } else {
-        app.textMessage = "D: "
+        app.getTextMessage().setMessage("D: "
             + (int) (vectorP.posY / 2)
             + "km  T: " + (int) app.getTime() / 2
             + "mins  H: "
-            + (int) ((vectorP.posZ / 2) * 1500) + "m ";
+            + (int) ((vectorP.posZ / 2) * 1500) + "m ");
       }
     }
 
