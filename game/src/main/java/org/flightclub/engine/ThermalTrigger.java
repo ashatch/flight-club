@@ -9,9 +9,8 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 
-public class ThermalTrigger implements Clock.Observer {
+public class ThermalTrigger implements UpdatableGameObject {
   final XcGame app;
-  Clock clock;
   final int positionX;
   final int positionY;
   float time;
@@ -52,7 +51,7 @@ public class ThermalTrigger implements Clock.Observer {
       float inCloudDuration
   ) {
     app = theApp;
-    app.clock.addObserver(this);
+    theApp.addObserver(this);
     positionX = inX;
     positionY = inY;
 
@@ -80,7 +79,7 @@ public class ThermalTrigger implements Clock.Observer {
   }
 
   @Override
-  public void tick(float delta) {
+  public void update(float delta) {
 
     if (time == 0) {
       makeCloud();
@@ -125,7 +124,7 @@ public class ThermalTrigger implements Clock.Observer {
   }
 
   void destroyMe() {
-    app.clock.removeObserver(this);
+    app.removeObserver(this);
 
     // hurry up clouds
     for (int i = 0; i < clouds.size(); i++) {

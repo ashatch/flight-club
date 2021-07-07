@@ -15,7 +15,7 @@ package org.flightclub.engine;
   - ds (horizontal distance moved per tick)
 */
 
-public class FlyingDot implements Clock.Observer, CameraSubject {
+public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   Vector3d vector;
   Vector3d vectorP = new Vector3d();
@@ -58,7 +58,7 @@ public class FlyingDot implements Clock.Observer, CameraSubject {
 
   public FlyingDot(XcGame theApp, float inSpeed, float inTurnRadius) {
     app = theApp;
-    app.clock.addObserver(this);
+    app.addObserver(this);
 
     speed = inSpeed;
     ds = speed * app.timePerFrame;
@@ -93,7 +93,7 @@ public class FlyingDot implements Clock.Observer, CameraSubject {
    * update position, velocity and local frame
    */
   @Override
-  public void tick(float delta) {
+  public void update(float delta) {
     vectorP.add(vector);
     vectorP.posY += Sky.getWind() * app.timePerFrame;
 

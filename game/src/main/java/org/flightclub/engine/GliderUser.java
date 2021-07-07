@@ -41,8 +41,8 @@ public class GliderUser extends Glider implements KeyEventHandler {
   }
 
   @Override
-  public void tick(float delta) {
-    super.tick(delta);
+  public void update(float delta) {
+    super.update(delta);
     checkBounds();
   }
 

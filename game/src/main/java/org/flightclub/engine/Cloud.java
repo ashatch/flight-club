@@ -9,7 +9,7 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 
-public class Cloud implements CameraSubject, Clock.Observer {
+public class Cloud implements CameraSubject, UpdatableGameObject {
   final XcGame app;
   final Object3dWithShadow object3d;
   Vector3d projection = new Vector3d();
@@ -79,7 +79,7 @@ public class Cloud implements CameraSubject, Clock.Observer {
     setSphericals();
     setCorners();
     buildSurfaces();
-    app.clock.addObserver(this);
+    app.addObserver(this);
 
     //add to lift profile ?
     inForeGround = (projection.posX < Landscape.TILE_WIDTH / 2
@@ -95,7 +95,7 @@ public class Cloud implements CameraSubject, Clock.Observer {
     if (inForeGround) {
       app.sky.removeCloud(this);
     }
-    app.clock.removeObserver(this);
+    app.removeObserver(this);
     if (trigger != null) {
       trigger.clouds.removeElement(this);
     }
@@ -183,7 +183,7 @@ public class Cloud implements CameraSubject, Clock.Observer {
   }
 
   @Override
-  public void tick(float delta) {
+  public void update(float delta) {
     age += delta * app.timeMultiplier / 2.0f;
     if (age > mature + nose + tail * 0.5) {
       decaying = true;

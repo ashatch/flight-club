@@ -16,8 +16,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import org.flightclub.engine.Clock;
 import org.flightclub.engine.MouseTracker;
+import org.flightclub.engine.UpdatableGameObject;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
  * This class is based on the framework outlined in a book called
  * 'Java Games Programming' by Niel Bartlett
  */
-public class ModelCanvas extends Canvas implements Clock.Observer {
+public class ModelCanvas extends Canvas implements UpdatableGameObject {
   private final Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
 
   private final Color backColor = Color.white;
@@ -43,7 +43,7 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
 
   public ModelCanvas(final XcGame game) {
     this.game = game;
-    this.game.clock.addObserver(this);
+    this.game.addObserver(this);
   }
 
   public void init() {
@@ -89,7 +89,7 @@ public class ModelCanvas extends Canvas implements Clock.Observer {
   }
 
   @Override
-  public void tick(final float delta) {
+  public void update(final float delta) {
     if (mouseTracker.isDragging()) {
       //float dtheta = (float) dx/width;
       float dtheta = 0;

@@ -9,13 +9,12 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 
-public class XcGame implements KeyEventHandler, Clock.Observer {
+public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
 
   private final Font font = new Font("SansSerif", Font.PLAIN, 10);
 
-  public final Clock clock = new Clock(1000 / FRAME_RATE);
   public final EventManager eventManager = new EventManager();
   public final Obj3dManager obj3dManager;
   public final CameraMan cameraMan;
@@ -40,6 +39,12 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   private DataSlider slider = null;
   private final Variometer vario;
 
+  final Vector<UpdatableGameObject> observers = new Vector<>();
+  final int sleepTime = 1000 / FRAME_RATE;
+  public long last = 0;
+  boolean paused = false;
+
+
   public XcGame(
       final Obj3dManager obj3dManager,
       final Sky sky,
@@ -52,9 +57,8 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     landscape = new Landscape(this);
     cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
 
-    clock.addObserver(this);
     eventManager.subscribe(this);
-
+    addObserver(this);
 
     gliderUser = new GliderUser(this, new Vector3d(0, 0, 0));
     gliderUser.landed();
@@ -108,13 +112,41 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   }
 
   void togglePause() {
-    clock.paused = !clock.paused;
+    paused = !paused;
   }
 
   public void gameLoop() {
     do {
-      clock.tick();
+      long now = System.currentTimeMillis();
+      float delta = (now - last) / 1000.0f;
+      last = now;
+
+      for (int i = 0; i < observers.size(); i++) {
+        /* hack - when paused still tick the modelviewer so
+            we can change our POV and unpause */
+        if (i == 0 || !paused) {
+          UpdatableGameObject c = observers.elementAt(i);
+          c.update(delta);
+        }
+      }
+
+      long timeLeft = sleepTime + now - System.currentTimeMillis();
+      if (timeLeft > 0) {
+        try {
+          Thread.sleep(timeLeft);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
     } while (true);
+  }
+
+  public void addObserver(UpdatableGameObject observer) {
+    observers.addElement(observer);
+  }
+
+  public void removeObserver(UpdatableGameObject observer) {
+    observers.removeElement(observer);
   }
 
   void startPlay() {
@@ -137,7 +169,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
     jet1.buzzThis = gliderUser;
     jet2.buzzThis = gliderUser;
 
-    if (clock.paused) {
+    if (paused) {
       togglePause();
     }
     if (fastForward) {
@@ -166,7 +198,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   }
 
   @Override
-  public void tick(final float delta) {
+  public void update(final float delta) {
     time += delta * timeMultiplier / 2.0f;
 
     eventManager.processEvent();
@@ -300,7 +332,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
       g.setFont(font);
       g.setColor(Color.LIGHT_GRAY);
 
-      final String msg = clock.paused ? textMessage + " [ paused ]" : textMessage;
+      final String msg = paused ? textMessage + " [ paused ]" : textMessage;
       g.drawString(msg, 15, height - 15);
     }
   }

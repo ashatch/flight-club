@@ -28,9 +28,9 @@ public class FlyingBody extends FlyingDot {
   }
 
   @Override
-  public void tick(float delta) {
+  public void update(float delta) {
     //update position and velocity
-    super.tick(delta);
+    super.update(delta);
 
     //flap wings etc
     //body0.timeStep();
