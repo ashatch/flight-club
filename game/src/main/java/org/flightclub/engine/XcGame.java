@@ -17,7 +17,7 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
 
   public final Clock clock = new Clock(1000 / FRAME_RATE);
   public final EventManager eventManager = new EventManager();
-  public final Obj3dManager obj3dManager = new Obj3dManager();
+  public final Obj3dManager obj3dManager;
   public final CameraMan cameraMan;
 
   private float time = 0.0f;
@@ -41,16 +41,18 @@ public class XcGame implements KeyEventHandler, Clock.Observer {
   private final Variometer vario;
 
   public XcGame(
-      GameModelHolder gameModelHolder,
-      GameEnvironment envGameEnvironment
+      final Obj3dManager obj3dManager,
+      final Sky sky,
+      final GameModelHolder gameModelHolder,
+      final GameEnvironment envGameEnvironment
   ) {
+    this.obj3dManager = obj3dManager;
     this.envGameEnvironment = envGameEnvironment;
-    clock.addObserver(this);
-
-    sky = new Sky();
+    this.sky = sky;
     landscape = new Landscape(this);
     cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
 
+    clock.addObserver(this);
     eventManager.subscribe(this);
 
 

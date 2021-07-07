@@ -18,6 +18,8 @@ import org.flightclub.engine.GameEnvironment;
 import org.flightclub.engine.GameMode;
 import org.flightclub.engine.GameModelHolder;
 import org.flightclub.engine.IntPair;
+import org.flightclub.engine.Obj3dManager;
+import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,8 @@ public class EngineTest extends Frame {
     super(title);
 
     final XcGame app = new XcGame(
+        new Obj3dManager(),
+        new Sky(),
         new GameModelHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );

@@ -16,6 +16,8 @@ import org.flightclub.engine.GameEnvironment;
 import org.flightclub.engine.GameMode;
 import org.flightclub.engine.GameModelHolder;
 import org.flightclub.engine.IntPair;
+import org.flightclub.engine.Obj3dManager;
+import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +65,8 @@ public class XcGameFrame extends Frame {
 
     final IntPair windowSize = new IntPair(1000, 600);
     final XcGame game = new XcGame(
+        new Obj3dManager(),
+        new Sky(),
         new GameModelHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );
