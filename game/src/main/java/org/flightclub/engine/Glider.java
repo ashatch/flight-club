@@ -54,12 +54,9 @@ public class Glider extends FlyingBody {
       final float turnRadius,
       final Vector3d p,
       final boolean isUser,
-      final Color color
+      final GliderShape gliderShape
   ) {
     super(app, sky, speed, turnRadius, isUser);
-
-    final GliderShape gliderShape = new GliderShape(color);
-
     this.init(gliderShape, p);
     bodyHeight = GliderShape.HEIGHT;
     gotoNextLiftSource();
@@ -76,7 +73,7 @@ public class Glider extends FlyingBody {
         TURN_RADIUS,
         new Vector3d(),
         false,
-        GliderShape.DEFAULT_COLOR
+        new GliderShape(Color.DEFAULT_GLIDER_COLOR)
     );
   }
 
@@ -91,7 +88,7 @@ public class Glider extends FlyingBody {
         TURN_RADIUS * (float) 1.2,
         new Vector3d(),
         false,
-        Color.PINK
+        new GliderShape(Color.PINK)
     );
   }
 
@@ -106,7 +103,7 @@ public class Glider extends FlyingBody {
         TURN_RADIUS,
         new Vector3d(0, 0, 0),
         true,
-        Color.YELLOW
+        new GliderShape(Color.YELLOW)
     );
   }
 

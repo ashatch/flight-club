@@ -78,7 +78,8 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     this.userGlider = userGlider(this, sky);
     userGlider.landed();
 
-    userGliderController = new UserGliderController(this.eventManager, userGlider);
+    userGliderController = new UserGliderController(userGlider);
+    this.eventManager.subscribe(userGliderController);
     cameraMan.subject1 = userGlider;
 
     textMessage = new TextMessage("Demo mode");

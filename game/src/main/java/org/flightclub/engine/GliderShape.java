@@ -11,18 +11,11 @@ import java.util.Vector;
 import org.flightclub.engine.math.Vector3d;
 
 public class GliderShape extends Object3dWithShadow {
-  public static final Color DEFAULT_COLOR = new Color(170, 170, 180);
   public static final float HEIGHT = (float) 0.2;
 
   final Color color;
 
-  /* default constructor - gray shape */
-  public GliderShape() {
-    this(DEFAULT_COLOR);
-  }
-
-  /* pass in a color (eg for user glider) */
-  public GliderShape(Color color) {
+  public GliderShape(final Color color) {
     super();
     this.color = color;
     init();

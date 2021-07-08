@@ -31,12 +31,7 @@ public class FlyingBody extends FlyingDot {
 
   @Override
   public void update(final UpdateContext context) {
-    //update position and velocity
     super.update(context);
-
-    //flap wings etc
-    //body0.timeStep();
-
     rotateBody();
     translateBody();
     body1.updateShadow(app.landscape);

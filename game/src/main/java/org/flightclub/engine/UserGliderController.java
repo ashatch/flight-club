@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -7,7 +7,6 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.KeyEvent;
 import org.flightclub.engine.events.KeyEventHandler;
 import org.flightclub.engine.math.Vector3d;
@@ -16,24 +15,8 @@ public class UserGliderController implements KeyEventHandler, UpdatableGameObjec
 
   private final Glider glider;
 
-  public UserGliderController(
-      final EventManager eventManager,
-      final Glider glider
-  ) {
+  public UserGliderController(final Glider glider) {
     this.glider = glider;
-    eventManager.subscribe(this);
-  }
-
-  void checkBounds() {
-    if (this.glider.vectorP.posX > Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
-    }
-    if (this.glider.vectorP.posX < -Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
-    }
-    if (this.glider.vectorP.posY < -Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(this.glider.vectorP.posX, 0, 0));
-    }
   }
 
   @Override
@@ -87,6 +70,18 @@ public class UserGliderController implements KeyEventHandler, UpdatableGameObjec
         this.glider.moveManager.setNextMove(MovementManager.STRAIGHT);
         break;
       default:
+    }
+  }
+
+  private void checkBounds() {
+    if (this.glider.vectorP.posX > Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
+    }
+    if (this.glider.vectorP.posX < -Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
+    }
+    if (this.glider.vectorP.posY < -Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3d(this.glider.vectorP.posX, 0, 0));
     }
   }
 }

@@ -53,6 +53,8 @@ public record Color(int r, int g, int b) {
    */
   public static final Color BLUE = new Color(0, 0, 255);
 
+  public static final Color DEFAULT_GLIDER_COLOR = new Color(170, 170, 180);
+
   public Color mul(final float scale) {
     return new Color((int) (r * scale), (int) (g * scale), (int) (b * scale));
   }
