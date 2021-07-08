@@ -47,39 +47,52 @@ public class Glider extends FlyingBody {
   public static final int TAIL_LENGTH = 40;
   public static final Color TAIL_COLOR = Color.LIGHT_GRAY;
 
-  /*
-   * default constructor - this glider is not being piloted by the user
-   */
-  public Glider(XcGame app, Sky sky, Vector3d p) {
-    this(app, sky, p, false);
-  }
+  protected Glider(
+      final XcGame app,
+      final Sky sky,
+      final float speed,
+      final float turnRadius,
+      final Vector3d p,
+      final boolean isUser,
+      final Color color
+  ) {
+    super(app, sky, speed, turnRadius, isUser);
 
-  public Glider(XcGame app, Sky sky, Vector3d p, boolean isUser) {
-    super(app, sky, SPEED, TURN_RADIUS, isUser);
-
-    GliderShape gliderShape;
-    if (!isUser) {
-      gliderShape = new GliderShape();
-    } else {
-      gliderShape = new GliderShape(Color.YELLOW);
-    }
+    final GliderShape gliderShape = new GliderShape(color);
 
     this.init(gliderShape, p);
     bodyHeight = GliderShape.HEIGHT;
     gotoNextLiftSource();
   }
 
-  public Glider(XcGame app, Sky sky, Vector3d p, boolean isUser, boolean isRigid) {
-    //hack to get a couple of faster pink machines
-    //sailplane/rigid
-    super(app, sky,SPEED * (float) 1.5, TURN_RADIUS * (float) 1.2, isUser);
+  public static Glider regularNpcGlider(
+      final XcGame app,
+      final Sky sky
+  ) {
+    return new Glider(
+        app,
+        sky,
+        SPEED,
+        TURN_RADIUS,
+        new Vector3d(),
+        false,
+        GliderShape.DEFAULT_COLOR
+    );
+  }
 
-
-    GliderShape gliderShape = new GliderShape(Color.PINK);
-
-    this.init(gliderShape, p);
-    bodyHeight = GliderShape.HEIGHT;
-    gotoNextLiftSource();
+  public static Glider rigidNpcGlider(
+      final XcGame app,
+      final Sky sky
+  ) {
+    return new Glider(
+        app,
+        sky,
+        SPEED * (float) 1.5,
+        TURN_RADIUS * (float) 1.2,
+        new Vector3d(),
+        false,
+        Color.PINK
+    );
   }
 
   /*
@@ -112,7 +125,6 @@ public class Glider extends FlyingBody {
       cutWhen = whenArrive(hill.x0, hill.y0) - app.cameraMan.CUT_LEN * 2; //??2
       cutSubject = hill;
       cutCount = 0;
-      // System.out.println("Cut when: " + cutWhen);
       return;
     }
 
@@ -139,10 +151,6 @@ public class Glider extends FlyingBody {
     cutWhen = whenArrive(cloud.projection.posX, cloud.projection.posY) - app.cameraMan.CUT_LEN * 2;
     cutSubject = cloud;
     cutCount = 0;
-    // System.out.println("Cut when: " + cutWhen);
-
-
-    // app.cameraMan.cutSetup(cloud, isUser);
   }
 
   @Override

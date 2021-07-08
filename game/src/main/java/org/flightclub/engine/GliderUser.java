@@ -22,7 +22,7 @@ public class GliderUser extends Glider implements KeyEventHandler {
   public GliderUser(XcGame app, Sky sky, Vector3d p) {
     //set flag so camera will follow my cuts when in mode 1
     //(see glider.gotoNextLiftSource)
-    super(app, sky, p, true);
+    super(app, sky, SPEED, TURN_RADIUS, p, true, Color.YELLOW);
     app.eventManager.subscribe(this);
   }
 

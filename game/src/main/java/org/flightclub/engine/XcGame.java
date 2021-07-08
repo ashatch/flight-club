@@ -19,6 +19,9 @@ import org.flightclub.engine.instruments.TextMessage;
 import org.flightclub.engine.instruments.Variometer;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Glider.regularNpcGlider;
+import static org.flightclub.engine.Glider.rigidNpcGlider;
+
 public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
@@ -96,10 +99,9 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     for (int i = 0; i < 10; i++) {
       Glider glider;
       if (i != 3 && i != 7) {
-        glider = new Glider(this, this.sky, new Vector3d());
+        glider = regularNpcGlider(this, sky);
       } else {
-        //pink ones
-        glider = new Glider(this, this.sky, new Vector3d(), false, true);
+        glider = rigidNpcGlider(this, sky);
       }
       gaggle.addElement(glider);
       if (i == 5) {
