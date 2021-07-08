@@ -21,6 +21,7 @@ import org.flightclub.engine.math.Vector3d;
 
 import static org.flightclub.engine.Glider.regularNpcGlider;
 import static org.flightclub.engine.Glider.rigidNpcGlider;
+import static org.flightclub.engine.Glider.userGlider;
 
 public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public static final int FRAME_RATE = 25;
@@ -42,7 +43,8 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   protected float timePerFrame = TIME_PER_FRAME;
 
   private final Vector<Glider> gaggle;
-  private final GliderUser gliderUser;
+  private final Glider userGlider;
+  private final UserGliderController userGliderController;
   private final JetTrail jet1;
   private final JetTrail jet2;
 
@@ -73,9 +75,11 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     eventManager.subscribe(this);
     addGameObject(this);
 
-    gliderUser = new GliderUser(this, this.sky, new Vector3d(0, 0, 0));
-    gliderUser.landed();
-    cameraMan.subject1 = gliderUser;
+    this.userGlider = userGlider(this, sky);
+    userGlider.landed();
+
+    userGliderController = new UserGliderController(this.eventManager, userGlider);
+    cameraMan.subject1 = userGlider;
 
     textMessage = new TextMessage("Demo mode");
     compass = new Compass(25, envGameEnvironment.windowSize().x() - 30, envGameEnvironment.windowSize().y() - 35);
@@ -89,7 +93,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
         envGameEnvironment.windowSize().y() - 35
     );
 
-    vario = new Variometer(this, gliderUser);
+    vario = new Variometer(this, userGlider);
 
     jet1 = new JetTrail(this, sky, -JetTrail.TURN_RADIUS, -JetTrail.TURN_RADIUS);
     jet2 = new JetTrail(this, sky, 0, JetTrail.TURN_RADIUS);
@@ -134,7 +138,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   }
 
   void launchUser() {
-    gliderUser.takeOff(new Vector3d(4 - 4 - 1, 4 - 6, (float) 1.8));
+    userGlider.takeOff(new Vector3d(4 - 4 - 1, 4 - 6, (float) 1.8));
     time = 0;
   }
 
@@ -180,7 +184,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     gameMode = GameMode.USER;
     landscape.removeAll();
 
-    gliderUser.triggerLoading = true;
+    userGlider.triggerLoading = true;
     Glider glider = gaggle.elementAt(5);
     glider.triggerLoading = false;
 
@@ -192,8 +196,8 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
 
     cameraMan.setMode(CameraMode.SELF);
 
-    jet1.buzzThis = gliderUser;
-    jet2.buzzThis = gliderUser;
+    jet1.buzzThis = userGlider;
+    jet2.buzzThis = userGlider;
 
     if (paused) {
       togglePause();
@@ -218,13 +222,13 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
 
   private void updateSlider(float delta) {
     if (slider != null) {
-      slider.setValue(2.0f * gliderUser.vector.posZ / (delta * timeMultiplier));
+      slider.setValue(2.0f * userGlider.vector.posZ / (delta * timeMultiplier));
     }
   }
 
   private void updateCompass() {
     if (compass != null) {
-      compass.setArrow(gliderUser.vector.posX, gliderUser.vector.posY);
+      compass.setArrow(userGlider.vector.posX, userGlider.vector.posY);
     }
   }
 

@@ -95,6 +95,21 @@ public class Glider extends FlyingBody {
     );
   }
 
+  public static Glider userGlider(
+      final XcGame app,
+      final Sky sky
+  ) {
+    return new Glider(
+        app,
+        sky,
+        SPEED,
+        TURN_RADIUS,
+        new Vector3d(0, 0, 0),
+        true,
+        Color.YELLOW
+    );
+  }
+
   /*
    * fly downwind to next lift source
    * goto hill if there is one, otherwise goto a cloud
