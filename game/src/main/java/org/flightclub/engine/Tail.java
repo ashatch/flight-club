@@ -19,22 +19,7 @@ public class Tail extends Object3d {
   private Vector3d[] tail;
   int wireEvery = 4;    //default add a wire for every 5 points
 
-  public Tail(XcGame theApp, int length, Color color) {
-    // only register top level objects with the manager
-    // a tail has a parent who IS registered with the manager
-    //  and is responsible for drawing and ticking its tail
-    // ...er no
-    super(1);
-    theApp.obj3dManager.add(this);
-    this.length = length;
-    this.color = color;
-  }
-
   public Tail(XcGame theApp, int length, Color color, int layer) {
-    /*
-    as above but add to a specific layer
-    eg zero for long jet tails, roads...
-    */
     super(layer);
     theApp.obj3dManager.add(this);
     this.length = length;

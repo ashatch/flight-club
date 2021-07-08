@@ -9,6 +9,8 @@ package org.flightclub.engine;
 
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.BACKGROUND_LAYER;
+
 /*
  * a jet in the upper atmosphere - leaves a long trail
  */
@@ -38,7 +40,7 @@ public class JetTrail extends FlyingDot {
 
   @Override
   protected void createTail() {
-    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR, 0);    //add to layer zero
+    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR, BACKGROUND_LAYER);
     tail.wireEvery = 1;
     tail.init(vectorP);
   }

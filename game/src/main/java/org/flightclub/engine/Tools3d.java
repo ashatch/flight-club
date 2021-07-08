@@ -10,6 +10,8 @@ package org.flightclub.engine;
 import java.util.Vector;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+
 /*
  * static methods for 3d geometry
  */
@@ -138,7 +140,7 @@ public class Tools3d {
   }
 
   static Object3d unitCube(boolean isSolid) {
-    Object3d cube = new Object3d(1);
+    Object3d cube = new Object3d(DEFAULT_LAYER);
     float d = (float) 0.5;
     Color c = Color.GREEN;
 

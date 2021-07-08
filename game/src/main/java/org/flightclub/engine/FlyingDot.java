@@ -18,6 +18,8 @@ package org.flightclub.engine;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   protected final Sky sky;
@@ -84,7 +86,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   }
 
   protected void createTail() {
-    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR);
+    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR, DEFAULT_LAYER);
     tail.init(vectorP);
   }
 

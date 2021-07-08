@@ -11,6 +11,8 @@ import java.util.Vector;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+
 /*
  * Three new methods added to object3d...
  *
@@ -30,7 +32,7 @@ public class Object3dWithShadow extends Object3d {
   int numShadows = 0;
 
   Object3dWithShadow() {
-    super(1);
+    super(DEFAULT_LAYER);
     initShadow();
   }
 

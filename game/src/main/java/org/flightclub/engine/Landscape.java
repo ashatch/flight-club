@@ -11,6 +11,8 @@ import java.util.Vector;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.BACKGROUND_LAYER;
+
 /*
  * Some hills, triggers and a road arranged onto tiles
  */
@@ -106,7 +108,7 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x, y - hair, 0));
     wire.addElement(new Vector3d(x, y + hair, 0));
 
-    Object3d o = new Object3d(0);    //layer zero !!
+    Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
     app.obj3dManager.add(o);
     o.addWire(wire, new Color(230, 230, 230), false, false);
 
@@ -123,7 +125,7 @@ public class Landscape implements CameraSubject {
   static void road() {
     float atom = 2;
 
-    Object3d o = new Object3d(0);    //layer zero !!
+    Object3d o = new Object3d(BACKGROUND_LAYER);
     app.obj3dManager.add(o);
     Vector<Vector3d> wire;
 
@@ -152,7 +154,7 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x1, y0, 0));
     wire.addElement(new Vector3d(x2, y0, 0));
 
-    Object3d o = new Object3d(0);    //layer zero !!
+    Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
     app.obj3dManager.add(o);
     o.addWire(wire, new Color(220, 220, 100), false, false);
 

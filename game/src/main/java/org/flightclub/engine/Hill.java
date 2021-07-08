@@ -10,6 +10,8 @@ package org.flightclub.engine;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.math.Vector3d;
 
+import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+
 /*
  * a spine running parallel to x axis or y axis (orientation 0 or 1)
  * has a circuit for ridge soaring
@@ -66,7 +68,7 @@ public class Hill implements CameraSubject {
     phase = inPhase;
     h0 = inH0;
     face = inFace;
-    object3d = new Object3d(1);
+    object3d = new Object3d(DEFAULT_LAYER);
     app.obj3dManager.add(object3d);
     color = new Color(255, 255, 255);
 

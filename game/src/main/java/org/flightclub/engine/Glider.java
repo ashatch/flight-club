@@ -7,9 +7,12 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.math.Vector3d;
+
+import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
 
 /*
  * a glider that sniffs out lift
@@ -134,7 +137,7 @@ public class Glider extends FlyingBody {
       this.moveManager.setCircuit(hill.getCircuit());
 
       cutPending = true;
-      cutWhen = whenArrive(hill.x0, hill.y0) - app.cameraMan.CUT_LEN * 2; //??2
+      cutWhen = whenArrive(hill.x0, hill.y0) - CameraMan.CUT_LEN * 2; //??2
       cutSubject = hill;
       cutCount = 0;
       return;
@@ -160,14 +163,14 @@ public class Glider extends FlyingBody {
     this.moveManager.setCloud(cloud);
 
     cutPending = true;
-    cutWhen = whenArrive(cloud.projection.posX, cloud.projection.posY) - app.cameraMan.CUT_LEN * 2;
+    cutWhen = whenArrive(cloud.projection.posX, cloud.projection.posY) - CameraMan.CUT_LEN * 2;
     cutSubject = cloud;
     cutCount = 0;
   }
 
   @Override
   protected void createTail() {
-    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR);
+    tail = new Tail(app, TAIL_LENGTH, TAIL_COLOR, DEFAULT_LAYER);
     tail.init(vectorP);
   }
 

@@ -16,6 +16,9 @@ import org.flightclub.engine.math.Vector3d;
  * manager for 3d objects
  */
 public class Obj3dManager {
+  public static final int BACKGROUND_LAYER = 0;
+  public static final int DEFAULT_LAYER = 1;
+
   private static final int MAX_LAYERS = 3;
 
   private static final Comparator<Object3d> COMPARATOR = (o1, o2) -> {
