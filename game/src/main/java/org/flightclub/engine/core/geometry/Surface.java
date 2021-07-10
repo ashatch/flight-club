@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core.geometry;
 
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;

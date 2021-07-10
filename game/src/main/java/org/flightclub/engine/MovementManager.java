@@ -36,9 +36,9 @@ public class MovementManager {
   int wiggleCount = 0;
   final int wiggleSize = 5;
 
-  static final int LEFT = -1;
-  static final int STRAIGHT = 0;
-  static final int RIGHT = 1;
+  public static final int LEFT = -1;
+  public static final int STRAIGHT = 0;
+  public static final int RIGHT = 1;
 
   public MovementManager(XcGame theApp, FlyingDot theFlyingDot) {
     app = theApp;
@@ -102,7 +102,7 @@ public class MovementManager {
     circuitPoint = circuit.next();
   }
 
-  void setTargetPoint(Vector3d t) {
+  public void setTargetPoint(Vector3d t) {
     clearControllers();
     targetPoint = new Vector3d(t.posX, t.posY, t.posZ);
   }
@@ -112,7 +112,7 @@ public class MovementManager {
     cloud = c;
   }
 
-  void setNextMove(int dir) {
+  public void setNextMove(int dir) {
     // user pressed key to turn
     // clear all controllers
     clearControllers();
@@ -265,7 +265,7 @@ public class MovementManager {
     }
   }
 
-  void workLift() {
+  public void workLift() {
     /*
      * this replaces togglelift - after hugh's helpful comments
      */

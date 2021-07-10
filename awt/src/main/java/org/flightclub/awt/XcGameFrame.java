@@ -17,7 +17,7 @@ import org.flightclub.engine.core.GameMode;
 import org.flightclub.engine.core.GameModelHolder;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.math.IntPair;
-import org.flightclub.engine.RenderManager;
+import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;

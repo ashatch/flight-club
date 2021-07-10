@@ -18,7 +18,7 @@ import org.flightclub.engine.core.GameMode;
 import org.flightclub.engine.core.GameModelHolder;
 import org.flightclub.engine.math.IntPair;
 import org.flightclub.engine.Landscape;
-import org.flightclub.engine.Tools3d;
+import org.flightclub.engine.core.geometry.Tools3d;
 import org.flightclub.engine.math.Vector3d;
 
 public class CameraMan {

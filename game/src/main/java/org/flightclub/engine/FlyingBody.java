@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import org.flightclub.engine.core.UpdateContext;
+import org.flightclub.engine.core.geometry.Object3dWithShadow;
 import org.flightclub.engine.math.Vector3d;
 
 public class FlyingBody extends FlyingDot {

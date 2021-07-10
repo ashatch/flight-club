@@ -5,8 +5,11 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.keyboard;
 
+import org.flightclub.engine.Glider;
+import org.flightclub.engine.Landscape;
+import org.flightclub.engine.MovementManager;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.events.KeyEvent;

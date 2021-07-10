@@ -10,6 +10,7 @@ package org.flightclub.engine;
 import java.util.Vector;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
+import org.flightclub.engine.core.geometry.Tools3d;
 
 public class ThermalTrigger implements UpdatableGameObject {
   final XcGame app;

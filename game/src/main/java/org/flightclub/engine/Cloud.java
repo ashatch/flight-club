@@ -12,6 +12,8 @@ import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
+import org.flightclub.engine.core.geometry.Object3dWithShadow;
+import org.flightclub.engine.core.geometry.Tools3d;
 import org.flightclub.engine.math.Vector3d;
 
 public class Cloud implements CameraSubject, UpdatableGameObject {

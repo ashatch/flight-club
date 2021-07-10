@@ -10,8 +10,9 @@ package org.flightclub.engine;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
+import org.flightclub.engine.models.Tail;
 
-import static org.flightclub.engine.RenderManager.BACKGROUND_LAYER;
+import static org.flightclub.engine.core.RenderManager.BACKGROUND_LAYER;
 
 /*
  * a jet in the upper atmosphere - leaves a long trail

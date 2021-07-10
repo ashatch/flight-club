@@ -5,16 +5,17 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
+import org.flightclub.engine.Landscape;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
+import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 /*
  * Three new methods added to object3d...
@@ -34,7 +35,7 @@ public class Object3dWithShadow extends Object3d {
   final Surface[] shadows = new Surface[MAX_SHADOWS];
   int numShadows = 0;
 
-  Object3dWithShadow() {
+  public Object3dWithShadow() {
     super(DEFAULT_LAYER);
     initShadow();
   }

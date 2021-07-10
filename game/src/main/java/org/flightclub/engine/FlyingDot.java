@@ -20,14 +20,15 @@ import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
+import org.flightclub.engine.models.Tail;
 
-import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
+import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   protected final Sky sky;
   public Vector3d vector;
-  Vector3d vectorP = new Vector3d();
+  public Vector3d vectorP = new Vector3d();
   float speed;
   float ds; //distance per frame - hack
   final float myTurnRadius;
@@ -39,7 +40,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final Vector3d axisZ = new Vector3d();
 
   Tail tail = null;
-  MovementManager moveManager = null;
+  public MovementManager moveManager = null;
 
   public static final int TAIL_LENGTH = 25;
   public static final Color TAIL_COLOR = Color.LIGHT_GRAY;

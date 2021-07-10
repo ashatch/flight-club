@@ -10,9 +10,11 @@ package org.flightclub.engine;
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.geometry.Object3d;
+import org.flightclub.engine.core.geometry.Tools3d;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.RenderManager.BACKGROUND_LAYER;
+import static org.flightclub.engine.core.RenderManager.BACKGROUND_LAYER;
 
 /*
  * Some hills, triggers and a road arranged onto tiles

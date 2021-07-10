@@ -13,8 +13,10 @@ import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
+import org.flightclub.engine.models.GliderShape;
+import org.flightclub.engine.models.Tail;
 
-import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
+import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 /*
  * a glider that sniffs out lift
@@ -24,7 +26,7 @@ public class Glider extends FlyingBody {
   int tryLater = 0;
 
   // hack - only glider user should know about this
-  boolean demoMode = true;
+  public boolean demoMode = true;
 
   boolean reachedGoal;
 
@@ -385,7 +387,7 @@ public class Glider extends FlyingBody {
    * bit of a mess as this class knows about sink rate
    * and super class manages horizontal speed
    */
-  void setPolarIndex(int i) {
+  public void setPolarIndex(int i) {
     polarIndex = i;
     super.setSpeed(POLAR[polarIndex][0] * SPEED);
   }

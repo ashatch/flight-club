@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraMan;
@@ -19,14 +19,14 @@ public class Object3d implements Renderable {
   private final int layer;
   private boolean inFov = false;
 
-  final Vector<Vector3d> points = new Vector<>();
-  final Vector<Vector3d> cameraSpacePoints = new Vector<>();
-  final Vector<PolyLine> wires = new Vector<>();
+  public final Vector<Vector3d> points = new Vector<>();
+  public final Vector<Vector3d> cameraSpacePoints = new Vector<>();
+  public final Vector<PolyLine> wires = new Vector<>();
 
   // list of flags - is point within field of view
-  final Vector<Boolean> flagsInFieldOfView = new Vector<>();
+  public final Vector<Boolean> flagsInFieldOfView = new Vector<>();
 
-  Object3d(int layer) {
+  public Object3d(int layer) {
     this.layer = layer;
   }
 
@@ -190,7 +190,7 @@ public class Object3d implements Renderable {
     }
   }
 
-  void reverse() {
+  public void reverse() {
     for (int i = 0; i < wires.size() / 2 - 1; i++) {
       int j = wires.size() - 1 - i;
       PolyLine wire1 = wires.elementAt(i);

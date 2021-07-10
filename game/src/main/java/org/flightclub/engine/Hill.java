@@ -9,9 +9,10 @@ package org.flightclub.engine;
 
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
+import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 /*
  * a spine running parallel to x axis or y axis (orientation 0 or 1)

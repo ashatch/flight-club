@@ -5,13 +5,14 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
 import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
+import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 /*
  * static methods for 3d geometry

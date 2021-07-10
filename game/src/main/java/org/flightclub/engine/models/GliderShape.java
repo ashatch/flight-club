@@ -5,9 +5,10 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.models;
 
 import java.util.Vector;
+import org.flightclub.engine.core.geometry.Object3dWithShadow;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 

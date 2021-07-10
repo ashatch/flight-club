@@ -5,15 +5,14 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.IntStream;
-import org.flightclub.engine.core.RenderContext;
-import org.flightclub.engine.core.Renderable;
+import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.math.Vector3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

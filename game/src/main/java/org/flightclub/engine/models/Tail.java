@@ -5,10 +5,12 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.models;
 
 import java.util.Vector;
+import org.flightclub.engine.XcGame;
 import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.math.Vector3d;
 
 /*
@@ -18,7 +20,7 @@ public class Tail extends Object3d {
   final int length;
   final Color color;
   private Vector3d[] tail;
-  int wireEvery = 4;    //default add a wire for every 5 points
+  public int wireEvery = 4;    //default add a wire for every 5 points
 
   public Tail(XcGame theApp, int length, Color color, int layer) {
     super(layer);

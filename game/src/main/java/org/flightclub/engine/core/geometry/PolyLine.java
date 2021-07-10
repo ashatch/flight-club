@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core.geometry;
 
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
@@ -13,16 +13,16 @@ import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.math.Vector3d;
 
 public class PolyLine {
-  final int numPoints;
-  final int[] points;
+  public final int numPoints;
+  public final int[] points;
   final Object3d object3d;
 
   private Color trueColor;
   Color apparentColor;
 
-  boolean isSolid = false;
+  public boolean isSolid = false;
 
-  Vector3d normal;
+  public Vector3d normal;
 
   private int nextIndex = 0;
 
@@ -47,7 +47,7 @@ public class PolyLine {
     nextIndex++;
   }
 
-  boolean isBackFace(Vector3d eye) {
+  public boolean isBackFace(Vector3d eye) {
     if (normal == null) {
       return false;
     }
@@ -60,7 +60,7 @@ public class PolyLine {
     return normal.dot(ray) >= 0;
   }
 
-  void setNormal() {
+  public void setNormal() {
     if (numPoints < 3) {
       return;
     }
