@@ -43,12 +43,6 @@ public class Landscape implements CameraSubject {
     goalLine();
   }
 
-  public static class Tile {
-    boolean loaded = false;
-    Vector<Hill> hills = new Vector<>();
-    Vector<ThermalTrigger> triggers = new Vector<>();
-  }
-
   /*
    * load a chunk of landscape mostly thermal triggers, some tiles have hills
    */
@@ -506,15 +500,6 @@ public class Landscape implements CameraSubject {
       //pass really flag so clouds disappear aswell
       removeTile(i, true);
     }
-  }
-
-  /*
-   * add a hill
-   * each call adds a different hill shape
-   */
-  void addHill(int tileNum, int x, int y) {
-    Hill hill = new Hill(app, x, y);
-    tiles[tileNum].hills.addElement(hill);
   }
 
   /*
