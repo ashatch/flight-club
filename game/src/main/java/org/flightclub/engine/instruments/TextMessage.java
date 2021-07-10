@@ -33,6 +33,6 @@ public class TextMessage implements Renderable {
 
     graphics.setFont(font);
     graphics.setColor(Color.LIGHT_GRAY);
-    graphics.drawString(getMessage(context.isPaused()), 15, height - 15);
+    graphics.drawString(getMessage(context.isPaused()), 15, height - 35);
   }
 }
