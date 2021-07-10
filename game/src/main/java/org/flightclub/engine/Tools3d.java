@@ -8,9 +8,10 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
 
 /*
  * static methods for 3d geometry

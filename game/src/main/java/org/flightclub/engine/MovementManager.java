@@ -15,7 +15,7 @@ import org.flightclub.engine.math.Vector3d;
 
 public class MovementManager {
   final XcGame app;
-  FlyingDot flyingDot = null;
+  FlyingDot flyingDot;
 
   // point to fly towards
   private Vector3d targetPoint = null;
@@ -99,7 +99,7 @@ public class MovementManager {
     clearControllers();
     circuit = inCircuit;
     joinedCircuit = false;
-    circuitPoint = circuit.next(flyingDot);
+    circuitPoint = circuit.next();
   }
 
   void setTargetPoint(Vector3d t) {
@@ -143,8 +143,8 @@ public class MovementManager {
 
     // hack - the circuit should do this leaning calc!
     // use fall line to calc change due to height
-    x += flyingDot.vectorP.posZ * circuit.fallLine.posX;
-    y += flyingDot.vectorP.posZ * circuit.fallLine.posY;
+    x += flyingDot.vectorP.posZ * circuit.getFallLine().posX;
+    y += flyingDot.vectorP.posZ * circuit.getFallLine().posY;
 
     return headTowards(x, y);
   }
@@ -214,7 +214,7 @@ public class MovementManager {
 
   void reachedCircuitPoint() {
     nextMoveUser = circuit.turnDir();    //hack
-    circuitPoint = circuit.next(flyingDot);
+    circuitPoint = circuit.next();
     joinedCircuit = true;
   }
 

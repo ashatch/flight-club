@@ -14,7 +14,7 @@ import java.util.Optional;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import org.flightclub.engine.AudioPlayer;
+import org.flightclub.engine.core.AudioPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

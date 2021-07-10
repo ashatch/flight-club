@@ -8,9 +8,10 @@
 package org.flightclub.engine;
 
 import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
 
 /*
  * a spine running parallel to x axis or y axis (orientation 0 or 1)
@@ -69,7 +70,7 @@ public class Hill implements CameraSubject {
     h0 = inH0;
     face = inFace;
     object3d = new Object3d(DEFAULT_LAYER);
-    app.obj3dManager.add(object3d);
+    app.renderManager.add(object3d);
     color = new Color(255, 255, 255);
 
     // higher resolution/sample rate if
@@ -165,7 +166,12 @@ public class Hill implements CameraSubject {
    * soaring circuit - treat x0,y0 as origin
    */
   Circuit getCircuit() {
-    Circuit circuit = new Circuit(this, 2);
+    final Vector3d fallLine = orientation == Orientation.X
+        //default fall line - climb one unit -> move north (+y) one unit
+        ? new Vector3d(0, 1, 0)
+        : new Vector3d(-1, 0, 0);
+
+    final Circuit circuit = new Circuit(this, fallLine, 2);
 
     float frontFace;
     if (face == FACE_CURVY) {
@@ -180,9 +186,8 @@ public class Hill implements CameraSubject {
     } else {
       circuit.add(new Vector3d(frontFace, 1, 0));
       circuit.add(new Vector3d(frontFace, 1 + spineLength, 0));
-      //override the default fall line
-      circuit.fallLine = new Vector3d(-1, 0, 0);
     }
+
     return circuit;
   }
 

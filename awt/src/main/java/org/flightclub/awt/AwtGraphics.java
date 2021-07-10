@@ -7,9 +7,9 @@
 
 package org.flightclub.awt;
 
-import org.flightclub.engine.Color;
-import org.flightclub.engine.Font;
-import org.flightclub.engine.Graphics;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.Font;
+import org.flightclub.engine.core.Graphics;
 
 public class AwtGraphics implements Graphics {
 

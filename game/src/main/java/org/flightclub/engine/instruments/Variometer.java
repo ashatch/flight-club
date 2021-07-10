@@ -9,7 +9,7 @@ package org.flightclub.engine.instruments;
 
 import org.flightclub.engine.FlyingDot;
 import org.flightclub.engine.Glider;
-import org.flightclub.engine.UpdateContext;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.XcGame;
 
 public class Variometer {

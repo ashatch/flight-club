@@ -15,20 +15,24 @@ import org.flightclub.engine.math.Vector3d;
  * NB We use the hill's local coord system
  */
 public class Circuit {
-  final Hill hill;
-  final Vector3d[] points;
-  int numPoints = 0;
-  int next = 0;
-  final float lift = (float) 1.5;
-  final float liftUpto = (float) 1.5;
-  Vector3d fallLine;
+  private final Hill hill;
+  private final Vector3d[] points;
+  private int numPoints = 0;
+  private int next = 0;
+  private final Vector3d fallLine;
 
-  public Circuit(Hill inHill, int n) {
-    hill = inHill;
+  public Circuit(
+      final Hill hill,
+      final Vector3d fallLine,
+      final int n
+  ) {
+    this.hill = hill;
     points = new Vector3d[n];
+    this.fallLine = fallLine;
+  }
 
-    //default fall line - climb one unit -> move north (+y) one unit
-    fallLine = new Vector3d(0, 1, 0);
+  public Vector3d getFallLine() {
+    return fallLine;
   }
 
   int turnDir() {
@@ -47,7 +51,7 @@ public class Circuit {
     numPoints++;
   }
 
-  Vector3d next(FlyingDot flyingDot) {
+  Vector3d next() {
     Vector3d p = points[next];
     next++;
     if (next > numPoints - 1) {
@@ -61,21 +65,4 @@ public class Circuit {
 
     return q;
   }
-
-  float getLift(Vector3d p) {
-    // refine this ?
-
-    if (p.posZ <= liftUpto) {
-      return lift;
-    } else {
-      return 0;
-    }
-
-    //when at top of left band want sink rate of zero or one ?
-  }
-
-  boolean atTop(Vector3d p) {
-    return p.posZ >= liftUpto - (float) 0.01;
-  }
-
 }

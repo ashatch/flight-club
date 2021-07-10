@@ -7,9 +7,11 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.BACKGROUND_LAYER;
+import static org.flightclub.engine.RenderManager.BACKGROUND_LAYER;
 
 /*
  * a jet in the upper atmosphere - leaves a long trail
@@ -65,4 +67,3 @@ public class JetTrail extends FlyingDot {
     checkBounds();
   }
 }
-

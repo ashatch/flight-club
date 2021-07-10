@@ -9,9 +9,12 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.Graphics;
+import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
 
 /*
  * Three new methods added to object3d...
@@ -120,10 +123,10 @@ public class Object3dWithShadow extends Object3d {
   }
 
   @Override
-  public void draw(Graphics g, CameraMan cameraMan) {
+  public void render(RenderContext context) {
     // tmp - not doing z order yet
-    drawShadow(g, cameraMan);
-    super.draw(g, cameraMan);
+    drawShadow(context.graphics(), context.cameraMan());
+    super.render(context);
   }
 
   public static void clone(Object3dWithShadow from, Object3dWithShadow to) {

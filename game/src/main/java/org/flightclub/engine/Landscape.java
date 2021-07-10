@@ -9,9 +9,10 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.BACKGROUND_LAYER;
+import static org.flightclub.engine.RenderManager.BACKGROUND_LAYER;
 
 /*
  * Some hills, triggers and a road arranged onto tiles
@@ -109,7 +110,7 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x, y + hair, 0));
 
     Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
-    app.obj3dManager.add(o);
+    app.renderManager.add(o);
     o.addWire(wire, new Color(230, 230, 230), false, false);
 
     wire = new Vector<>();
@@ -126,7 +127,7 @@ public class Landscape implements CameraSubject {
     float atom = 2;
 
     Object3d o = new Object3d(BACKGROUND_LAYER);
-    app.obj3dManager.add(o);
+    app.renderManager.add(o);
     Vector<Vector3d> wire;
 
     for (int i = 0; i < MAX_TILES * TILE_WIDTH; i += atom * 1) {
@@ -155,7 +156,7 @@ public class Landscape implements CameraSubject {
     wire.addElement(new Vector3d(x2, y0, 0));
 
     Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
-    app.obj3dManager.add(o);
+    app.renderManager.add(o);
     o.addWire(wire, new Color(220, 220, 100), false, false);
 
     wire = new Vector<>();
@@ -173,10 +174,10 @@ public class Landscape implements CameraSubject {
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
 
-    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 2, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
     trigger = new ThermalTrigger(app, this.sky, x0, y0 + TILE_WIDTH + 2, 1, (float) 0.2, (float) 0.5);
@@ -192,22 +193,22 @@ public class Landscape implements CameraSubject {
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
 
-    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0, y0 + 3, 2, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
     trigger = new ThermalTrigger(app, this.sky, x0, y0 + 15, 1, 1, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, this.sky, x0 + 5, y0 + 5);
+    trigger = new ThermalTrigger(app, this.sky, x0 + 5, y0 + 5, 1, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
     trigger = new ThermalTrigger(app, this.sky, x0 + 5, y0 + 13, 2, (float) 0.5, (float) 0.5);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 5);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 5, 1, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 13);
+    trigger = new ThermalTrigger(app, this.sky, x0 - 5, y0 + 13, 1, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
     loadBackTriggers(tile);
@@ -222,10 +223,10 @@ public class Landscape implements CameraSubject {
     ThermalTrigger trigger;
     int dx = TILE_WIDTH / 2 + 3;
 
-    trigger = new ThermalTrigger(app, this.sky, x0 - dx, y0 + 3, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0 - dx, y0 + 3, 2, 1, 1);
     tiles[tile].triggers.addElement(trigger);
 
-    trigger = new ThermalTrigger(app, this.sky, x0 + dx, y0 + 15, 2);
+    trigger = new ThermalTrigger(app, this.sky, x0 + dx, y0 + 15, 2, 1, 1);
     tiles[tile].triggers.addElement(trigger);
   }
 
@@ -485,7 +486,7 @@ public class Landscape implements CameraSubject {
     }
 
     for (Hill hill : tiles[tileNum].hills) {
-      app.obj3dManager.remove(hill.object3d);
+      app.renderManager.remove(hill.object3d);
     }
 
     for (ThermalTrigger trigger : tiles[tileNum].triggers) {

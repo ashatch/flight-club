@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
 public record Font(String name, int style, int size) {
   /**

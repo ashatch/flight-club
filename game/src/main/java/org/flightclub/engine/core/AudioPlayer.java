@@ -5,7 +5,7 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
 public interface AudioPlayer {
   void play(String resourceName);

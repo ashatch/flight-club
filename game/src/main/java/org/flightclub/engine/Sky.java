@@ -33,11 +33,11 @@ public class Sky {
     clouds.removeElement(cloud);
   }
 
-  void setHigh() {
+  public void setHigh() {
     cloudBase = BASE_HIGH;
   }
 
-  void setLow() {
+  public void setLow() {
     cloudBase = BASE_LOW;
   }
 

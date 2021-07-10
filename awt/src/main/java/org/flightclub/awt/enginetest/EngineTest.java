@@ -13,11 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.awt.JavaxAudioPlayer;
-import org.flightclub.engine.GameEnvironment;
-import org.flightclub.engine.GameMode;
-import org.flightclub.engine.GameModelHolder;
+import org.flightclub.engine.core.GameEnvironment;
+import org.flightclub.engine.core.GameMode;
+import org.flightclub.engine.core.GameModelHolder;
+import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.math.IntPair;
-import org.flightclub.engine.Obj3dManager;
+import org.flightclub.engine.RenderManager;
 import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
@@ -35,7 +36,8 @@ public class EngineTest extends Frame {
     super(title);
 
     final XcGame app = new XcGame(
-        new Obj3dManager(),
+        new RenderManager(),
+        new EventManager(),
         new Sky(),
         new GameModelHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())

@@ -5,8 +5,9 @@
  * Dan Burton , Nov 2001
  */
 
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
+import org.flightclub.engine.core.AudioPlayer;
 import org.flightclub.engine.math.IntPair;
 
 public record GameEnvironment(

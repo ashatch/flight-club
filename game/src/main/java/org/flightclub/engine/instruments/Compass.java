@@ -7,14 +7,16 @@
 
 package org.flightclub.engine.instruments;
 
-import org.flightclub.engine.Color;
-import org.flightclub.engine.Font;
-import org.flightclub.engine.Graphics;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.Font;
+import org.flightclub.engine.core.Graphics;
+import org.flightclub.engine.core.RenderContext;
+import org.flightclub.engine.core.Renderable;
 
 /*
  * a simple compass
  */
-public class Compass {
+public class Compass implements Renderable {
   // head of arrow
   private final int[] hxs = {0, 2, -2};
   private final int[] hys = {5, 2, 2};
@@ -88,19 +90,6 @@ public class Compass {
     updateArrow();
   }
 
-  public void draw(final Graphics g) {
-    g.setColor(Color.LIGHT_GRAY);
-    g.drawLine(txsPrime[0], tysPrime[0], txsPrime[1], tysPrime[1]);
-
-    g.setFont(font);
-    g.setColor(Color.LIGHT_GRAY);
-    g.drawString("N", x - 3, y - theR * 2 - dy);
-    g.drawString("S", x - 2, y);
-
-    g.setColor(Color.GRAY);
-    g.fillPolygon(hxsPrime, hysPrime, hxsPrime.length);
-  }
-
   void updateArrow() {
     // rotate
     matrix[0][0] = vy;
@@ -120,4 +109,19 @@ public class Compass {
     }
   }
 
+  @Override
+  public void render(final RenderContext context) {
+    final Graphics graphics = context.graphics();
+
+    graphics.setColor(Color.LIGHT_GRAY);
+    graphics.drawLine(txsPrime[0], tysPrime[0], txsPrime[1], tysPrime[1]);
+
+    graphics.setFont(font);
+    graphics.setColor(Color.LIGHT_GRAY);
+    graphics.drawString("N", x - 3, y - theR * 2 - dy);
+    graphics.drawString("S", x - 2, y);
+
+    graphics.setColor(Color.GRAY);
+    graphics.fillPolygon(hxsPrime, hysPrime, hxsPrime.length);
+  }
 }

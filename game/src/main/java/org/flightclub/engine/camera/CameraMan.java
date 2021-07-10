@@ -13,9 +13,9 @@ package org.flightclub.engine.camera;
   - XCGame extension of above class
 */
 
-import org.flightclub.engine.Color;
-import org.flightclub.engine.GameMode;
-import org.flightclub.engine.GameModelHolder;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.GameMode;
+import org.flightclub.engine.core.GameModelHolder;
 import org.flightclub.engine.math.IntPair;
 import org.flightclub.engine.Landscape;
 import org.flightclub.engine.Tools3d;
@@ -25,7 +25,6 @@ public class CameraMan {
   public final Vector3d lightRay;
   private final GameModelHolder gameModeHolder;
   private final Landscape landscape;
-  public float zoom = 1;
 
   private float distance = 0;
   private float[][] matrix;
@@ -394,5 +393,3 @@ public class CameraMan {
     focus.posY += dy;
   }
 }
-
-

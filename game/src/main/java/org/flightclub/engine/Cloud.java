@@ -9,6 +9,9 @@ package org.flightclub.engine;
 
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
 
 public class Cloud implements CameraSubject, UpdatableGameObject {
@@ -53,7 +56,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     app = inApp;
     this.sky = sky;
     object3d = new Object3dWithShadow();
-    inApp.obj3dManager.add(object3d);
+    inApp.renderManager.add(object3d);
 
     for (int i = 0; i < 8; i++) {
       corners[i] = new Vector3d();
@@ -95,7 +98,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   }
 
   void destroyMe() {
-    app.obj3dManager.remove(object3d);
+    app.renderManager.remove(object3d);
     if (inForeGround) {
       this.sky.removeCloud(this);
     }
@@ -360,6 +363,4 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
 
     return lift;
   }
-
 }
-

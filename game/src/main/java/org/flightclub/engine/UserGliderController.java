@@ -7,6 +7,8 @@
 
 package org.flightclub.engine;
 
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.events.KeyEvent;
 import org.flightclub.engine.events.KeyEventHandler;
 import org.flightclub.engine.math.Vector3d;
@@ -85,4 +87,3 @@ public class UserGliderController implements KeyEventHandler, UpdatableGameObjec
     }
   }
 }
-

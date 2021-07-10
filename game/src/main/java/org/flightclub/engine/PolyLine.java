@@ -8,6 +8,8 @@
 package org.flightclub.engine;
 
 import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.math.Vector3d;
 
 public class PolyLine {

@@ -10,9 +10,11 @@ package org.flightclub.engine;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
 
 /*
  * a glider that sniffs out lift
@@ -388,4 +390,3 @@ public class Glider extends FlyingBody {
     super.setSpeed(POLAR[polarIndex][0] * SPEED);
   }
 }
-

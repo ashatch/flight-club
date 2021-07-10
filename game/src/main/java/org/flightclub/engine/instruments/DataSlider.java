@@ -6,15 +6,17 @@
  */
 package org.flightclub.engine.instruments;
 
-import org.flightclub.engine.Color;
-import org.flightclub.engine.Font;
-import org.flightclub.engine.Graphics;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.Font;
+import org.flightclub.engine.core.Graphics;
+import org.flightclub.engine.core.RenderContext;
+import org.flightclub.engine.core.Renderable;
 
 /*
  * a dot on a line - use for eg vario
  * minimal design - cf toshiba scan of fred
  */
-public class DataSlider {
+public class DataSlider implements Renderable {
   // pixel space for label at bottom
   static final int dx = 2;
   static final int dy = 10;
@@ -57,18 +59,21 @@ public class DataSlider {
     sliderValue = (int) (((displayValue - minValue) / (maxValue - minValue)) * size);
   }
 
-  public void draw(Graphics g) {
-    g.setColor(Color.LIGHT_GRAY);
-    g.drawLine(x - dx, y - size - dy, x + dx, y - size - dy);
-    g.drawLine(x - dx, y - dy, x + dx, y - dy);
-    g.drawLine(x, y - dy, x, y - size - dy);
+  @Override
+  public void render(final RenderContext context) {
+    final Graphics graphics = context.graphics();
+
+    graphics.setColor(Color.LIGHT_GRAY);
+    graphics.drawLine(x - dx, y - size - dy, x + dx, y - size - dy);
+    graphics.drawLine(x - dx, y - dy, x + dx, y - dy);
+    graphics.drawLine(x, y - dy, x, y - size - dy);
 
     if (label != null) {
-      g.setFont(font);
-      g.drawString(label, x - 10, y);
+      graphics.setFont(font);
+      graphics.drawString(label, x - 10, y);
     }
 
-    g.setColor(Color.GRAY);
-    g.fillCircle(x - 1, y - sliderValue - dy - 1, 3);
+    graphics.setColor(Color.GRAY);
+    graphics.fillCircle(x - 1, y - sliderValue - dy - 1, 3);
   }
 }

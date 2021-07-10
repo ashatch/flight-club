@@ -1,4 +1,4 @@
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
 public class GameModelHolder {
   private GameMode mode;

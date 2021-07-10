@@ -10,27 +10,38 @@ package org.flightclub.engine;
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.camera.CameraMode;
+import org.flightclub.engine.core.Font;
+import org.flightclub.engine.core.GameEnvironment;
+import org.flightclub.engine.core.GameMode;
+import org.flightclub.engine.core.GameModelHolder;
+import org.flightclub.engine.core.Graphics;
+import org.flightclub.engine.core.RenderContext;
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
+import org.flightclub.engine.keyboard.CameraControl;
 import org.flightclub.engine.events.EventManager;
-import org.flightclub.engine.events.KeyEvent;
-import org.flightclub.engine.events.KeyEventHandler;
+import org.flightclub.engine.keyboard.GameControl;
+import org.flightclub.engine.keyboard.SkyControl;
 import org.flightclub.engine.instruments.Compass;
 import org.flightclub.engine.instruments.DataSlider;
 import org.flightclub.engine.instruments.TextMessage;
 import org.flightclub.engine.instruments.Variometer;
 import org.flightclub.engine.math.Vector3d;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.flightclub.engine.Glider.regularNpcGlider;
 import static org.flightclub.engine.Glider.rigidNpcGlider;
 import static org.flightclub.engine.Glider.userGlider;
 
-public class XcGame implements KeyEventHandler, UpdatableGameObject {
+public class XcGame {
+  private static final Logger LOG = LoggerFactory.getLogger(XcGame.class);
+
   public static final int FRAME_RATE = 25;
   public static final float TIME_PER_FRAME = (float) (1.0 / FRAME_RATE) / 2;
 
-  private final Font font = new Font("SansSerif", Font.PLAIN, 10);
-
-  public final EventManager eventManager = new EventManager();
-  public final Obj3dManager obj3dManager;
+  public final EventManager eventManager;
+  public final RenderManager renderManager;
   public final CameraMan cameraMan;
 
   private float time = 0.0f;
@@ -49,8 +60,8 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   private final JetTrail jet2;
 
   private boolean fastForward = true;
-  private Compass compass = null;
-  private DataSlider slider = null;
+  private Compass compass;
+  private DataSlider slider;
   private TextMessage textMessage;
   private final Variometer vario;
 
@@ -59,21 +70,22 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   public long last = 0;
   boolean paused = false;
 
+  private RenderContext renderContext;
 
   public XcGame(
-      final Obj3dManager obj3dManager,
+      final RenderManager renderManager,
+      final EventManager eventManager,
       final Sky sky,
       final GameModelHolder gameModelHolder,
       final GameEnvironment envGameEnvironment
   ) {
-    this.obj3dManager = obj3dManager;
+    this.eventManager = eventManager;
+    this.renderManager = renderManager;
     this.envGameEnvironment = envGameEnvironment;
+
     this.sky = sky;
     landscape = new Landscape(this, this.sky);
     cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
-
-    eventManager.subscribe(this);
-    addGameObject(this);
 
     this.userGlider = userGlider(this, sky);
     userGlider.landed();
@@ -82,8 +94,12 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     this.eventManager.subscribe(userGliderController);
     cameraMan.subject1 = userGlider;
 
-    textMessage = new TextMessage("Demo mode");
+    textMessage = new TextMessage("Demo mode", new Font("SansSerif", Font.PLAIN, 10));
+    renderManager.addRenderable(textMessage);
+
     compass = new Compass(25, envGameEnvironment.windowSize().x() - 30, envGameEnvironment.windowSize().y() - 35);
+    renderManager.addRenderable(compass);
+
     float vmax = -2 * Glider.SINK_RATE;
     slider = new DataSlider(
         "vario",
@@ -93,6 +109,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
         envGameEnvironment.windowSize().x() - 60,
         envGameEnvironment.windowSize().y() - 35
     );
+    renderManager.addRenderable(slider);
 
     vario = new Variometer(this, userGlider);
 
@@ -125,6 +142,10 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     cameraMan.setMode(CameraMode.GAGGLE);
     gameModelHolder.setMode(GameMode.DEMO);
     toggleFastForward();
+
+    this.eventManager.subscribe(new CameraControl(cameraMan));
+    this.eventManager.subscribe(new SkyControl(sky));
+    this.eventManager.subscribe(new GameControl(this));
   }
 
   public TextMessage getTextMessage() {
@@ -143,8 +164,9 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     time = 0;
   }
 
-  void togglePause() {
-    paused = !paused;
+  public void togglePause() {
+    this.paused = !paused;
+    this.renderContext.setPaused(this.paused);
   }
 
   public void gameLoop() {
@@ -153,24 +175,44 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
       float delta = (now - last) / 1000.0f;
       last = now;
 
-      for (int i = 0; i < gameObjects.size(); i++) {
-        /* hack - when paused still tick the modelviewer so
-            we can change our POV and unpause */
-        if (i == 0 || !paused) {
-          UpdatableGameObject c = gameObjects.elementAt(i);
-          c.update(new UpdateContext(delta, this.timeMultiplier, this.obj3dManager));
-        }
-      }
-
-      long timeLeft = sleepTime + now - System.currentTimeMillis();
-      if (timeLeft > 0) {
-        try {
-          Thread.sleep(timeLeft);
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
+      updateGameState(delta);
+      frameSleep(now);
     } while (true);
+  }
+
+  public void render() {
+    if (this.renderContext == null) {
+      LOG.warn("Waiting for graphics context");
+      return;
+    }
+
+    cameraMan.setMatrix();
+    renderManager.render(this.renderContext);
+  }
+
+  private void updateGameState(float delta) {
+    final UpdateContext context = new UpdateContext(delta, this.timeMultiplier, this.renderManager);
+
+    this.update(context);
+
+    if (paused) {
+      return;
+    }
+
+    for (int i = 0; i < this.gameObjects.size(); i++) {
+      this.gameObjects.elementAt(i).update(context);
+    }
+  }
+
+  private void frameSleep(long now) {
+    long timeLeft = sleepTime + now - System.currentTimeMillis();
+    if (timeLeft > 0) {
+      try {
+        Thread.sleep(timeLeft);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   public void addGameObject(UpdatableGameObject observer) {
@@ -181,7 +223,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     gameObjects.removeElement(observer);
   }
 
-  void startPlay() {
+  public void startPlay() {
     gameMode = GameMode.USER;
     landscape.removeAll();
 
@@ -208,8 +250,6 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     }
   }
 
-
-  @Override
   public void update(final UpdateContext context) {
     time += context.deltaTime() * timeMultiplier / 2.0f;
 
@@ -236,7 +276,7 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
   /*
    * how much model time passes each second of game play
    */
-  void toggleFastForward() {
+  public void toggleFastForward() {
     fastForward = !fastForward;
     if (fastForward) {
       //2.5 minutes per second
@@ -248,102 +288,16 @@ public class XcGame implements KeyEventHandler, UpdatableGameObject {
     timePerFrame = TIME_PER_FRAME * timeMultiplier;
   }
 
-  @Override
-  public void keyPressed(KeyEvent e) {
-    int key = e.code();
-    switch (key) {
-      case KeyEvent.VK_P:
-        togglePause();
-        break;
-
-      case KeyEvent.VK_Y:
-        startPlay();
-        break;
-
-      case KeyEvent.VK_Q:
-        toggleFastForward();
-        break;
-
-      case KeyEvent.VK_H:
-        sky.setHigh();
-        break;
-
-      case KeyEvent.VK_G:
-        sky.setLow();
-        break;
-
-      case KeyEvent.VK_K:
-        cameraMan.move(-CameraMan.CAMERA_MOVEMENT_DELTA, 0);
-        return;
-      case KeyEvent.VK_L:
-        cameraMan.move(CameraMan.CAMERA_MOVEMENT_DELTA, 0);
-        return;
-      case KeyEvent.VK_M:
-        cameraMan.move(0, CameraMan.CAMERA_MOVEMENT_DELTA);
-        return;
-      case KeyEvent.VK_N:
-        cameraMan.move(0, -CameraMan.CAMERA_MOVEMENT_DELTA);
-        return;
-
-      case KeyEvent.VK_1:
-        cameraMan.setMode(CameraMode.SELF);
-        return;
-      case KeyEvent.VK_2:
-        cameraMan.setMode(CameraMode.GAGGLE);
-        return;
-      case KeyEvent.VK_3:
-        cameraMan.setMode(CameraMode.PLAN);
-        return;
-      case KeyEvent.VK_4:
-        cameraMan.setMode(CameraMode.TILE);
-        return;
-
-      default:
-    }
-  }
-
-  @Override
-  public void keyReleased(final KeyEvent e) {
-  }
-
-  public void draw(final Graphics g, final int width, final int height) {
-    //TODO optimize - build vector of objs in FOV, need only draw these
-    cameraMan.setMatrix();
-
-    obj3dManager.sort()
-        .forEach(layer ->
-            layer.forEach(obj -> {
-              obj.film(cameraMan);
-              obj.draw(g, cameraMan);
-            })
-        );
-
-    renderTextMessage(g, height);
-    renderCompass(g);
-    renderSlider(g);
-  }
-
-  private void renderCompass(final Graphics g) {
-    if (compass != null) {
-      compass.draw(g);
-    }
-  }
-
-  private void renderSlider(final Graphics g) {
-    if (slider != null) {
-      slider.draw(g);
-    }
-  }
-
-  private void renderTextMessage(final Graphics g, final int height) {
-    if (textMessage != null) {
-      g.setFont(font);
-      g.setColor(Color.LIGHT_GRAY);
-      g.drawString(textMessage.getMessage(paused), 15, height - 15);
-    }
-  }
-
   public float getTime() {
     return time;
+  }
+
+  public void setGameGraphics(Graphics gameGraphics) {
+    this.renderContext = new RenderContext(
+        gameGraphics,
+        this.cameraMan,
+        this.envGameEnvironment.windowSize(),
+        paused
+    );
   }
 }

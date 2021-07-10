@@ -7,7 +7,6 @@
 
 package org.flightclub.awt;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -16,9 +15,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.JPanel;
 import org.flightclub.engine.events.MouseTracker;
-import org.flightclub.engine.UpdatableGameObject;
-import org.flightclub.engine.UpdateContext;
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import static org.flightclub.awt.AwtKeyEventMapper.toEngineKeyEvent;
  * This class is based on the framework outlined in a book called
  * 'Java Games Programming' by Niel Bartlett
  */
-public class ModelCanvas extends Canvas implements UpdatableGameObject {
+public class ModelCanvas extends JPanel implements UpdatableGameObject {
   private final Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
 
   private final Color backColor = Color.white;
@@ -40,7 +40,7 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
   protected final XcGame game;
   private Image imgBuffer;
   private Graphics graphicsBuffer;
-  private org.flightclub.engine.Graphics gameGraphics;
+  private org.flightclub.engine.core.Graphics gameGraphics;
 
   public ModelCanvas(final XcGame game) {
     this.game = game;
@@ -128,6 +128,7 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
 
     if (this.gameGraphics == null) {
       this.gameGraphics = new AwtGraphics(this.graphicsBuffer);
+      this.game.setGameGraphics(gameGraphics);
     }
 
     updateImgBuffer(this.graphicsBuffer);
@@ -143,6 +144,6 @@ public class ModelCanvas extends Canvas implements UpdatableGameObject {
     g.setColor(backColor);
     g.fillRect(0, 0, getWidth(), getHeight());
 
-    this.game.draw(gameGraphics, getWidth(), getHeight());
+    this.game.render();
   }
 }

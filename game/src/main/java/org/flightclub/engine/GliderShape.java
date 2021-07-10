@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 
 public class GliderShape extends Object3dWithShadow {
@@ -70,4 +71,3 @@ public class GliderShape extends Object3dWithShadow {
     scaleBy(HEIGHT);
   }
 }
-

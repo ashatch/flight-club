@@ -8,6 +8,7 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.core.Color;
 import org.flightclub.engine.math.Vector3d;
 
 /*
@@ -21,7 +22,7 @@ public class Tail extends Object3d {
 
   public Tail(XcGame theApp, int length, Color color, int layer) {
     super(layer);
-    theApp.obj3dManager.add(this);
+    theApp.renderManager.add(this);
     this.length = length;
     this.color = color;
   }

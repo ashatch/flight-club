@@ -8,6 +8,8 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
 
 public class ThermalTrigger implements UpdatableGameObject {
   final XcGame app;
@@ -34,14 +36,6 @@ public class ThermalTrigger implements UpdatableGameObject {
   /* life span of cloud in seconds */
   static final int CLOUD_DURATION = 10;
   static final int MAX_WAIT = 7;
-
-  public ThermalTrigger(XcGame theApp, Sky sky, int inX, int inY) {
-    this(theApp, sky, inX, inY, 1, 1, 1);
-  }
-
-  public ThermalTrigger(XcGame theApp, Sky sky, int inX, int inY, int inCloudStrenth) {
-    this(theApp, sky, inX, inY, inCloudStrenth, 1, 1);
-  }
 
   public ThermalTrigger(
       XcGame theApp,

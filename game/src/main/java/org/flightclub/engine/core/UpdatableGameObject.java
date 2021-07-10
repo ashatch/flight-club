@@ -1,4 +1,4 @@
-package org.flightclub.engine;
+package org.flightclub.engine.core;
 
 public interface UpdatableGameObject {
   void update(UpdateContext context);

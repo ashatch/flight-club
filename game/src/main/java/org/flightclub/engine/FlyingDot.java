@@ -16,9 +16,12 @@ package org.flightclub.engine;
 */
 
 import org.flightclub.engine.camera.CameraSubject;
+import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.UpdatableGameObject;
+import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.math.Vector3d;
 
-import static org.flightclub.engine.Obj3dManager.DEFAULT_LAYER;
+import static org.flightclub.engine.RenderManager.DEFAULT_LAYER;
 
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
