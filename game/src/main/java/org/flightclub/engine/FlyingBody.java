@@ -16,11 +16,20 @@ public class FlyingBody extends FlyingDot {
   private Object3dWithShadow body1;
   protected float bodyHeight;
 
-  public FlyingBody(XcGame theApp, Sky sky, float speed, float inTurnRadius, boolean isUser) {
+  public FlyingBody(
+      final XcGame theApp,
+      final Sky sky,
+      final float speed,
+      final float inTurnRadius,
+      final boolean isUser
+  ) {
     super(theApp, sky, speed, inTurnRadius, isUser);
   }
 
-  public void init(Object3dWithShadow inBody, Vector3d inP) {
+  public void init(
+      final Object3dWithShadow inBody,
+      final Vector3d inP
+  ) {
     body0 = inBody;    //the base object should not be registered
     body1 = new Object3dWithShadow();
     app.renderManager.add(body1);

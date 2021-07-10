@@ -66,7 +66,12 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     }
   }
 
-  public FlyingDot(XcGame theApp, final Sky sky, float inSpeed, float inTurnRadius) {
+  public FlyingDot(
+      final XcGame theApp,
+      final Sky sky,
+      final float inSpeed,
+      final float inTurnRadius
+  ) {
     app = theApp;
     this.sky = sky;
     app.addGameObject(this);
@@ -77,7 +82,13 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     myTurnRadius = inTurnRadius;
   }
 
-  public FlyingDot(XcGame theApp, final Sky sky, float inSpeed, float inTurnRadius, boolean inIsUser) {
+  public FlyingDot(
+      final XcGame theApp,
+      final Sky sky,
+      final float inSpeed,
+      final float inTurnRadius,
+      final boolean inIsUser
+  ) {
     this(theApp, sky, inSpeed, inTurnRadius);
     isUser = inIsUser;
   }
@@ -160,7 +171,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     axisX.set(dx).add(dz);
   }
 
-  void roll(float dir) {
+  void roll(final float dir) {
     if (dir != 0) {
       //turning
       roll += dir;
@@ -205,7 +216,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
    * 1 - my turn radius
    * 2 - halve that etc.
    */
-  void makeTurn(float dir) {
+  void makeTurn(final float dir) {
     vector.posZ = 0;    //work in xy plane
     Vector3d w = new Vector3d(0, 0, 1).cross(vector).scaleBy(-dir * ds / myTurnRadius);
     vector.add(w).scaleToLength(ds); //ds is in xy only

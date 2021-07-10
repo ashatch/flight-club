@@ -192,7 +192,7 @@ public class XcGame {
     renderManager.render(this.renderContext);
   }
 
-  private void updateGameState(float delta) {
+  private void updateGameState(final float delta) {
     final UpdateContext context = new UpdateContext(delta, this.timeMultiplier, this.renderManager);
 
     this.update(context);
@@ -206,7 +206,7 @@ public class XcGame {
     }
   }
 
-  private void frameSleep(long now) {
+  private void frameSleep(final long now) {
     long timeLeft = sleepTime + now - System.currentTimeMillis();
     if (timeLeft > 0) {
       try {
@@ -217,11 +217,11 @@ public class XcGame {
     }
   }
 
-  public void addGameObject(UpdatableGameObject observer) {
+  public void addGameObject(final UpdatableGameObject observer) {
     gameObjects.addElement(observer);
   }
 
-  public void removeGameObject(UpdatableGameObject observer) {
+  public void removeGameObject(final UpdatableGameObject observer) {
     gameObjects.removeElement(observer);
   }
 
@@ -263,7 +263,7 @@ public class XcGame {
     vario.tick(context);
   }
 
-  private void updateSlider(float delta) {
+  private void updateSlider(final float delta) {
     if (slider != null) {
       slider.setValue(2.0f * userGlider.vector.posZ / (delta * timeMultiplier));
     }
@@ -294,7 +294,7 @@ public class XcGame {
     return time;
   }
 
-  public void setGameGraphics(Graphics gameGraphics) {
+  public void setGameGraphics(final Graphics gameGraphics) {
     this.renderContext = new RenderContext(
         gameGraphics,
         this.cameraMan,

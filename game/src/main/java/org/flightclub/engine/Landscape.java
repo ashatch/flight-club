@@ -29,7 +29,10 @@ public class Landscape implements CameraSubject {
   public static final int TILE_WIDTH = 20;
   public static final int MAX_TILES = 10;
 
-  public Landscape(XcGame theApp, Sky sky) {
+  public Landscape(
+      final XcGame theApp,
+      final Sky sky
+  ) {
     app = theApp;
     this.sky = sky;
     tiles = new Tile[MAX_TILES];
@@ -46,7 +49,7 @@ public class Landscape implements CameraSubject {
   /*
    * load a chunk of landscape mostly thermal triggers, some tiles have hills
    */
-  void loadTile(int t) {
+  void loadTile(final int t) {
     if (tiles[t].loaded) {
       return;
     }
@@ -82,22 +85,14 @@ public class Landscape implements CameraSubject {
     tiles[t].loaded = true;
   }
 
-  void addFrame(int tile, int x) {
-    //Vector wire;
-
-    //int y0 = tile * TILE_WIDTH;
-    //int x0 = - TILE_WIDTH/2 + x * TILE_WIDTH;
-
-    //two cross hairs
-    //crossHair(x0, y0);
-    //crossHair(x0 + TILE_WIDTH, y0);
-  }
-
   /*
    * add a cross hair (show your working + LED !)
    * - use for tile corners and triggers
    */
-  static void crossHair(float x, float y) {
+  static void crossHair(
+      final float x,
+      final float y
+  ) {
     float hair = 1;
 
     Vector<Vector3d> wire;
@@ -164,8 +159,7 @@ public class Landscape implements CameraSubject {
   /*
    * one cloud before goal line and one after
    */
-  void loadFinalTile(int tile) {
-    addFrame(tile, 0);
+  void loadFinalTile(final int tile) {
     ThermalTrigger trigger;
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
@@ -183,8 +177,7 @@ public class Landscape implements CameraSubject {
   /*
    * bruce's hexagon of thermal triggers
    */
-  void loadFlatLand(int tile) {
-    addFrame(tile, 0);
+  void loadFlatLand(final int tile) {
     ThermalTrigger trigger;
     int y0 = tile * TILE_WIDTH;
     int x0 = 0;
@@ -213,7 +206,7 @@ public class Landscape implements CameraSubject {
   /*
    * load some cloud sources off track just for looks
    */
-  void loadBackTriggers(int tile) {
+  void loadBackTriggers(final int tile) {
     int y0 = tile * TILE_WIDTH;
     int x0 = (int) Tools3d.rnd(2, -2);
     ThermalTrigger trigger;
@@ -226,12 +219,10 @@ public class Landscape implements CameraSubject {
     tiles[tile].triggers.addElement(trigger);
   }
 
-  void loadHill_1(int tile) {
+  void loadHill_1(final int tile) {
 
     int y0 = tile * TILE_WIDTH;
     Hill hill;
-
-    addFrame(tile, 0);
 
     hill = new Hill(
         app,
@@ -278,7 +269,7 @@ public class Landscape implements CameraSubject {
     loadBackTriggers(tile);
   }
 
-  void loadHill_2(int tile) {
+  void loadHill_2(final int tile) {
 
     int y0 = tile * TILE_WIDTH;
     Hill hill;
@@ -330,7 +321,7 @@ public class Landscape implements CameraSubject {
   /*
    * one trigger with short cycle
    */
-  void loadStorm(int tile) {
+  void loadStorm(final int tile) {
     ThermalTrigger trigger;
     int y0 = tile * TILE_WIDTH;
 
@@ -343,7 +334,7 @@ public class Landscape implements CameraSubject {
    * 1d - no triggers - just tumble weed !
    * well, just one slow one
    */
-  void loadBlueHole(int tile) {
+  void loadBlueHole(final int tile) {
     ThermalTrigger trigger;
     int y0 = tile * TILE_WIDTH;
 
@@ -351,7 +342,7 @@ public class Landscape implements CameraSubject {
     tiles[tile].triggers.addElement(trigger);
   }
 
-  void loadMountain_1(int tile) {
+  void loadMountain_1(final int tile) {
 
     int y0 = tile * TILE_WIDTH;
     Hill hill;
@@ -402,7 +393,7 @@ public class Landscape implements CameraSubject {
 
   }
 
-  void loadMountain_2(int tile) {
+  void loadMountain_2(final int tile) {
 
     int y0 = tile * TILE_WIDTH;
     Hill hill;
@@ -455,7 +446,7 @@ public class Landscape implements CameraSubject {
    * and the next tile downwind
    * unload the upwind tile
    */
-  public void loadTilesAround(Vector3d p) {
+  public void loadTilesAround(final Vector3d p) {
     currentTile = getTile(p);
     if (currentTile < MAX_TILES) {
       loadTile(currentTile);
@@ -468,15 +459,15 @@ public class Landscape implements CameraSubject {
     }
   }
 
-  public boolean reachedGoal(Vector3d p) {
+  public boolean reachedGoal(final Vector3d p) {
     return p.posY >= MAX_TILES * TILE_WIDTH;
   }
 
-  void removeTile(int tileNum) {
+  void removeTile(final int tileNum) {
     removeTile(tileNum, false);
   }
 
-  void removeTile(int tileNum, boolean really) {
+  void removeTile(final int tileNum, final boolean really) {
     if (!tiles[tileNum].loaded) {
       return;
     }
@@ -505,7 +496,7 @@ public class Landscape implements CameraSubject {
   /*
    * return first hill downwind (+y) of p within glide
    */
-  Hill nextHill(Vector3d p) {
+  Hill nextHill(final Vector3d p) {
     int tile = getTile(p);
     if (!tiles[tile].loaded) {
       return null;
@@ -541,7 +532,7 @@ public class Landscape implements CameraSubject {
   /*
    * which tile does this point fall in
    */
-  int getTile(Vector3d p) {
+  int getTile(final Vector3d p) {
     for (int i = 0; i < MAX_TILES; i++) {
       if ((i + 1) * TILE_WIDTH > p.posY)  {
         return i;
@@ -553,7 +544,7 @@ public class Landscape implements CameraSubject {
   /*
    * find local hill to point, if any
    */
-  public Hill getHillAt(Vector3d p) {
+  public Hill getHillAt(final Vector3d p) {
     int tile = getTile(p);
     if (!tiles[tile].loaded) {
       return null;
@@ -568,7 +559,7 @@ public class Landscape implements CameraSubject {
     return null;
   }
 
-  public float getHeight(float x, float y) {
+  public float getHeight(final float x, final float y) {
     Hill hill = getHillAt(new Vector3d(x, y, 0));
     return (hill == null) ? 0 : hill.getHeight(x, y);
   }

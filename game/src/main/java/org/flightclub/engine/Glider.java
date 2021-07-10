@@ -315,7 +315,10 @@ public class Glider extends FlyingBody {
    * return number of ticks till we get there
    * nb. this assumes stationary target and no wind
    */
-  int whenArrive(float x, float y) {
+  int whenArrive(
+      final float x,
+      final float y
+  ) {
     float d = (vectorP.posX - x) * (vectorP.posX - x) + (vectorP.posY - y) * (vectorP.posY - y);
     d = (float) Math.sqrt(d);
     return (int) (d / ds);
@@ -356,7 +359,7 @@ public class Glider extends FlyingBody {
         vectorP.posZ + (float) 0.3); //(float)0.8
   }
 
-  void takeOff(Vector3d inP) {
+  void takeOff(final Vector3d inP) {
     /*
       hack ? should be in glider user ?
     */
@@ -387,7 +390,7 @@ public class Glider extends FlyingBody {
    * bit of a mess as this class knows about sink rate
    * and super class manages horizontal speed
    */
-  public void setPolarIndex(int i) {
+  public void setPolarIndex(final int i) {
     polarIndex = i;
     super.setSpeed(POLAR[polarIndex][0] * SPEED);
   }

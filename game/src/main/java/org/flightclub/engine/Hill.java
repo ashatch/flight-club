@@ -91,8 +91,11 @@ public class Hill implements CameraSubject {
   /*
    * default hill (curvy spine, curvy face)
    */
-  public Hill(XcGame theApp, int inX, int inY) {
-
+  public Hill(
+      final XcGame theApp,
+      final int inX,
+      final int inY
+  ) {
     this(theApp, inX, inY, Orientation.X, 2, 1, (float) 0.5, FACE_CURVY);
   }
 
@@ -126,7 +129,7 @@ public class Hill implements CameraSubject {
   /*
    * add a tile at x0 +i, y0 + j if OR_X else swap i and j
    */
-  void addTile(float i, float j) {
+  void addTile(final float i, final float j) {
     float x1;
     float x2;
     float y1;
@@ -210,7 +213,7 @@ public class Hill implements CameraSubject {
     }
   }
 
-  boolean contains(float inX, float inY) {
+  boolean contains(final float inX, final float inY) {
     float frontFace;
     if (face == FACE_CURVY) {
       frontFace = 2;
@@ -237,7 +240,7 @@ public class Hill implements CameraSubject {
    * then, scale f1 by f2, h at this point on spine
    *
    */
-  private float getZ(float i, float j) {
+  private float getZ(final float i, final float j) {
     float f1 = 1; //tmp
     float f2 = spineHeight(i);
 
@@ -261,7 +264,7 @@ public class Hill implements CameraSubject {
   /*
    * convert to local coords then call getZ
    */
-  public float getHeight(float x, float y) {
+  public float getHeight(final float x, final float y) {
     float i;
     float j;
     if (orientation == Orientation.X) {
@@ -277,7 +280,7 @@ public class Hill implements CameraSubject {
   /*
    * spine h a distance i along it
    */
-  float spineHeight(float i) {
+  float spineHeight(final float i) {
     if (i < 0 || i > spineLength + 2) {
       return 0;
     }
@@ -325,7 +328,7 @@ public class Hill implements CameraSubject {
    * lift twice sink rate close to hill, falling to zero
    * as we get further away
    */
-  float getLift(Vector3d p) {
+  float getLift(final Vector3d p) {
     float lmax = -3 * Glider.SINK_RATE;
     float dh = (float) 0.1;
     //if (p.z > maxH + (float) 0.2) return 0;

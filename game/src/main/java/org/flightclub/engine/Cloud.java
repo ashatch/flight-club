@@ -170,7 +170,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
 
   }
 
-  public boolean isUnder(Vector3d inP) {
+  public boolean isUnder(final Vector3d inP) {
     // only compute lift if within bounding box
 
     //if (age > t_nose + t_mature) return false;
@@ -233,7 +233,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     return fn * maxRadius;
   }
 
-  float getRadiusBase(float radius) {
+  float getRadiusBase(final float radius) {
     // make base decay quicker than top of cloud
     if (age > mature + nose) {
       float fn = (float) Math.sqrt(1 - (double) (age - mature - nose) / tail);
@@ -296,10 +296,15 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     }
   }
 
-  void sphToXxy(float r, double a, double b, Vector3d v) {
+  void sphToXxy(
+      final float r,
+      final double _a,
+      final double _b,
+      final Vector3d v
+  ) {
     //convert degrees to radians, a - theta, b -landa
-    a *= (Math.PI / 180);
-    b *= (Math.PI / 180);
+    double a = _a * (Math.PI / 180);
+    double b = _b * (Math.PI / 180);
 
     v.posX = (float) (r * Math.cos(b) * Math.cos(a));
     v.posY = (float) (r * Math.cos(b) * Math.sin(a));
@@ -336,12 +341,12 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     return projection.posX;
   }
 
-  float getY(float z) {
+  float getY(final float z) {
     float d = this.sky.getCloudBase() - z;
     return projection.posY - d * windSlope;
   }
 
-  float getLift(Vector3d inP) {
+  float getLift(final Vector3d inP) {
     // lift is a function of r (dist from thermal center)
 
     float dx = projection.posX - inP.posX;

@@ -40,7 +40,10 @@ public class MovementManager {
   public static final int STRAIGHT = 0;
   public static final int RIGHT = 1;
 
-  public MovementManager(XcGame theApp, FlyingDot theFlyingDot) {
+  public MovementManager(
+      final XcGame theApp,
+      final FlyingDot theFlyingDot
+  ) {
     app = theApp;
     flyingDot = theFlyingDot;
   }
@@ -95,24 +98,24 @@ public class MovementManager {
     return 0;
   }
 
-  void setCircuit(Circuit inCircuit) {
+  void setCircuit(final Circuit inCircuit) {
     clearControllers();
     circuit = inCircuit;
     joinedCircuit = false;
     circuitPoint = circuit.next();
   }
 
-  public void setTargetPoint(Vector3d t) {
+  public void setTargetPoint(final Vector3d t) {
     clearControllers();
     targetPoint = new Vector3d(t.posX, t.posY, t.posZ);
   }
 
-  void setCloud(Cloud c) {
+  void setCloud(final Cloud c) {
     clearControllers();
     cloud = c;
   }
 
-  public void setNextMove(int dir) {
+  public void setNextMove(final int dir) {
     // user pressed key to turn
     // clear all controllers
     clearControllers();
@@ -149,7 +152,7 @@ public class MovementManager {
     return headTowards(x, y);
   }
 
-  private float headTowards(float x, float y) {
+  private float headTowards(final float x, final float y) {
     /*
      * use cross product to see if we need
      * to turn left or right. return true if
@@ -222,7 +225,7 @@ public class MovementManager {
     return circleAround(circlePoint.posX, circlePoint.posY);
   }
 
-  private float circleAround(float x, float y) {
+  private float circleAround(final float x, final float y) {
     /*
      * use cross product of v and r
      */

@@ -35,13 +35,13 @@ public class ThermalTrigger implements UpdatableGameObject {
   static final int MAX_WAIT = 7;
 
   public ThermalTrigger(
-      XcGame theApp,
-      Sky sky,
-      int inX,
-      int inY,
-      int inCloudStrength,
-      float inCycleLength,
-      float inCloudDuration
+      final XcGame theApp,
+      final Sky sky,
+      final int inX,
+      final int inY,
+      final int inCloudStrength,
+      final float inCycleLength,
+      final float inCloudDuration
   ) {
     app = theApp;
     this.sky = sky;
@@ -111,7 +111,7 @@ public class ThermalTrigger implements UpdatableGameObject {
     }
   }
 
-  void destroyMe(boolean really) {
+  void destroyMe(final boolean really) {
     destroyMe();
 
     if (!really) {

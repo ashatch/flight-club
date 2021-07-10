@@ -27,7 +27,12 @@ public class JetTrail extends FlyingDot {
   public static final int TAIL_LENGTH = 240;
   public static final Color TAIL_COLOR = new Color(200, 200, 200);
 
-  public JetTrail(XcGame app, Sky sky, float x, float y) {
+  public JetTrail(
+      final XcGame app,
+      final Sky sky,
+      final float x,
+      final float y
+  ) {
     //set flag so camera will follow my cuts when in mode 1
     //(see glider.gotoNextLiftSource)
     super(app, sky, SPEED, TURN_RADIUS);

@@ -29,7 +29,7 @@ public class Sky {
     clouds.addElement(cloud);
   }
 
-  void removeCloud(Cloud cloud) {
+  void removeCloud(final Cloud cloud) {
     clouds.removeElement(cloud);
   }
 
@@ -44,7 +44,7 @@ public class Sky {
   /*
    * return first cloud downwind of p within glide
    */
-  Cloud nextCloud(Vector3d p) {
+  Cloud nextCloud(final Vector3d p) {
     int j = -1;
     float dyMin = RANGE * p.posZ;
 
@@ -72,7 +72,7 @@ public class Sky {
    * useful when gaggle get ahead of user
    * and reach end of a tile
    */
-  Cloud prevCloud(Vector3d p) {
+  Cloud prevCloud(final Vector3d p) {
     int j = -1;
     float dyMin = RANGE * p.posZ;
 
@@ -95,7 +95,7 @@ public class Sky {
     return null;
   }
 
-  public Cloud getCloudAt(Vector3d p) {
+  public Cloud getCloudAt(final Vector3d p) {
     for (Cloud cloud : clouds) {
       if (cloud.isUnder(p)) {
         return cloud;

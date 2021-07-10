@@ -45,7 +45,7 @@ public class Circuit {
     }
   }
 
-  void add(Vector3d inP) {
+  void add(final Vector3d inP) {
     // hills build circuits using their local coords
     points[numPoints] = inP;
     numPoints++;
