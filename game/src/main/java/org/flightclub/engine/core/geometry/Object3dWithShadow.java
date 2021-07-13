@@ -13,6 +13,7 @@ import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
+import org.flightclub.engine.core.ShadowTarget;
 import org.flightclub.engine.math.Vector3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,7 @@ public class Object3dWithShadow extends Object3d {
     }
   }
 
-  public void updateShadow(Landscape landscape) {
+  public void updateShadow(ShadowTarget landscape) {
     /*
     keep shadow under object.
     the owner/creator of this object should

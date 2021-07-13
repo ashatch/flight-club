@@ -1,17 +1,22 @@
 package org.flightclub.awt.enginetest;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 import org.flightclub.engine.GameLoopTarget;
 import org.flightclub.engine.GameRenderer;
+import org.flightclub.engine.MouseOrbitCamera;
 import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.GameEnvironment;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.core.RenderManager;
+import org.flightclub.engine.core.ShadowTarget;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.events.EventManager;
+import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.models.GliderShape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +36,8 @@ public class TestGame implements GameLoopTarget, GameRenderer {
       final Camera camera,
       final RenderManager renderManager,
       final EventManager eventManager,
-      final GameEnvironment gameEnvironment
+      final GameEnvironment gameEnvironment,
+      final MouseTracker mouseTracker
   ) {
     this.camera = camera;
     this.renderManager = renderManager;
@@ -39,10 +45,12 @@ public class TestGame implements GameLoopTarget, GameRenderer {
     this.gameEnvironment = gameEnvironment;
 
     final GliderShape someGlider = new GliderShape(Color.BLUE);
-
     this.renderManager.add(someGlider);
     camera.setEye(0, -1, -1);
     camera.setFocus(0, 0, 0);
+    someGlider.updateShadow((posX, posY) -> 1.2f);
+
+    this.addGameObject(new MouseOrbitCamera(this.camera, mouseTracker));
   }
 
   public void addGameObject(final UpdatableGameObject gameObject) {

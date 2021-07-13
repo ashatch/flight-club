@@ -39,15 +39,17 @@ public class EngineTest extends Frame {
     final EventManager eventManager = new EventManager();
     final RenderManager renderManager = new RenderManager();
     final GameEnvironment gameEnvironment = new GameEnvironment(windowSize, new JavaxAudioPlayer());
+    final MouseTracker mouseTracker = new MouseTracker();
 
     final TestGame app = new TestGame(
         camera,
         renderManager,
         eventManager,
-        gameEnvironment
+        gameEnvironment,
+        mouseTracker
     );
 
-    final ModelCanvas modelCanvas = new ModelCanvas(eventManager, new MouseTracker(), app);
+    final ModelCanvas modelCanvas = new ModelCanvas(eventManager, mouseTracker, app);
     add(modelCanvas, "Center");
     setSize(windowSize.x(), windowSize.y());
     setVisible(true);

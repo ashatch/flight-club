@@ -10,6 +10,7 @@ package org.flightclub.engine;
 import java.util.Vector;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
+import org.flightclub.engine.core.ShadowTarget;
 import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.core.geometry.Tools3d;
 import org.flightclub.engine.math.Vector3d;
@@ -19,7 +20,7 @@ import static org.flightclub.engine.core.RenderManager.BACKGROUND_LAYER;
 /*
  * Some hills, triggers and a road arranged onto tiles
  */
-public class Landscape implements CameraSubject {
+public class Landscape implements CameraSubject, ShadowTarget {
   // hills in order heading downwind
   final Tile[] tiles;
   static XcGame app;
@@ -559,6 +560,7 @@ public class Landscape implements CameraSubject {
     return null;
   }
 
+  @Override
   public float getHeight(final float x, final float y) {
     Hill hill = getHillAt(new Vector3d(x, y, 0));
     return (hill == null) ? 0 : hill.getHeight(x, y);
