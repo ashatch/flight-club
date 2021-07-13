@@ -20,7 +20,7 @@ import org.flightclub.engine.core.GameMode;
 import org.flightclub.engine.core.GameModeHolder;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.MouseTracker;
-import org.flightclub.engine.math.IntPair;
+import org.flightclub.engine.math.Pair;
 import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.Sky;
 import org.flightclub.engine.XcGame;
@@ -37,7 +37,7 @@ public class XcGameFrame extends JFrame {
       final MouseTracker mouseTracker,
       final XcGame game,
       final String title,
-      final IntPair windowSize
+      final Pair<Integer, Integer> windowSize
   ) {
     super(title);
 
@@ -71,7 +71,7 @@ public class XcGameFrame extends JFrame {
   public static void main(final String ...args) {
     LOG.info("Flight Club");
 
-    final IntPair windowSize = new IntPair(1000, 600);
+    final Pair windowSize = new Pair(1000, 600);
     final EventManager eventManager = new EventManager();
     final MouseTracker mouseTracker = new MouseTracker();
     final RenderManager renderManager = new RenderManager();

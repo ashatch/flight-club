@@ -19,7 +19,7 @@ import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.GameEnvironment;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.MouseTracker;
-import org.flightclub.engine.math.IntPair;
+import org.flightclub.engine.math.Pair;
 import org.flightclub.engine.core.RenderManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class EngineTest extends Frame {
 
   public EngineTest(
       final String title,
-      final IntPair windowSize
+      final Pair<Integer, Integer> windowSize
   ) {
     super(title);
 
@@ -78,7 +78,7 @@ public class EngineTest extends Frame {
 
   public static void main(final String ...args) {
     LOG.info("Flight Club Engine Test");
-    final IntPair windowSize =  new IntPair(1000, 600);
+    final Pair windowSize =  new Pair(1000, 600);
     new EngineTest("Flight Club Engine Test", windowSize);
   }
 }

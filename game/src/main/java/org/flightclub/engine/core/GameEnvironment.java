@@ -7,9 +7,9 @@
 
 package org.flightclub.engine.core;
 
-import org.flightclub.engine.math.IntPair;
+import org.flightclub.engine.math.Pair;
 
 public record GameEnvironment(
-    IntPair windowSize,
+    Pair<Integer, Integer> windowSize,
     AudioPlayer audioPlayer
 ) {}

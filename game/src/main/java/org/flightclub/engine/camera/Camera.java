@@ -3,7 +3,7 @@ package org.flightclub.engine.camera;
 import org.flightclub.engine.Landscape;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.geometry.Tools3d;
-import org.flightclub.engine.math.IntPair;
+import org.flightclub.engine.math.Pair;
 import org.flightclub.engine.math.Vector3d;
 
 public class Camera {
@@ -27,7 +27,7 @@ public class Camera {
   private Vector3d focus;
 
   public Camera(
-      final IntPair windowSize
+      final Pair<Integer, Integer> windowSize
   ) {
     screenWidth = windowSize.x();
     screenHeight = windowSize.y();

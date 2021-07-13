@@ -7,4 +7,4 @@
 
 package org.flightclub.engine.math;
 
-public record IntPair(int x, int y) {}
+public record Pair<T, U>(T x, U y) {}
