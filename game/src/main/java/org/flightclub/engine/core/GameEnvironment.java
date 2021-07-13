@@ -7,7 +7,6 @@
 
 package org.flightclub.engine.core;
 
-import org.flightclub.engine.core.AudioPlayer;
 import org.flightclub.engine.math.IntPair;
 
 public record GameEnvironment(

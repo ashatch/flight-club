@@ -1,16 +1,23 @@
 package org.flightclub.engine.keyboard;
 
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.events.KeyEvent;
 import org.flightclub.engine.events.KeyEventHandler;
 
 public class CameraControl implements KeyEventHandler {
+  public static final float CAMERA_MOVEMENT_DELTA = (float) 0.1;
 
   private final CameraMan cameraMan;
+  private final Camera camera;
 
-  public CameraControl(CameraMan cameraMan) {
+  public CameraControl(
+      final CameraMan cameraMan,
+      final Camera camera
+  ) {
     this.cameraMan = cameraMan;
+    this.camera = camera;
   }
 
   @Override
@@ -18,16 +25,16 @@ public class CameraControl implements KeyEventHandler {
     int key = e.code();
     switch (key) {
       case KeyEvent.VK_K:
-        cameraMan.move(-CameraMan.CAMERA_MOVEMENT_DELTA, 0);
+        camera.move(-CAMERA_MOVEMENT_DELTA, 0);
         return;
       case KeyEvent.VK_L:
-        cameraMan.move(CameraMan.CAMERA_MOVEMENT_DELTA, 0);
+        camera.move(CAMERA_MOVEMENT_DELTA, 0);
         return;
       case KeyEvent.VK_M:
-        cameraMan.move(0, CameraMan.CAMERA_MOVEMENT_DELTA);
+        camera.move(0, CAMERA_MOVEMENT_DELTA);
         return;
       case KeyEvent.VK_N:
-        cameraMan.move(0, -CameraMan.CAMERA_MOVEMENT_DELTA);
+        camera.move(0, -CAMERA_MOVEMENT_DELTA);
         return;
 
       case KeyEvent.VK_1:

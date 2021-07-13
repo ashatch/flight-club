@@ -1,10 +1,12 @@
 package org.flightclub.engine.core;
 
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.math.IntPair;
 
 public class RenderContext {
   private final Graphics graphics;
+  private final Camera camera;
   private final CameraMan cameraMan;
   private final IntPair screenSize;
 
@@ -12,11 +14,13 @@ public class RenderContext {
 
   public RenderContext(
       final Graphics graphics,
+      final Camera camera,
       final CameraMan cameraMan,
       final IntPair screenSize,
       final boolean isPaused
   ) {
     this.graphics = graphics;
+    this.camera = camera;
     this.cameraMan = cameraMan;
     this.screenSize = screenSize;
     this.isPaused = isPaused;
@@ -40,5 +44,9 @@ public class RenderContext {
 
   public void setPaused(boolean paused) {
     isPaused = paused;
+  }
+
+  public Camera camera() {
+    return this.camera;
   }
 }

@@ -100,4 +100,13 @@ public final class Vector3d {
   public Vector3d crossed(Vector3d other) {
     return new Vector3d(this).cross(other);
   }
+
+  @Override
+  public String toString() {
+    return "Vector3d{" +
+        "posX=" + posX +
+        ", posY=" + posY +
+        ", posZ=" + posZ +
+        '}';
+  }
 }

@@ -7,6 +7,7 @@
 
 package org.flightclub.engine.core.geometry;
 
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
@@ -27,14 +28,14 @@ public class Surface extends PolyLine {
   }
 
   @Override
-  public void draw(Graphics g, CameraMan cameraMan) {
+  public void draw(Graphics g, Camera camera) {
     boolean inFieldOfView = true;
 
     if (numPoints <= 1) {
       return;
     }
 
-    g.setColor(getColor(cameraMan));
+    g.setColor(getColor(camera));
 
     for (int i = 0; i < numPoints; i++) {
       Vector3d a = object3d.cameraSpacePoints.elementAt(points[i]);

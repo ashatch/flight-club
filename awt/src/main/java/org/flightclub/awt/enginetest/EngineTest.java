@@ -13,14 +13,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.flightclub.awt.JavaxAudioPlayer;
+import org.flightclub.awt.ModelCanvas;
+import org.flightclub.engine.GameLoop;
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.GameEnvironment;
-import org.flightclub.engine.core.GameMode;
-import org.flightclub.engine.core.GameModelHolder;
 import org.flightclub.engine.events.EventManager;
+import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.math.IntPair;
 import org.flightclub.engine.core.RenderManager;
-import org.flightclub.engine.Sky;
-import org.flightclub.engine.XcGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,20 +35,24 @@ public class EngineTest extends Frame {
   ) {
     super(title);
 
-    final XcGame app = new XcGame(
-        new RenderManager(),
-        new EventManager(),
-        new Sky(),
-        new GameModelHolder(GameMode.DEMO),
-        new GameEnvironment(windowSize, new JavaxAudioPlayer())
+    final Camera camera = new Camera(windowSize);
+    final EventManager eventManager = new EventManager();
+    final RenderManager renderManager = new RenderManager();
+    final GameEnvironment gameEnvironment = new GameEnvironment(windowSize, new JavaxAudioPlayer());
+
+    final TestGame app = new TestGame(
+        camera,
+        renderManager,
+        eventManager,
+        gameEnvironment
     );
 
-//    final ModelCanvas modelCanvas = new ModelCanvas(app);
-//    add(modelCanvas, "Center");
+    final ModelCanvas modelCanvas = new ModelCanvas(eventManager, new MouseTracker(), app);
+    add(modelCanvas, "Center");
     setSize(windowSize.x(), windowSize.y());
     setVisible(true);
-//    modelCanvas.init();
-    app.gameLoop();
+    modelCanvas.init();
+    app.addGameObject(modelCanvas);
 
     this.addWindowListener(new WindowAdapter() {
       @Override
@@ -60,17 +64,17 @@ public class EngineTest extends Frame {
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(final KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        eventManager.addEvent(toEngineKeyEvent(e));
       }
 
       @Override
       public void keyReleased(final KeyEvent e) {
-        app.eventManager.addEvent(toEngineKeyEvent(e));
+        eventManager.addEvent(toEngineKeyEvent(e));
       }
     });
+
+    new GameLoop(app, 25).gameLoop();
   }
-
-
 
   public static void main(final String ...args) {
     LOG.info("Flight Club Engine Test");

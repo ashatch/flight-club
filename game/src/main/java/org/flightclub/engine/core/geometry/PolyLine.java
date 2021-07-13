@@ -7,10 +7,17 @@
 
 package org.flightclub.engine.core.geometry;
 
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.math.Vector3d;
+
+import static org.flightclub.engine.camera.Camera.BACKGROUND;
+import static org.flightclub.engine.camera.Camera.BACKGROUND_B;
+import static org.flightclub.engine.camera.Camera.BACKGROUND_G;
+import static org.flightclub.engine.camera.Camera.BACKGROUND_R;
+import static org.flightclub.engine.camera.Camera.DEPTH_OF_VISION;
 
 public class PolyLine {
   public final int numPoints;
@@ -76,14 +83,14 @@ public class PolyLine {
     normal = new Vector3d(e1).cross(e2).makeUnit();
   }
 
-  public void draw(Graphics g, CameraMan cameraMan) {
+  public void draw(Graphics g, Camera camera) {
     Vector3d a;
     Vector3d b;
 
     if (numPoints <= 1) {
       return;
     }
-    g.setColor(this.getColor(cameraMan));
+    g.setColor(this.getColor(camera));
 
     for (int i = 0; i < numPoints - 1; i++) {
       a = object3d.cameraSpacePoints.elementAt(points[i]);
@@ -98,15 +105,41 @@ public class PolyLine {
     }
   }
 
-  Color getColor(CameraMan cameraMan) {
+  Color getColor(Camera camera) {
     if (normal == null) {
       return trueColor;
     }
-    float light = cameraMan.surfaceLight(normal);
+    float light = camera.surfaceLight(normal);
     apparentColor = trueColor.mul(light);
 
     //fogging
     Vector3d p = object3d.cameraSpacePoints.elementAt(points[0]);
-    return cameraMan.foggyColor(p.posX, apparentColor);
+    return foggyColor(p.posX, apparentColor);
+  }
+
+
+  /*
+   * mute distant colors.
+   *
+   * x is ~ distance of surface from camera
+   * since we are using the transformed coords
+   */
+  public Color foggyColor(float x, Color c) {
+    if (x >= 0) {
+      return c;
+    }
+
+    x *= -1;
+
+    if (x > DEPTH_OF_VISION) {
+      return BACKGROUND;
+    }
+
+    float f = x / DEPTH_OF_VISION;
+    int r = (int) (c.r() + f * (BACKGROUND_R - c.r()));
+    int g = (int) (c.g() + f * (BACKGROUND_G - c.g()));
+    int b = (int) (c.b() + f * (BACKGROUND_B - c.b()));
+
+    return new Color(r, g, b);
   }
 }

@@ -12,10 +12,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import org.flightclub.engine.GameLoop;
+import org.flightclub.engine.MouseOrbitCamera;
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.GameEnvironment;
 import org.flightclub.engine.core.GameMode;
-import org.flightclub.engine.core.GameModelHolder;
+import org.flightclub.engine.core.GameModeHolder;
 import org.flightclub.engine.events.EventManager;
+import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.math.IntPair;
 import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.Sky;
@@ -29,17 +33,20 @@ public class XcGameFrame extends JFrame {
   private static final Logger LOG = LoggerFactory.getLogger(XcGameFrame.class);
 
   public XcGameFrame(
+      final EventManager eventManager,
+      final MouseTracker mouseTracker,
       final XcGame game,
       final String title,
       final IntPair windowSize
   ) {
     super(title);
 
-    final ModelCanvas modelCanvas = new ModelCanvas(game);
+    final ModelCanvas modelCanvas = new ModelCanvas(eventManager, mouseTracker, game);
     add(modelCanvas, "Center");
     setSize(windowSize.x(), windowSize.y());
     setVisible(true);
     modelCanvas.init();
+    game.addGameObject(modelCanvas);
 
     this.addWindowListener(new WindowAdapter() {
       @Override
@@ -65,15 +72,24 @@ public class XcGameFrame extends JFrame {
     LOG.info("Flight Club");
 
     final IntPair windowSize = new IntPair(1000, 600);
+    final EventManager eventManager = new EventManager();
+    final MouseTracker mouseTracker = new MouseTracker();
+    final RenderManager renderManager = new RenderManager();
+    final Camera camera = new Camera(windowSize);
+
     final XcGame game = new XcGame(
-        new RenderManager(),
-        new EventManager(),
+        renderManager,
+        camera,
+        eventManager,
         new Sky(),
-        new GameModelHolder(GameMode.DEMO),
+        new GameModeHolder(GameMode.DEMO),
         new GameEnvironment(windowSize, new JavaxAudioPlayer())
     );
 
-    new XcGameFrame(game, "Flight Club", windowSize);
-    game.gameLoop();
+    final MouseOrbitCamera mouseOrbitCamera = new MouseOrbitCamera(camera, mouseTracker);
+    game.addGameObject(mouseOrbitCamera);
+
+    new XcGameFrame(eventManager, mouseTracker, game, "Flight Club", windowSize);
+    new GameLoop(game, 25).gameLoop();
   }
 }

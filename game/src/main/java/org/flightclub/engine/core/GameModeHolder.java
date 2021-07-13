@@ -1,9 +1,9 @@
 package org.flightclub.engine.core;
 
-public class GameModelHolder {
+public class GameModeHolder {
   private GameMode mode;
 
-  public GameModelHolder(final GameMode initialMode) {
+  public GameModeHolder(final GameMode initialMode) {
     this.mode = initialMode;
   }
 

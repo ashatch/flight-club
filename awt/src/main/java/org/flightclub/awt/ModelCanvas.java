@@ -16,10 +16,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
-import org.flightclub.engine.events.MouseTracker;
+import org.flightclub.engine.GameRenderer;
+import org.flightclub.engine.XcGame;
+import org.flightclub.engine.core.RenderContext;
+import org.flightclub.engine.core.Renderable;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.XcGame;
+import org.flightclub.engine.events.EventManager;
+import org.flightclub.engine.events.MouseTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,16 +39,22 @@ public class ModelCanvas extends JPanel implements UpdatableGameObject {
   private final Logger LOG = LoggerFactory.getLogger(ModelCanvas.class);
 
   private final Color backColor = Color.white;
-  private final MouseTracker mouseTracker = new MouseTracker();
 
-  protected final XcGame game;
+  private final EventManager eventManager;
+  private final MouseTracker mouseTracker;
+  protected final GameRenderer gameRenderer;
   private Image imgBuffer;
   private Graphics graphicsBuffer;
   private org.flightclub.engine.core.Graphics gameGraphics;
 
-  public ModelCanvas(final XcGame game) {
-    this.game = game;
-    this.game.addGameObject(this);
+  public ModelCanvas(
+      final EventManager eventManager,
+      final MouseTracker mouseTracker,
+      final GameRenderer gameRenderer
+  ) {
+    this.eventManager = eventManager;
+    this.mouseTracker = mouseTracker;
+    this.gameRenderer = gameRenderer;
   }
 
   public void init() {
@@ -70,54 +80,23 @@ public class ModelCanvas extends JPanel implements UpdatableGameObject {
       }
     });
 
-    // Add key listeners for XCGameApplet implementation
-    // (XCGameFrame is listening by itself)
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        if (!game.eventManager.addEvent(toEngineKeyEvent(e))) {
+        boolean eventAdded = eventManager.addEvent(toEngineKeyEvent(e));
+        if (!eventAdded) {
           LOG.warn("Did not register keyPressed " + e);
         }
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
-        if (!game.eventManager.addEvent(toEngineKeyEvent(e))) {
+        boolean eventAdded = eventManager.addEvent(toEngineKeyEvent(e));
+        if (!eventAdded) {
           LOG.warn("Did not register keyReleased " + e);
         }
       }
     });
-  }
-
-  @Override
-  public void update(final UpdateContext context) {
-    if (mouseTracker.isDragging()) {
-      //float dtheta = (float) dx/width;
-      float dtheta = 0;
-      float dz = 0;
-      float unitStep = (float) Math.PI * context.deltaTime() / 8; //4 seconds to 90 - sloow!
-
-      if (mouseTracker.getDeltaX() > 20) {
-        dtheta = -unitStep;
-      }
-
-      if (mouseTracker.getDeltaX() < -20) {
-        dtheta = unitStep;
-      }
-
-      if (mouseTracker.getDeltaY() > 20) {
-        dz = context.deltaTime() / 4;
-      }
-
-      if (mouseTracker.getDeltaY() < -20) {
-        dz = -context.deltaTime() / 4;
-      }
-
-      game.cameraMan.rotateEyeAboutFocus(-dtheta);
-      game.cameraMan.translateZ(-dz);
-    }
-
-    repaint();
   }
 
   @Override
@@ -128,7 +107,7 @@ public class ModelCanvas extends JPanel implements UpdatableGameObject {
 
     if (this.gameGraphics == null) {
       this.gameGraphics = new AwtGraphics(this.graphicsBuffer);
-      this.game.setGameGraphics(gameGraphics);
+      this.gameRenderer.setGameGraphics(gameGraphics);
     }
 
     updateImgBuffer(this.graphicsBuffer);
@@ -144,6 +123,11 @@ public class ModelCanvas extends JPanel implements UpdatableGameObject {
     g.setColor(backColor);
     g.fillRect(0, 0, getWidth(), getHeight());
 
-    this.game.render();
+    this.gameRenderer.render();
+  }
+
+  @Override
+  public void update(UpdateContext context) {
+    repaint();
   }
 }

@@ -8,25 +8,26 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.core.Font;
 import org.flightclub.engine.core.GameEnvironment;
 import org.flightclub.engine.core.GameMode;
-import org.flightclub.engine.core.GameModelHolder;
+import org.flightclub.engine.core.GameModeHolder;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.keyboard.CameraControl;
 import org.flightclub.engine.events.EventManager;
-import org.flightclub.engine.keyboard.GameControl;
-import org.flightclub.engine.keyboard.SkyControl;
 import org.flightclub.engine.instruments.Compass;
 import org.flightclub.engine.instruments.DataSlider;
 import org.flightclub.engine.instruments.TextMessage;
 import org.flightclub.engine.instruments.Variometer;
+import org.flightclub.engine.keyboard.CameraControl;
+import org.flightclub.engine.keyboard.GameControl;
+import org.flightclub.engine.keyboard.SkyControl;
 import org.flightclub.engine.keyboard.UserGliderController;
 import org.flightclub.engine.math.Vector3d;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ import static org.flightclub.engine.Glider.regularNpcGlider;
 import static org.flightclub.engine.Glider.rigidNpcGlider;
 import static org.flightclub.engine.Glider.userGlider;
 
-public class XcGame {
+public class XcGame implements GameLoopTarget, GameRenderer {
   private static final Logger LOG = LoggerFactory.getLogger(XcGame.class);
 
   public static final int FRAME_RATE = 25;
@@ -45,6 +46,7 @@ public class XcGame {
   public final EventManager eventManager;
   public final RenderManager renderManager;
   public final CameraMan cameraMan;
+  private final Camera camera;
 
   private float time = 0.0f;
   public Landscape landscape;
@@ -68,33 +70,33 @@ public class XcGame {
   private final Variometer vario;
 
   final Vector<UpdatableGameObject> gameObjects = new Vector<>();
-  final int sleepTime = 1000 / FRAME_RATE;
-  public long last = 0;
   boolean paused = false;
 
   private RenderContext renderContext;
 
   public XcGame(
       final RenderManager renderManager,
+      final Camera camera,
       final EventManager eventManager,
       final Sky sky,
-      final GameModelHolder gameModelHolder,
+      final GameModeHolder gameModeHolder,
       final GameEnvironment envGameEnvironment
   ) {
     this.eventManager = eventManager;
     this.renderManager = renderManager;
     this.envGameEnvironment = envGameEnvironment;
+    this.camera = camera;
 
     this.sky = sky;
     landscape = new Landscape(this, this.sky);
-    cameraMan = new CameraMan(gameModelHolder, landscape, envGameEnvironment.windowSize());
+    cameraMan = new CameraMan(camera, gameModeHolder, landscape);
 
     this.userGlider = userGlider(this, sky);
     userGlider.landed();
 
     userGliderController = new UserGliderController(userGlider);
     this.eventManager.subscribe(userGliderController);
-    cameraMan.subject1 = userGlider;
+    cameraMan.setSubject1(userGlider);
 
     textMessage = new TextMessage("Demo mode", new Font("SansSerif", Font.PLAIN, 10));
     renderManager.addRenderable(textMessage);
@@ -129,7 +131,7 @@ public class XcGame {
       }
       gaggle.addElement(glider);
       if (i == 5) {
-        cameraMan.subject2 = glider;
+        cameraMan.setSubject2(glider);
         glider.triggerLoading = true;
         jet1.buzzThis = glider;
         jet2.buzzThis = glider;
@@ -137,15 +139,15 @@ public class XcGame {
       //glider.triggerLoading = true;//????
     }
 
-    cameraMan.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
-    cameraMan.setFocus(0, 0, 0);
+    camera.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
+    camera.setFocus(0, 0, 0);
 
     launchGaggle();
     cameraMan.setMode(CameraMode.GAGGLE);
-    gameModelHolder.setMode(GameMode.DEMO);
+    gameModeHolder.setMode(GameMode.DEMO);
     toggleFastForward();
 
-    this.eventManager.subscribe(new CameraControl(cameraMan));
+    this.eventManager.subscribe(new CameraControl(cameraMan, camera));
     this.eventManager.subscribe(new SkyControl(sky));
     this.eventManager.subscribe(new GameControl(this));
   }
@@ -171,28 +173,29 @@ public class XcGame {
     this.renderContext.setPaused(this.paused);
   }
 
-  public void gameLoop() {
-    do {
-      long now = System.currentTimeMillis();
-      float delta = (now - last) / 1000.0f;
-      last = now;
-
-      updateGameState(delta);
-      frameSleep(now);
-    } while (true);
+  @Override
+  public void setGameGraphics(final Graphics gameGraphics) {
+    this.renderContext = new RenderContext(
+        gameGraphics,
+        camera, this.cameraMan,
+        this.envGameEnvironment.windowSize(),
+        paused
+    );
   }
 
+  @Override
   public void render() {
     if (this.renderContext == null) {
       LOG.warn("Waiting for graphics context");
       return;
     }
 
-    cameraMan.setMatrix();
+    camera.setMatrix();
     renderManager.render(this.renderContext);
   }
 
-  private void updateGameState(final float delta) {
+  @Override
+  public void updateGameState(final float delta) {
     final UpdateContext context = new UpdateContext(delta, this.timeMultiplier, this.renderManager);
 
     this.update(context);
@@ -203,17 +206,6 @@ public class XcGame {
 
     for (int i = 0; i < this.gameObjects.size(); i++) {
       this.gameObjects.elementAt(i).update(context);
-    }
-  }
-
-  private void frameSleep(final long now) {
-    long timeLeft = sleepTime + now - System.currentTimeMillis();
-    if (timeLeft > 0) {
-      try {
-        Thread.sleep(timeLeft);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
     }
   }
 
@@ -236,8 +228,8 @@ public class XcGame {
     launchUser();
     launchGaggle();
 
-    cameraMan.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
-    cameraMan.setFocus(0, 0, 0);
+    camera.setEye(Landscape.TILE_WIDTH / 2f, -Landscape.TILE_WIDTH / 4f, 6);
+    camera.setFocus(0, 0, 0);
 
     cameraMan.setMode(CameraMode.SELF);
 
@@ -292,14 +284,5 @@ public class XcGame {
 
   public float getTime() {
     return time;
-  }
-
-  public void setGameGraphics(final Graphics gameGraphics) {
-    this.renderContext = new RenderContext(
-        gameGraphics,
-        this.cameraMan,
-        this.envGameEnvironment.windowSize(),
-        paused
-    );
   }
 }

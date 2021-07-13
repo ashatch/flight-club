@@ -9,11 +9,13 @@ package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
 import org.flightclub.engine.Landscape;
-import org.flightclub.engine.camera.CameraMan;
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.math.Vector3d;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
@@ -58,7 +60,7 @@ public class Object3dWithShadow extends Object3d {
     //reverse point order so shadow faces
     //up ?? assumes shadow caster faces down always ??
     for (int i = wirePoints.size() - 1; i >= 0; i--) {
-      Vector3d p = (Vector3d) wirePoints.elementAt(i);
+      Vector3d p = wirePoints.elementAt(i);
       Vector3d q = new Vector3d(p.posX, p.posY, (float) -0.01); //change z so we get unique points
       shadowPoints.addElement(q);
     }
@@ -111,7 +113,7 @@ public class Object3dWithShadow extends Object3d {
     }
   }
 
-  public void drawShadow(Graphics g, CameraMan cameraMan) {
+  public void drawShadow(Graphics g, Camera cameraMan) {
     for (int i = 0; i < MAX_SHADOWS; i++) {
       if (shadowCasters[i] == -1) {
         return;
@@ -124,13 +126,13 @@ public class Object3dWithShadow extends Object3d {
   }
 
   @Override
-  public void render(RenderContext context) {
+  public void render(final RenderContext context) {
     // tmp - not doing z order yet
-    drawShadow(context.graphics(), context.cameraMan());
+    drawShadow(context.graphics(), context.camera());
     super.render(context);
   }
 
-  public static void clone(Object3dWithShadow from, Object3dWithShadow to) {
+  public static void clone(final Object3dWithShadow from, final Object3dWithShadow to) {
     Object3d.clone(from, to);
 
     for (int i = 0; i < MAX_SHADOWS; i++) {

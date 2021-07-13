@@ -8,6 +8,7 @@
 package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
+import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.RenderContext;
@@ -37,7 +38,7 @@ public class Object3d implements Renderable {
 
   @Override
   public void render(RenderContext context) {
-    project(context.cameraMan());
+    project(context.camera());
 
     if (!inFov) {
       return;
@@ -46,14 +47,14 @@ public class Object3d implements Renderable {
     for (int i = 0; i < wires.size(); i++) {
       PolyLine wire = wires.elementAt(i);
 
-      if (!wire.isBackFace(context.cameraMan().getEye())) {
-        wire.draw(context.graphics(), context.cameraMan());
+      if (!wire.isBackFace(context.camera().getEye())) {
+        wire.draw(context.graphics(), context.camera());
       }
     }
   }
 
   /* use camera to get from 3d to 2d */
-  void project(final CameraMan camera) {
+  void project(final Camera camera) {
     Vector3d vector;
     Vector3d vectorPrime;
 
