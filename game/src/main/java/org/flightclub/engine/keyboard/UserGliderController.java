@@ -19,14 +19,36 @@ import org.flightclub.engine.math.Vector3d;
 public class UserGliderController implements KeyEventHandler, UpdatableGameObject {
 
   private final Glider glider;
+  private final KeyboardState keyboardState;
 
-  public UserGliderController(final Glider glider) {
+  public UserGliderController(final Glider glider, KeyboardState keyboardState) {
     this.glider = glider;
+    this.keyboardState = keyboardState;
   }
 
   @Override
   public void update(final UpdateContext context) {
+    //    keyControl();
     checkBounds();
+  }
+
+  private void keyControl() {
+    if (this.keyboardState.anyKeyDown(KeyEvent.VK_LEFT, KeyEvent.VK_A)) {
+      this.glider.demoMode = false;
+      this.glider.moveManager.setNextMove(MovementManager.LEFT);
+    } else if (this.keyboardState.anyKeyDown(KeyEvent.VK_RIGHT, KeyEvent.VK_D)) {
+      this.glider.demoMode = false;
+      this.glider.moveManager.setNextMove(MovementManager.RIGHT);
+    } else if (this.keyboardState.anyKeyDown(KeyEvent.VK_UP, KeyEvent.VK_W)) {
+      this.glider.setPolarIndex(1);
+    } else if (this.keyboardState.anyKeyDown(KeyEvent.VK_DOWN, KeyEvent.VK_S)) {
+      this.glider.setPolarIndex(0);
+    } else if (this.keyboardState.isKeyDown(KeyEvent.VK_SPACE)) {
+      this.glider.setPolarIndex(0);
+      this.glider.moveManager.workLift();
+    } else {
+      //this.glider.moveManager.setNextMove(MovementManager.STRAIGHT);
+    }
   }
 
   @Override

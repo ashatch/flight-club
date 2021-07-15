@@ -114,14 +114,14 @@ public class Object3dWithShadow extends Object3d {
     }
   }
 
-  public void drawShadow(Graphics g, Camera cameraMan) {
+  public void drawShadow(final Graphics g, final Camera camera) {
     for (int i = 0; i < MAX_SHADOWS; i++) {
       if (shadowCasters[i] == -1) {
         return;
       }
 
-      if (!shadows[i].isBackFace(cameraMan.getEye())) {
-        shadows[i].draw(g, cameraMan);
+      if (!shadows[i].isBackFace(camera.getEye())) {
+        shadows[i].draw(g, camera);
       }
     }
   }

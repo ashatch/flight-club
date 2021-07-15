@@ -55,14 +55,11 @@ public class Object3d implements Renderable {
 
   /* use camera to get from 3d to 2d */
   void project(final Camera camera) {
-    Vector3d vector;
-    Vector3d vectorPrime;
-
     inFov = false; //set true if any points are in FOV
 
     for (int i = 0; i < points.size(); i++) {
-      vector = points.elementAt(i);
-      vectorPrime = cameraSpacePoints.elementAt(i);
+      final Vector3d vector = points.elementAt(i);
+      final Vector3d vectorPrime = cameraSpacePoints.elementAt(i);
 
       //translate, rotate and project (only if visible)
       vectorPrime.set(vector).subtract(camera.getFocus());

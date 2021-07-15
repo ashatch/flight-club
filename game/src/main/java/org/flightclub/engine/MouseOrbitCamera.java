@@ -6,40 +6,61 @@ import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.events.MouseTracker;
 
 public class MouseOrbitCamera implements UpdatableGameObject {
+  private static final float DEFAULT_SENSITIVITY = 20f;
+
   private final Camera camera;
   private final MouseTracker mouseTracker;
+  private final float speedZeroToOne;
 
-  public MouseOrbitCamera(final Camera camera, final MouseTracker mouseTracker) {
+  private float sensitivity = DEFAULT_SENSITIVITY;
+  private boolean limitZ = false;
+
+  public MouseOrbitCamera(
+      final Camera camera,
+      final MouseTracker mouseTracker,
+      float speedZeroToOne
+  ) {
     this.camera = camera;
     this.mouseTracker = mouseTracker;
+    this.speedZeroToOne = speedZeroToOne;
   }
 
   @Override
   public void update(final UpdateContext context) {
-    if (mouseTracker.isDragging()) {
-      //float dtheta = (float) dx/width;
-      float dtheta = 0;
-      float dz = 0;
-      float unitStep = (float) Math.PI * context.deltaTime() / 8; //4 seconds to 90 - sloow!
+    if (this.mouseTracker.isDragging()) {
+      final float unitStep = context.deltaTime() * speedZeroToOne;
 
-      if (mouseTracker.getDeltaX() > 20) {
-        dtheta = -unitStep;
+      float theta = 0;
+      float translateZ = 0;
+
+      if (this.mouseTracker.getDeltaX() > this.sensitivity) {
+        theta = (float) Math.PI * -unitStep;
       }
 
-      if (mouseTracker.getDeltaX() < -20) {
-        dtheta = unitStep;
+      if (this.mouseTracker.getDeltaX() < -this.sensitivity) {
+        theta = (float) Math.PI * unitStep;
       }
 
-      if (mouseTracker.getDeltaY() > 20) {
-        dz = context.deltaTime() / 4;
+      if (this.mouseTracker.getDeltaY() > this.sensitivity) {
+        translateZ = unitStep;
       }
 
-      if (mouseTracker.getDeltaY() < -20) {
-        dz = -context.deltaTime() / 4;
+      if (this.mouseTracker.getDeltaY() < -this.sensitivity) {
+        translateZ = -unitStep;
       }
 
-      camera.rotateEyeAboutFocus(-dtheta);
-      camera.translateZ(-dz);
+      camera.rotateEyeAboutFocus(-theta);
+      camera.translateZ(-translateZ, limitZ);
     }
+  }
+
+  public MouseOrbitCamera withSensitivity(float sensitivity) {
+    this.sensitivity = sensitivity;
+    return this;
+  }
+
+  public MouseOrbitCamera withLimitZ(boolean limitZ) {
+    this.limitZ = limitZ;
+    return this;
   }
 }

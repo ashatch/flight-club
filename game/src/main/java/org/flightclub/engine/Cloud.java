@@ -81,7 +81,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
      */
     liftMax = -(1 + inStrength) * Glider.SINK_RATE;
     int c = CLOUD_COLOR - (inStrength - 1) * CLOUD_COLOR_STEP;
-    color = new Color(c, c, c);
+    color = new Color(Math.min(255, c), Math.min(255, c), Math.min(255, c));
 
     maxRadius = inStrength;  // (float) Math.sqrt(inStrength); was 1
 

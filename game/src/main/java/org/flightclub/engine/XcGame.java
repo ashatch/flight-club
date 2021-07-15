@@ -27,6 +27,7 @@ import org.flightclub.engine.instruments.TextMessage;
 import org.flightclub.engine.instruments.Variometer;
 import org.flightclub.engine.keyboard.CameraControl;
 import org.flightclub.engine.keyboard.GameControl;
+import org.flightclub.engine.keyboard.KeyboardState;
 import org.flightclub.engine.keyboard.SkyControl;
 import org.flightclub.engine.keyboard.UserGliderController;
 import org.flightclub.engine.math.Vector3d;
@@ -78,6 +79,7 @@ public class XcGame implements GameLoopTarget, GameRenderer {
       final RenderManager renderManager,
       final Camera camera,
       final EventManager eventManager,
+      final KeyboardState keyboardState,
       final Sky sky,
       final GameModeHolder gameModeHolder,
       final GameEnvironment envGameEnvironment
@@ -94,7 +96,8 @@ public class XcGame implements GameLoopTarget, GameRenderer {
     this.userGlider = userGlider(this, sky);
     userGlider.landed();
 
-    userGliderController = new UserGliderController(userGlider);
+    userGliderController = new UserGliderController(userGlider, keyboardState);
+    addGameObject(userGliderController);
     this.eventManager.subscribe(userGliderController);
     cameraMan.setSubject1(userGlider);
 
@@ -177,7 +180,7 @@ public class XcGame implements GameLoopTarget, GameRenderer {
   public void setGameGraphics(final Graphics gameGraphics) {
     this.renderContext = new RenderContext(
         gameGraphics,
-        camera, this.cameraMan,
+        camera,
         this.envGameEnvironment.windowSize(),
         paused
     );

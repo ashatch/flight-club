@@ -54,12 +54,12 @@ public class PolyLine {
     nextIndex++;
   }
 
-  public boolean isBackFace(Vector3d eye) {
+  public boolean isBackFace(final Vector3d eye) {
     if (normal == null) {
       return false;
     }
 
-    setNormal();    //now ???
+    setNormal();
 
     Vector3d p = object3d.points.elementAt(points[0]);
     Vector3d ray = p.minus(eye);
@@ -140,6 +140,6 @@ public class PolyLine {
     int g = (int) (c.g() + f * (BACKGROUND_G - c.g()));
     int b = (int) (c.b() + f * (BACKGROUND_B - c.b()));
 
-    return new Color(r, g, b);
+    return new Color(Math.min(255, r), Math.min(255, g), Math.min(255, b));
   }
 }

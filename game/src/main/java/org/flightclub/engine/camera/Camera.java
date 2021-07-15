@@ -15,14 +15,14 @@ public class Camera {
   public static final Color BACKGROUND = new Color(BACKGROUND_R, BACKGROUND_G, BACKGROUND_B);
   public static final float DEPTH_OF_VISION = Landscape.TILE_WIDTH * (float) 2.5;
 
-  private final Vector3d lightRay;
-  private float distance = 0;
-  private float[][] matrix;
-
   private final int screenWidth;
   private final int screenHeight;
   private final float theScale;
 
+  private float distance = 0;
+  private float[][] matrix;
+
+  private Vector3d lightRay;
   private Vector3d eye;
   private Vector3d focus;
 
@@ -36,11 +36,14 @@ public class Camera {
     eye = new Vector3d(3, 0, 0);
     focus = new Vector3d(0, 0, 0);
 
-    lightRay = new Vector3d(1, 1, -3);
-    //lightRay = new Vector3d(-2,2,-1);
-    lightRay.makeUnit();
+    withLightRay(1, 1, -3);
   }
 
+  public Camera withLightRay(float x, float y, float z) {
+    lightRay = new Vector3d(x, y, z);
+    lightRay.makeUnit();
+    return this;
+  }
 
   public Vector3d getEye() {
     return eye;
@@ -80,14 +83,14 @@ public class Camera {
     eye.set(focus).add(ray);
   }
 
-  public void translateZ(float dz) {
+  public void translateZ(float dz, boolean limitZ) {
     Vector3d ray = eye.minus(focus);
 
     ray.posZ += distance * dz;
 
     eye.set(focus).add(ray);
 
-    if (eye.posZ < 0) {
+    if (limitZ && eye.posZ < 0) {
       eye.posZ = 0;
     }
   }
