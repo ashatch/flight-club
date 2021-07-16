@@ -1,4 +1,4 @@
-/**
+/*
  * This code is covered by the GNU General Public License
  * detailed at http://www.gnu.org/copyleft/gpl.html
  * Flight Club docs located at http://www.danb.dircon.co.uk/hg/hg.htm
@@ -8,15 +8,12 @@
 package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
-import org.flightclub.engine.Landscape;
 import org.flightclub.engine.camera.Camera;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.core.ShadowTarget;
-import org.flightclub.engine.math.Vector3d;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
@@ -44,7 +41,7 @@ public class Object3dWithShadow extends Object3d {
   }
 
   public int addWireWithShadow(
-      Vector<Vector3d> wirePoints,
+      Vector<Vector3f> wirePoints,
       Color c,
       boolean isSolid,
       boolean hasNormal
@@ -56,13 +53,13 @@ public class Object3dWithShadow extends Object3d {
     shadowCasters[numShadows] = super.addWire(wirePoints, c, isSolid, hasNormal);
 
     //create shadow
-    Vector<Vector3d> shadowPoints = new Vector<>();
+    Vector<Vector3f> shadowPoints = new Vector<>();
 
     //reverse point order so shadow faces
     //up ?? assumes shadow caster faces down always ??
     for (int i = wirePoints.size() - 1; i >= 0; i--) {
-      Vector3d p = wirePoints.elementAt(i);
-      Vector3d q = new Vector3d(p.posX, p.posY, (float) -0.01); //change z so we get unique points
+      Vector3f p = wirePoints.elementAt(i);
+      Vector3f q = new Vector3f(p.x, p.y, (float) -0.01); //change z so we get unique points
       shadowPoints.addElement(q);
     }
 
@@ -99,16 +96,16 @@ public class Object3dWithShadow extends Object3d {
       Surface surface = (Surface) wires.elementAt(shadowCasters[i]);
 
       for (int j = surface.numPoints - 1; j >= 0; j--) {
-        Vector3d p = points.elementAt(surface.points[j]);
-        Vector3d q = points.elementAt(shadows[i].points[surface.numPoints - 1 - j]); //??
+        Vector3f p = points.elementAt(surface.points[j]);
+        Vector3f q = points.elementAt(shadows[i].points[surface.numPoints - 1 - j]); //??
         q.set(p);
         //float doff = p.z/2;
         //q.x -= doff;
         //q.y += 0;;
         if (landscape != null) {
-          q.posZ = landscape.getHeight(q.posX, q.posY);
+          q.z = landscape.getHeight(q.x, q.y);
         } else {
-          q.posZ = 0;
+          q.z = 0;
         }
       }
     }
@@ -140,11 +137,11 @@ public class Object3dWithShadow extends Object3d {
       if (from.shadowCasters[i] != -1) {
 
         PolyLine fromWire = from.wires.elementAt(from.shadowCasters[i]);
-        Vector<Vector3d> toWire = new Vector<>();
+        Vector<Vector3f> toWire = new Vector<>();
         for (int j = 0; j < fromWire.points.length; j++) {
           int k = fromWire.points[j];
-          Vector3d v = from.points.elementAt(k);
-          Vector3d q = new Vector3d(v.posX, v.posY, v.posZ);
+          Vector3f v = from.points.elementAt(k);
+          Vector3f q = new Vector3f(v.x, v.y, v.z);
           toWire.addElement(q);
         }
         boolean hasNorm = (fromWire.normal != null);

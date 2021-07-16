@@ -3,7 +3,7 @@ package org.flightclub.engine.models;
 import java.util.Vector;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.geometry.Object3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public class UnitCube extends Object3d {
   public static final int YZF = 0;
@@ -39,7 +39,7 @@ public class UnitCube extends Object3d {
   }
 
   /* get points for unit square in given plane */
-  public Vector<Vector3d> square(
+  public Vector<Vector3f> square(
       int face,
       float bottom,
       float left,
@@ -47,79 +47,79 @@ public class UnitCube extends Object3d {
       float right,
       float d
   ) {
-    Vector<Vector3d> sq = new Vector<>();
-    Vector3d[] ps = new Vector3d[5];
+    Vector<Vector3f> sq = new Vector<>();
+    Vector3f[] ps = new Vector3f[5];
 
     for (int i = 0; i < 5; i++) {
-      ps[i] = new Vector3d(d, d, d);
+      ps[i] = new Vector3f(d, d, d);
       sq.addElement(ps[i]);
     }
 
     switch (face) {
       case YZF:
-        ps[0].posY = left;
-        ps[0].posZ = bottom;
-        ps[1].posY = left;
-        ps[1].posZ = top;
-        ps[2].posY = right;
-        ps[2].posZ = top;
-        ps[3].posY = right;
-        ps[3].posZ = bottom;
+        ps[0].y = left;
+        ps[0].z = bottom;
+        ps[1].y = left;
+        ps[1].z = top;
+        ps[2].y = right;
+        ps[2].z = top;
+        ps[3].y = right;
+        ps[3].z = bottom;
         break;
 
       case YZB:
-        ps[0].posY = left;
-        ps[0].posZ = bottom;
-        ps[3].posY = left;
-        ps[3].posZ = top;
-        ps[2].posY = right;
-        ps[2].posZ = top;
-        ps[1].posY = right;
-        ps[1].posZ = bottom;
+        ps[0].y = left;
+        ps[0].z = bottom;
+        ps[3].y = left;
+        ps[3].z = top;
+        ps[2].y = right;
+        ps[2].z = top;
+        ps[1].y = right;
+        ps[1].z = bottom;
         break;
 
       case ZXB:
-        ps[0].posX = left;
-        ps[0].posZ = bottom;
-        ps[1].posX = left;
-        ps[1].posZ = top;
-        ps[2].posX = right;
-        ps[2].posZ = top;
-        ps[3].posX = right;
-        ps[3].posZ = bottom;
+        ps[0].x = left;
+        ps[0].z = bottom;
+        ps[1].x = left;
+        ps[1].z = top;
+        ps[2].x = right;
+        ps[2].z = top;
+        ps[3].x = right;
+        ps[3].z = bottom;
         break;
 
       case ZXF:
-        ps[0].posX = left;
-        ps[0].posZ = bottom;
-        ps[3].posX = left;
-        ps[3].posZ = top;
-        ps[2].posX = right;
-        ps[2].posZ = top;
-        ps[1].posX = right;
-        ps[1].posZ = bottom;
+        ps[0].x = left;
+        ps[0].z = bottom;
+        ps[3].x = left;
+        ps[3].z = top;
+        ps[2].x = right;
+        ps[2].z = top;
+        ps[1].x = right;
+        ps[1].z = bottom;
         break;
 
       case XYF:
-        ps[0].posX = left;
-        ps[0].posY = bottom;
-        ps[1].posX = right;
-        ps[1].posY = bottom;
-        ps[2].posX = right;
-        ps[2].posY = top;
-        ps[3].posX = left;
-        ps[3].posY = top;
+        ps[0].x = left;
+        ps[0].y = bottom;
+        ps[1].x = right;
+        ps[1].y = bottom;
+        ps[2].x = right;
+        ps[2].y = top;
+        ps[3].x = left;
+        ps[3].y = top;
         break;
 
       case XYB:
-        ps[0].posX = left;
-        ps[0].posY = bottom;
-        ps[3].posX = left;
-        ps[3].posY = top;
-        ps[2].posX = right;
-        ps[2].posY = top;
-        ps[1].posX = right;
-        ps[1].posY = bottom;
+        ps[0].x = left;
+        ps[0].y = bottom;
+        ps[3].x = left;
+        ps[3].y = top;
+        ps[2].x = right;
+        ps[2].y = top;
+        ps[1].x = right;
+        ps[1].y = bottom;
         break;
 
       default:
@@ -130,7 +130,7 @@ public class UnitCube extends Object3d {
     return sq;
   }
 
-  private Vector<Vector3d> unitSquare(int face, float d) {
+  private Vector<Vector3f> unitSquare(int face, float d) {
     float dx = (float) 0.5;
     return square(face, -dx, -dx, dx, dx, d);
   }

@@ -20,7 +20,7 @@ import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.keyboard.KeyboardState;
-import org.flightclub.engine.math.Pair;
+import org.joml.Vector2i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class XcGameFrame extends JFrame {
 
   public XcGameFrame(
       final String title,
-      final Pair<Integer, Integer> windowSize
+      final Vector2i windowSize
   ) {
     super(title);
 
@@ -71,7 +71,7 @@ public class XcGameFrame extends JFrame {
 
   public static void main(final String... args) {
     LOG.info("Flight Club");
-    final Pair<Integer, Integer> windowSize = new Pair<>(1000, 600);
+    final Vector2i windowSize = new Vector2i(1000, 600);
 
     new XcGameFrame(
         "Flight Club",

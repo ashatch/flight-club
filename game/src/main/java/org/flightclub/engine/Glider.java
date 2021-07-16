@@ -12,9 +12,9 @@ import org.flightclub.engine.camera.CameraMode;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.math.Vector3d;
 import org.flightclub.engine.models.GliderShape;
 import org.flightclub.engine.models.Tail;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
@@ -59,7 +59,7 @@ public class Glider extends FlyingBody {
       final Sky sky,
       final float speed,
       final float turnRadius,
-      final Vector3d p,
+      final Vector3f p,
       final boolean isUser,
       final GliderShape gliderShape
   ) {
@@ -78,7 +78,7 @@ public class Glider extends FlyingBody {
         sky,
         SPEED,
         TURN_RADIUS,
-        new Vector3d(),
+        new Vector3f(),
         false,
         new GliderShape(Color.DEFAULT_GLIDER_COLOR)
     );
@@ -93,7 +93,7 @@ public class Glider extends FlyingBody {
         sky,
         SPEED * (float) 1.5,
         TURN_RADIUS * (float) 1.2,
-        new Vector3d(),
+        new Vector3f(),
         false,
         new GliderShape(Color.PINK)
     );
@@ -108,7 +108,7 @@ public class Glider extends FlyingBody {
         sky,
         SPEED,
         TURN_RADIUS,
-        new Vector3d(0, 0, 0),
+        new Vector3f(0, 0, 0),
         true,
         new GliderShape(Color.YELLOW)
     );
@@ -128,11 +128,11 @@ public class Glider extends FlyingBody {
     Cloud cloud = null;
 
     if (app.landscape != null) {
-      hill = app.landscape.nextHill(new Vector3d(vectorP.posX, vectorP.posY + 2, vectorP.posZ));
+      hill = app.landscape.nextHill(new Vector3f(vectorP.x, vectorP.y + 2, vectorP.z));
     }
 
     if (app.sky != null) {
-      cloud = app.sky.nextCloud(new Vector3d(vectorP.posX, vectorP.posY + 2, vectorP.posZ));
+      cloud = app.sky.nextCloud(new Vector3f(vectorP.x, vectorP.y + 2, vectorP.z));
     }
 
     cutPending = false;
@@ -152,12 +152,12 @@ public class Glider extends FlyingBody {
       // backtrack upwind
 
       if (app.sky != null) {
-        cloud = app.sky.prevCloud(new Vector3d(vectorP.posX, vectorP.posY - 2, vectorP.posZ));
+        cloud = app.sky.prevCloud(new Vector3f(vectorP.x, vectorP.y - 2, vectorP.z));
       }
 
       if (cloud == null) {
         //try again later, fly downwind for now
-        this.moveManager.setTargetPoint(new Vector3d(vectorP.posX, vectorP.posY + 8, vectorP.posZ));
+        this.moveManager.setTargetPoint(new Vector3f(vectorP.x, vectorP.y + 8, vectorP.z));
         tryLater = 25;
         return;
       }
@@ -167,7 +167,7 @@ public class Glider extends FlyingBody {
     this.moveManager.setCloud(cloud);
 
     cutPending = true;
-    cutWhen = whenArrive(cloud.projection.posX, cloud.projection.posY) - CameraMan.CUT_LEN * 2;
+    cutWhen = whenArrive(cloud.projection.x, cloud.projection.y) - CameraMan.CUT_LEN * 2;
     cutSubject = cloud;
     cutCount = 0;
   }
@@ -196,7 +196,7 @@ public class Glider extends FlyingBody {
     if (app.landscape != null) {
       Hill hill = app.landscape.getHillAt(vectorP);
       if (hill != null) {
-        if (vectorP.posZ < hill.maxH + (float) 0.1) {
+        if (vectorP.z < hill.maxH + (float) 0.1) {
           //lift += (float) 1.5 * - SINK_RATE;
           lift += hill.getLift(vectorP);
         } else {
@@ -214,7 +214,7 @@ public class Glider extends FlyingBody {
     if (app.sky != null) {
       Cloud cloud = app.sky.getCloudAt(vectorP);
       if (cloud != null) {
-        if (vectorP.posZ < this.sky.getCloudBase() - this.getBodyHeight()) {
+        if (vectorP.z < this.sky.getCloudBase() - this.getBodyHeight()) {
           lift += cloud.getLift(vectorP);
         } else {
           //stick to base of cloud and f*** off downwind
@@ -227,11 +227,11 @@ public class Glider extends FlyingBody {
       }
     }
 
-    vector.posZ = lift * app.timePerFrame;
+    vector.z = lift * app.timePerFrame;
 
     //check not going underground
-    if (vectorP.posZ <= 0 && vector.posZ < 0) {
-      vector.posZ = 0;
+    if (vectorP.z <= 0 && vector.z < 0) {
+      vector.z = 0;
       if (!landed) {
         landed();
       }
@@ -271,20 +271,20 @@ public class Glider extends FlyingBody {
 
       if (reachedGoal) {
         app.getTextMessage().setMessage("Well done ! You have reached goal. You flew "
-            + (int) (vectorP.posY / 2)
+            + (int) (vectorP.y / 2)
             + "km in "
             + (int) app.getTime() / 2
             + " mins. Press <y> to fly again.");
       } else if (landed) {
         app.getTextMessage().setMessage("You have landed - you flew "
-            + (int) (vectorP.posY / 2)
+            + (int) (vectorP.y / 2)
             + "km. Press <y> to fly again.");
       } else {
         app.getTextMessage().setMessage("D: "
-            + (int) (vectorP.posY / 2)
+            + (int) (vectorP.y / 2)
             + "km  T: " + (int) app.getTime() / 2
             + "mins  H: "
-            + (int) ((vectorP.posZ / 2) * 1500) + "m ");
+            + (int) ((vectorP.z / 2) * 1500) + "m ");
       }
     }
 
@@ -319,7 +319,7 @@ public class Glider extends FlyingBody {
       final float x,
       final float y
   ) {
-    float d = (vectorP.posX - x) * (vectorP.posX - x) + (vectorP.posY - y) * (vectorP.posY - y);
+    float d = (vectorP.x - x) * (vectorP.x - x) + (vectorP.y - y) * (vectorP.y - y);
     d = (float) Math.sqrt(d);
     return (int) (d / ds);
   }
@@ -341,25 +341,25 @@ public class Glider extends FlyingBody {
   }
 
   @Override
-  public Vector3d getFocus() {
+  public Vector3f getFocus() {
     float z;
-    if (vectorP.posZ < 0.5) {
+    if (vectorP.z < 0.5) {
       z = (float) 0.5;
     } else {
-      z = (float) 0.5 + (vectorP.posZ - (float) 0.5) / 2;
+      z = (float) 0.5 + (vectorP.z - (float) 0.5) / 2;
     }
-    return new Vector3d(vectorP.posX, vectorP.posY + 1, z);
+    return new Vector3f(vectorP.x, vectorP.y + 1, z);
   }
 
   @Override
-  public Vector3d getEye() {
-    return new Vector3d(
-        vectorP.posX + (float) 0.2,
-        vectorP.posY - 2,
-        vectorP.posZ + (float) 0.3); //(float)0.8
+  public Vector3f getEye() {
+    return new Vector3f(
+        vectorP.x + (float) 0.2,
+        vectorP.y - 2,
+        vectorP.z + (float) 0.3); //(float)0.8
   }
 
-  void takeOff(final Vector3d inP) {
+  void takeOff(final Vector3f inP) {
     /*
       hack ? should be in glider user ?
     */
@@ -367,8 +367,8 @@ public class Glider extends FlyingBody {
     //if (!landed) return;
 
     setPolarIndex(0);
-    vector = new Vector3d(0, ds, 0);
-    vectorP = new Vector3d(inP.posX, inP.posY, inP.posZ);
+    vector = new Vector3f(0, ds, 0);
+    vectorP = new Vector3f(inP.x, inP.y, inP.z);
 
     landed = false;
     reachedGoal = false;

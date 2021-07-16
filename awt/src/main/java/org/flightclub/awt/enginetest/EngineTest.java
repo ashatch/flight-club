@@ -16,7 +16,7 @@ import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.keyboard.KeyboardState;
-import org.flightclub.engine.math.Pair;
+import org.joml.Vector2i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class EngineTest extends JFrame {
 
   public EngineTest(
       final String title,
-      final Pair<Integer, Integer> windowSize
+      final Vector2i windowSize
   ) {
     super(title);
 
@@ -42,8 +42,7 @@ public class EngineTest extends JFrame {
         camera,
         renderManager,
         keyboardState,
-        gameEnvironment,
-        mouseTracker
+        gameEnvironment
     );
 
     final ModelCanvas modelCanvas = new ModelCanvas(game);
@@ -59,7 +58,7 @@ public class EngineTest extends JFrame {
 
   public static void main(final String ...args) {
     LOG.info("Flight Club Engine Test");
-    final Pair<Integer, Integer> windowSize =  new Pair<>(1000, 600);
+    final Vector2i windowSize =  new Vector2i(1000, 600);
     new EngineTest("Flight Club Engine Test", windowSize);
   }
 }

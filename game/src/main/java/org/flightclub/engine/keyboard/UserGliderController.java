@@ -14,7 +14,7 @@ import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.events.KeyEvent;
 import org.flightclub.engine.events.KeyEventHandler;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public class UserGliderController implements KeyEventHandler, UpdatableGameObject {
 
@@ -101,14 +101,14 @@ public class UserGliderController implements KeyEventHandler, UpdatableGameObjec
   }
 
   private void checkBounds() {
-    if (this.glider.vectorP.posX > Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
+    if (this.glider.vectorP.x > Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3f(0, this.glider.vectorP.y, 0));
     }
-    if (this.glider.vectorP.posX < -Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(0, this.glider.vectorP.posY, 0));
+    if (this.glider.vectorP.x < -Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3f(0, this.glider.vectorP.y, 0));
     }
-    if (this.glider.vectorP.posY < -Landscape.TILE_WIDTH / 2f) {
-      this.glider.moveManager.setTargetPoint(new Vector3d(this.glider.vectorP.posX, 0, 0));
+    if (this.glider.vectorP.y < -Landscape.TILE_WIDTH / 2f) {
+      this.glider.moveManager.setTargetPoint(new Vector3f(this.glider.vectorP.x, 0, 0));
     }
   }
 }

@@ -7,22 +7,22 @@
 
 package org.flightclub.engine.core.geometry;
 
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 /*
  * static methods for 3d geometry
  */
 public class Tools3d {
-  static Vector3d[] circleXy(int numPoints, float radius, Vector3d center) {
+  static Vector3f[] circleXy(int numPoints, float radius, Vector3f center) {
     float dtheta = (float) Math.PI * 2 / numPoints;
-    Vector3d[] circle = new Vector3d[numPoints];
+    Vector3f[] circle = new Vector3f[numPoints];
 
     for (int i = 0; i < numPoints; i++) {
       float theta = dtheta * i;
       float x = (float) Math.sin(theta) * radius;
       float z = (float) Math.cos(theta) * radius;
 
-      circle[i] = new Vector3d(x, 0, z);
+      circle[i] = new Vector3f(x, 0, z);
       circle[i].add(center);
     }
     return circle;
@@ -36,7 +36,7 @@ public class Tools3d {
     return new float[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
   }
 
-  public static float[][] rotateX(Vector3d v) {
+  public static float[][] rotateX(Vector3f v) {
     /*
      * rotation matrix: rotate the given point so that it lies on the x axis
      * 1. rotate about z axis
@@ -50,10 +50,10 @@ public class Tools3d {
     float[][] m2 = identity();
     float[][] m4 = identity();
 
-    primeR = (float) Math.sqrt(v.posY * v.posY + v.posX * v.posX);
+    primeR = (float) Math.sqrt(v.y * v.y + v.x * v.x);
     if (primeR != 0) {
-      m1[0][0] = v.posX / primeR;
-      m1[0][1] = v.posY / primeR;
+      m1[0][0] = v.x / primeR;
+      m1[0][1] = v.y / primeR;
       m1[1][0] = -m1[0][1];
       m1[1][1] = m1[0][0];
     }
@@ -61,21 +61,21 @@ public class Tools3d {
     r = v.length();
     if (primeR != 0) {
       m2[0][0] = primeR / r;
-      m2[0][2] = v.posZ / r;
+      m2[0][2] = v.z / r;
       m2[2][0] = -m2[0][2];
       m2[2][2] = m2[0][0];
     }
 
     //keep z axis pointing up
-    Vector3d up = new Vector3d(0, 0, 1);
+    Vector3f up = new Vector3f(0, 0, 1);
     applyTo(m1, up, up);
 
     applyTo(m2, up, up);
 
-    primeR = (float) Math.sqrt(v.posY * v.posY + v.posZ * v.posZ);
+    primeR = (float) Math.sqrt(v.y * v.y + v.z * v.z);
     if (primeR != 0) {
-      m4[1][1] = up.posZ / primeR;
-      m4[1][2] = up.posY / primeR;
+      m4[1][1] = up.z / primeR;
+      m4[1][2] = up.y / primeR;
       m4[2][1] = -m4[1][2];
       m4[2][2] = m4[1][1];
     }
@@ -88,22 +88,22 @@ public class Tools3d {
     return m3;
   }
 
-  public static void applyTo(float[][] m, Vector3d a, Vector3d b) {
+  public static void applyTo(float[][] m, Vector3f a, Vector3f b) {
     float[] inV = new float[3];
     float[] outV = {0, 0, 0};
 
-    inV[0] = a.posX;
-    inV[1] = a.posY;
-    inV[2] = a.posZ;
+    inV[0] = a.x;
+    inV[1] = a.y;
+    inV[2] = a.z;
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         outV[i] = outV[i] + m[i][j] * inV[j];
       }
     }
-    b.posX = outV[0];
-    b.posY = outV[1];
-    b.posZ = outV[2];
+    b.x = outV[0];
+    b.y = outV[1];
+    b.z = outV[2];
   }
 
   public static float[][] applyTo(float[][] m1, float[][] m2) {
@@ -124,31 +124,31 @@ public class Tools3d {
    * view (FOV), true otherwise
    */
   public static boolean projectYz(
-      final Vector3d a,
-      final Vector3d b,
+      final Vector3f a,
+      final Vector3f b,
       final float d
   ) {
-    b.posX = a.posX;
-    if (a.posX >= d) {
+    b.x = a.x;
+    if (a.x >= d) {
       return false; //point behind camera
     }
 
     float tan;
-    float scale = (d - a.posX);
+    float scale = (d - a.x);
     float tanMax = 25;
 
-    tan = a.posY / (d - a.posX);
+    tan = a.y / (d - a.x);
     if (tan * tan > tanMax) {
       return false;
     } else {
-      b.posY = a.posY / scale;
+      b.y = a.y / scale;
     }
 
-    tan = a.posZ / (d - a.posX);
+    tan = a.z / (d - a.x);
     if (tan * tan > tanMax) {
       return false;
     } else {
-      b.posZ = a.posZ / scale;
+      b.z = a.z / scale;
     }
 
     return true;

@@ -13,7 +13,7 @@ import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.ShadowTarget;
 import org.flightclub.engine.core.geometry.Object3d;
 import org.flightclub.engine.core.geometry.Tools3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.BACKGROUND_LAYER;
 
@@ -96,18 +96,18 @@ public class Landscape implements CameraSubject, ShadowTarget {
   ) {
     float hair = 1;
 
-    Vector<Vector3d> wire;
+    Vector<Vector3f> wire;
     wire = new Vector<>();
-    wire.addElement(new Vector3d(x, y - hair, 0));
-    wire.addElement(new Vector3d(x, y + hair, 0));
+    wire.addElement(new Vector3f(x, y - hair, 0));
+    wire.addElement(new Vector3f(x, y + hair, 0));
 
     Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
     app.renderManager.add(o);
     o.addWire(wire, new Color(230, 230, 230), false, false);
 
     wire = new Vector<>();
-    wire.addElement(new Vector3d(x - hair, y, 0));
-    wire.addElement(new Vector3d(x + hair, y, 0));
+    wire.addElement(new Vector3f(x - hair, y, 0));
+    wire.addElement(new Vector3f(x + hair, y, 0));
     o.addWire(wire, new Color(230, 230, 230), false, false);
 
   }
@@ -120,15 +120,15 @@ public class Landscape implements CameraSubject, ShadowTarget {
 
     Object3d o = new Object3d(BACKGROUND_LAYER);
     app.renderManager.add(o);
-    Vector<Vector3d> wire;
+    Vector<Vector3f> wire;
 
     for (int i = 0; i < MAX_TILES * TILE_WIDTH; i += atom * 1) {
       wire = new Vector<>();
 
       float x1 = (float) Math.sin((double) i * Math.PI / TILE_WIDTH);
       float x2 = (float) Math.sin((double) (i + atom) * Math.PI / TILE_WIDTH);
-      wire.addElement(new Vector3d(x1 * 1, i, 0));
-      wire.addElement(new Vector3d(x2 * 1, i + atom, 0));
+      wire.addElement(new Vector3f(x1 * 1, i, 0));
+      wire.addElement(new Vector3f(x2 * 1, i + atom, 0));
       o.addWire(wire, new Color(220, 220, 220), false, false);
     }
   }
@@ -139,21 +139,21 @@ public class Landscape implements CameraSubject, ShadowTarget {
   static void goalLine() {
     float y0 = TILE_WIDTH * MAX_TILES;
 
-    Vector<Vector3d> wire;
+    Vector<Vector3f> wire;
     float x1 = (float) -TILE_WIDTH / 8;
     float x2 = (float) TILE_WIDTH / 8;
 
     wire = new Vector<>();
-    wire.addElement(new Vector3d(x1, y0, 0));
-    wire.addElement(new Vector3d(x2, y0, 0));
+    wire.addElement(new Vector3f(x1, y0, 0));
+    wire.addElement(new Vector3f(x2, y0, 0));
 
     Object3d o = new Object3d(BACKGROUND_LAYER);    //layer zero !!
     app.renderManager.add(o);
     o.addWire(wire, new Color(220, 220, 100), false, false);
 
     wire = new Vector<>();
-    wire.addElement(new Vector3d(x1, 0, 0));
-    wire.addElement(new Vector3d(x2, 0, 0));
+    wire.addElement(new Vector3f(x1, 0, 0));
+    wire.addElement(new Vector3f(x2, 0, 0));
     o.addWire(wire, new Color(220, 220, 100), false, false);
   }
 
@@ -447,7 +447,7 @@ public class Landscape implements CameraSubject, ShadowTarget {
    * and the next tile downwind
    * unload the upwind tile
    */
-  public void loadTilesAround(final Vector3d p) {
+  public void loadTilesAround(final Vector3f p) {
     currentTile = getTile(p);
     if (currentTile < MAX_TILES) {
       loadTile(currentTile);
@@ -460,8 +460,8 @@ public class Landscape implements CameraSubject, ShadowTarget {
     }
   }
 
-  public boolean reachedGoal(final Vector3d p) {
-    return p.posY >= MAX_TILES * TILE_WIDTH;
+  public boolean reachedGoal(final Vector3f p) {
+    return p.y >= MAX_TILES * TILE_WIDTH;
   }
 
   void removeTile(final int tileNum) {
@@ -497,7 +497,7 @@ public class Landscape implements CameraSubject, ShadowTarget {
   /*
    * return first hill downwind (+y) of p within glide
    */
-  Hill nextHill(final Vector3d p) {
+  Hill nextHill(final Vector3f p) {
     int tile = getTile(p);
     if (!tiles[tile].loaded) {
       return null;
@@ -506,7 +506,7 @@ public class Landscape implements CameraSubject, ShadowTarget {
     float range = 8;
 
     for (Hill hill : tiles[tile].hills) {
-      if (hill.y0 >= p.posY && hill.y0 - p.posY < range * p.posZ && hill.inForeGround) {
+      if (hill.y0 >= p.y && hill.y0 - p.y < range * p.z && hill.inForeGround) {
         return hill;
       }
     }
@@ -522,7 +522,7 @@ public class Landscape implements CameraSubject, ShadowTarget {
     }
 
     for (Hill hill : tiles[tile].hills) {
-      if (hill.y0 >= p.posY && hill.y0 - p.posY < range * p.posZ && hill.inForeGround) {
+      if (hill.y0 >= p.y && hill.y0 - p.y < range * p.z && hill.inForeGround) {
         return hill;
       }
     }
@@ -533,9 +533,9 @@ public class Landscape implements CameraSubject, ShadowTarget {
   /*
    * which tile does this point fall in
    */
-  int getTile(final Vector3d p) {
+  int getTile(final Vector3f p) {
     for (int i = 0; i < MAX_TILES; i++) {
-      if ((i + 1) * TILE_WIDTH > p.posY)  {
+      if ((i + 1) * TILE_WIDTH > p.y)  {
         return i;
       }
     }
@@ -545,14 +545,14 @@ public class Landscape implements CameraSubject, ShadowTarget {
   /*
    * find local hill to point, if any
    */
-  public Hill getHillAt(final Vector3d p) {
+  public Hill getHillAt(final Vector3f p) {
     int tile = getTile(p);
     if (!tiles[tile].loaded) {
       return null;
     }
 
     for (Hill hill : tiles[tile].hills) {
-      if (hill.contains(p.posX, p.posY)) {
+      if (hill.contains(p.x, p.y)) {
         return hill;
       }
     }
@@ -562,22 +562,22 @@ public class Landscape implements CameraSubject, ShadowTarget {
 
   @Override
   public float getHeight(final float x, final float y) {
-    Hill hill = getHillAt(new Vector3d(x, y, 0));
+    Hill hill = getHillAt(new Vector3f(x, y, 0));
     return (hill == null) ? 0 : hill.getHeight(x, y);
   }
 
   @Override
-  public Vector3d getFocus() {
+  public Vector3f getFocus() {
     float centerY = currentTile * TILE_WIDTH + TILE_WIDTH / 2;
-    return new Vector3d(0, centerY, 0);
+    return new Vector3f(0, centerY, 0);
   }
 
   /*
    * look in from near corner (at cloudbase)
    */
   @Override
-  public Vector3d getEye() {
+  public Vector3f getEye() {
     float centerY = currentTile * TILE_WIDTH + TILE_WIDTH / 2;
-    return new Vector3d(TILE_WIDTH / 2, centerY - TILE_WIDTH / 2, 2);
+    return new Vector3f(TILE_WIDTH / 2, centerY - TILE_WIDTH / 2, 2);
   }
 }

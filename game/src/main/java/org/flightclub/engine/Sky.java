@@ -8,7 +8,7 @@
 package org.flightclub.engine;
 
 import java.util.Vector;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 /*
  * Manages clouds and related met data
@@ -44,15 +44,15 @@ public class Sky {
   /*
    * return first cloud downwind of p within glide
    */
-  Cloud nextCloud(final Vector3d p) {
+  Cloud nextCloud(final Vector3f p) {
     int j = -1;
-    float dyMin = RANGE * p.posZ;
+    float dyMin = RANGE * p.z;
 
     for (int i = 0; i < clouds.size(); i++) {
       Cloud cloud = clouds.elementAt(i);
       //if (cloud.getY(p.z) >= p.y && cloud.age < 10) {
-      if (cloud.getY(p.posZ) >= p.posY && !cloud.decaying) {
-        float dy = cloud.getY(p.posZ) - p.posY;
+      if (cloud.getY(p.z) >= p.y && !cloud.decaying) {
+        float dy = cloud.getY(p.z) - p.y;
         if (dy < dyMin) {
           j = i;
           dyMin = dy;
@@ -72,14 +72,14 @@ public class Sky {
    * useful when gaggle get ahead of user
    * and reach end of a tile
    */
-  Cloud prevCloud(final Vector3d p) {
+  Cloud prevCloud(final Vector3f p) {
     int j = -1;
-    float dyMin = RANGE * p.posZ;
+    float dyMin = RANGE * p.z;
 
     for (int i = clouds.size() - 1; i >= 0; i--) {
       Cloud cloud = clouds.elementAt(i);
-      if (cloud.getY(p.posZ) <= p.posY && cloud.age < 10) {
-        float dy = p.posY - cloud.getY(p.posZ);
+      if (cloud.getY(p.z) <= p.y && cloud.age < 10) {
+        float dy = p.y - cloud.getY(p.z);
         if (dy < dyMin) {
           j = i;
           dyMin = dy;
@@ -95,7 +95,7 @@ public class Sky {
     return null;
   }
 
-  public Cloud getCloudAt(final Vector3d p) {
+  public Cloud getCloudAt(final Vector3f p) {
     for (Cloud cloud : clouds) {
       if (cloud.isUnder(p)) {
         return cloud;

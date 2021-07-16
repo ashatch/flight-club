@@ -7,9 +7,9 @@
 
 package org.flightclub.engine.core;
 
-import org.flightclub.engine.math.Pair;
+import org.joml.Vector2i;
 
 public record GameEnvironment(
-    Pair<Integer, Integer> windowSize,
+    Vector2i windowSize,
     AudioPlayer audioPlayer
 ) {}

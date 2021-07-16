@@ -54,7 +54,7 @@ public class Variometer {
    * dist per frame to dist per unit time.
    */
   private void beep(final UpdateContext context) {
-    float lift = flyingDot.vector.posZ / (context.timeMultiplier() * XcGame.TIME_PER_FRAME);
+    float lift = flyingDot.vector.z / (context.timeMultiplier() * XcGame.TIME_PER_FRAME);
 
     String filename = filenameForLift(lift);
     if (filename != null) {

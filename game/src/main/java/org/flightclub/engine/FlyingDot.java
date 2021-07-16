@@ -19,25 +19,25 @@ import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.math.Vector3d;
 import org.flightclub.engine.models.Tail;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
 public class FlyingDot implements UpdatableGameObject, CameraSubject {
   final XcGame app;
   protected final Sky sky;
-  public Vector3d vector;
-  public Vector3d vectorP = new Vector3d();
+  public Vector3f vector;
+  public Vector3f vectorP = new Vector3f();
   float speed;
   float ds; //distance per frame - hack
   final float myTurnRadius;
 
   boolean isUser = false; //TODO - tidy this hack ! classname operator ?
 
-  final Vector3d axisX = new Vector3d();
-  final Vector3d axisY = new Vector3d();
-  final Vector3d axisZ = new Vector3d();
+  final Vector3f axisX = new Vector3f();
+  final Vector3f axisY = new Vector3f();
+  final Vector3f axisZ = new Vector3f();
 
   Tail tail = null;
   public MovementManager moveManager = null;
@@ -48,7 +48,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   int roll = 0;
   static final int ROLL_STEPS = 15;
   static final float ROLL_MAX_ANGLE = (float) (Math.PI / 4);
-  static final Vector3d[] AXIS_ZS = new Vector3d[ROLL_STEPS * 2 + 1];
+  static final Vector3f[] AXIS_ZS = new Vector3f[ROLL_STEPS * 2 + 1];
 
   /*
    * generate an array of unit 'up' vectors for
@@ -57,10 +57,10 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   static {
     for (int i = -ROLL_STEPS; i < ROLL_STEPS + 1; i++) {
       double theta = ((double) i / (double) ROLL_STEPS) * ROLL_MAX_ANGLE;
-      Vector3d axisZ = new Vector3d();
+      Vector3f axisZ = new Vector3f();
 
-      axisZ.posX = (float) Math.sin(theta);
-      axisZ.posZ = (float) Math.cos(theta);
+      axisZ.x = (float) Math.sin(theta);
+      axisZ.z = (float) Math.cos(theta);
 
       AXIS_ZS[i + ROLL_STEPS] = axisZ;
     }
@@ -78,7 +78,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
 
     speed = inSpeed;
     ds = speed * app.timePerFrame;
-    vector = new Vector3d(0, ds, 0);
+    vector = new Vector3f(0, ds, 0);
     myTurnRadius = inTurnRadius;
   }
 
@@ -93,8 +93,8 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
     isUser = inIsUser;
   }
 
-  public void init(Vector3d inP) {
-    vectorP = new Vector3d(inP);
+  public void init(Vector3f inP) {
+    vectorP = new Vector3f(inP);
     moveManager = new MovementManager(app, this);
     setLocalFrame();
     createTail();
@@ -117,7 +117,7 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   @Override
   public void update(final UpdateContext context) {
     vectorP.add(vector);
-    vectorP.posY += this.sky.getWind() * app.timePerFrame;
+    vectorP.y += this.sky.getWind() * app.timePerFrame;
 
     //hack - may have changed game speed (otherwise ds is constant)
     ds = speed * app.timePerFrame;
@@ -139,15 +139,15 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
 
   protected void sink() {
     // overrider this method for different flying machines
-    vector.posZ = 0;
+    vector.z = 0;
   }
 
   /*
    * Set i, j and k vectors so v is along the y axis - ie do pitch and yaw
    */
   private void setLocalFrame() {
-    axisX.set(vector).cross(new Vector3d(0, 0, 1)).makeUnit();
-    axisY.set(vector).makeUnit();
+    axisX.set(vector).cross(new Vector3f(0, 0, 1)).normalize();
+    axisY.set(vector).normalize();
     axisZ.set(axisX).cross(axisY);
 
     //now apply roll, if any
@@ -155,18 +155,18 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
       return;
     }
 
-    Vector3d up = AXIS_ZS[roll + ROLL_STEPS];
+    Vector3f up = AXIS_ZS[roll + ROLL_STEPS];
 
-    Vector3d axisX0 = new Vector3d(axisX);
-    Vector3d axisZ0 = new Vector3d(axisZ);
+    Vector3f axisX0 = new Vector3f(axisX);
+    Vector3f axisZ0 = new Vector3f(axisZ);
 
-    Vector3d dx = new Vector3d(axisX0).scaleBy(up.posX);
-    Vector3d dz = new Vector3d(axisZ0).scaleBy(up.posZ);
+    Vector3f dx = new Vector3f(axisX0).mul(up.x);
+    Vector3f dz = new Vector3f(axisZ0).mul(up.z);
 
     axisZ.set(dx).add(dz);
 
-    dx.set(axisX0).scaleBy(up.posZ);
-    dz.set(axisZ0).scaleBy(-up.posX);
+    dx.set(axisX0).mul(up.z);
+    dz.set(axisZ0).mul(-up.x);
 
     axisX.set(dx).add(dz);
   }
@@ -194,15 +194,15 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
   }
 
   @Override
-  public Vector3d getFocus() {
+  public Vector3f getFocus() {
     // mid height and 'ahead'
-    return new Vector3d(vectorP.posX, vectorP.posY + 1, 1);
+    return new Vector3f(vectorP.x, vectorP.y + 1, 1);
   }
 
   @Override
-  public Vector3d getEye() {
-    float x = (vectorP.posX > 0) ? (vectorP.posX + 2) : (vectorP.posX - 2);
-    return new Vector3d(x, vectorP.posY - 2, (float) 0.8);
+  public Vector3f getEye() {
+    float x = (vectorP.x > 0) ? (vectorP.x + 2) : (vectorP.x - 2);
+    return new Vector3f(x, vectorP.y - 2, (float) 0.8);
   }
 
   /*
@@ -217,9 +217,9 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
    * 2 - halve that etc.
    */
   void makeTurn(final float dir) {
-    vector.posZ = 0;    //work in xy plane
-    Vector3d w = new Vector3d(0, 0, 1).cross(vector).scaleBy(-dir * ds / myTurnRadius);
-    vector.add(w).scaleToLength(ds); //ds is in xy only
+    vector.z = 0;    //work in xy plane
+    Vector3f w = new Vector3f(0, 0, 1).cross(vector).mul(-dir * ds / myTurnRadius);
+    vector.add(w).normalize(ds); //ds is in xy only
     roll(dir);
   }
 
@@ -234,10 +234,10 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
       return;
     }
 
-    Vector3d vectorPrime = vectorP.plus(vector);
+    Vector3f vectorPrime = vectorP.add(vector);
 
-    float height = vectorP.posZ - app.landscape.getHeight(vectorP.posX, vectorP.posY);
-    float heightPrime = vectorP.posZ - app.landscape.getHeight(vectorPrime.posX, vectorPrime.posY);
+    float height = vectorP.z - app.landscape.getHeight(vectorP.x, vectorP.y);
+    float heightPrime = vectorP.z - app.landscape.getHeight(vectorPrime.x, vectorPrime.y);
     float deltaHeight = heightPrime - height;
 
     if (height < 0) {
@@ -249,10 +249,10 @@ public class FlyingDot implements UpdatableGameObject, CameraSubject {
       //float r = (h - ONE_WING) * (ds/dh) * (ds/dh);
 
       // turn left or right ? see if moving right a bit gives a greater h than straight on
-      Vector3d w = vector.crossed(new Vector3d(0, 0, 1)).scaleBy(ds / myTurnRadius);
-      Vector3d vectorPrimePlusW = vectorPrime.plus(w);
-      float heightAfterCalculation = vectorP.posZ - app.landscape.getHeight(
-          vectorPrimePlusW.posX, vectorPrimePlusW.posY);
+      Vector3f w = new Vector3f(vector).cross(new Vector3f(0, 0, 1)).mul(ds / myTurnRadius);
+      Vector3f vectorPrimePlusW = vectorPrime.add(w);
+      float heightAfterCalculation = vectorP.z - app.landscape.getHeight(
+          vectorPrimePlusW.x, vectorPrimePlusW.y);
       if (heightAfterCalculation >= heightPrime) {
         makeTurn(1); //turn right
       } else {

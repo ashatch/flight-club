@@ -9,7 +9,7 @@ package org.flightclub.engine;
 
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.core.geometry.Object3dWithShadow;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public class FlyingBody extends FlyingDot {
   private Object3dWithShadow body0;
@@ -28,7 +28,7 @@ public class FlyingBody extends FlyingDot {
 
   public void init(
       final Object3dWithShadow inBody,
-      final Vector3d inP
+      final Vector3f inP
   ) {
     body0 = inBody;    //the base object should not be registered
     body1 = new Object3dWithShadow();
@@ -50,21 +50,21 @@ public class FlyingBody extends FlyingDot {
 
   public void rotateBody() {
     for (int i = 0; i < body0.points.size(); i++) {
-      Vector3d p1 = body1.points.elementAt(i);
-      Vector3d p0 = body0.points.elementAt(i);
+      Vector3f p1 = body1.points.elementAt(i);
+      Vector3f p0 = body0.points.elementAt(i);
 
-      Vector3d xp1 = new Vector3d(axisX).scaleBy(p0.posX);
-      Vector3d yp1 = new Vector3d(axisY).scaleBy(p0.posY);
-      Vector3d zp1 = new Vector3d(axisZ).scaleBy(p0.posZ);
+      Vector3f xp1 = new Vector3f(axisX).mul(p0.x);
+      Vector3f yp1 = new Vector3f(axisY).mul(p0.y);
+      Vector3f zp1 = new Vector3f(axisZ).mul(p0.z);
 
-      p1.posX = xp1.posX + yp1.posX + zp1.posX;
-      p1.posY = xp1.posY + yp1.posY + zp1.posY;
-      p1.posZ = xp1.posZ + yp1.posZ + zp1.posZ;
+      p1.x = xp1.x + yp1.x + zp1.x;
+      p1.y = xp1.y + yp1.y + zp1.y;
+      p1.z = xp1.z + yp1.z + zp1.z;
     }
   }
 
   public void translateBody() {
-    for (Vector3d point : body1.points) {
+    for (Vector3f point : body1.points) {
       point.add(vectorP);
     }
   }

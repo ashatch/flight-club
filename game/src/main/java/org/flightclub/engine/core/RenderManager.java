@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.stream.IntStream;
 import org.flightclub.engine.core.geometry.Object3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +34,12 @@ public class RenderManager {
       return 0;
     }
 
-    final Vector3d p1 = o1.cameraSpacePoints.get(0);
-    final Vector3d p2 = o2.cameraSpacePoints.get(0);
+    final Vector3f p1 = o1.cameraSpacePoints.get(0);
+    final Vector3f p2 = o2.cameraSpacePoints.get(0);
 
-    if (p1.posX > p2.posX) {
+    if (p1.x > p2.x) {
       return 1;
-    } else if (p1.posX < p2.posX) {
+    } else if (p1.x < p2.x) {
       return -1;
     } else {
       return 0;

@@ -1,19 +1,19 @@
 package org.flightclub.engine.core;
 
 import org.flightclub.engine.camera.Camera;
-import org.flightclub.engine.math.Pair;
+import org.joml.Vector2i;
 
 public class RenderContext {
   private final Graphics graphics;
   private final Camera camera;
-  private final Pair screenSize;
+  private final Vector2i screenSize;
 
   private boolean isPaused;
 
   public RenderContext(
       final Graphics graphics,
       final Camera camera,
-      final Pair screenSize,
+      final Vector2i screenSize,
       final boolean isPaused
   ) {
     this.graphics = graphics;
@@ -26,7 +26,7 @@ public class RenderContext {
     return graphics;
   }
 
-  public Pair<Integer, Integer> screenSize() {
+  public Vector2i screenSize() {
     return screenSize;
   }
 

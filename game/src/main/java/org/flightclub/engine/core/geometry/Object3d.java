@@ -9,19 +9,18 @@ package org.flightclub.engine.core.geometry;
 
 import java.util.Vector;
 import org.flightclub.engine.camera.Camera;
-import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.core.Renderable;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 
 public class Object3d implements Renderable {
   private final int layer;
   private boolean inFov = false;
 
-  public final Vector<Vector3d> points = new Vector<>();
-  public final Vector<Vector3d> cameraSpacePoints = new Vector<>();
+  public final Vector<Vector3f> points = new Vector<>();
+  public final Vector<Vector3f> cameraSpacePoints = new Vector<>();
   public final Vector<PolyLine> wires = new Vector<>();
 
   // list of flags - is point within field of view
@@ -58,11 +57,11 @@ public class Object3d implements Renderable {
     inFov = false; //set true if any points are in FOV
 
     for (int i = 0; i < points.size(); i++) {
-      final Vector3d vector = points.elementAt(i);
-      final Vector3d vectorPrime = cameraSpacePoints.elementAt(i);
+      final Vector3f vector = points.elementAt(i);
+      final Vector3f vectorPrime = cameraSpacePoints.elementAt(i);
 
       //translate, rotate and project (only if visible)
-      vectorPrime.set(vector).subtract(camera.getFocus());
+      vectorPrime.set(vector).sub(camera.getFocus());
       Tools3d.applyTo(camera.getMatrix(), vectorPrime, vectorPrime);
 
       boolean rc = Tools3d.projectYz(vectorPrime, vectorPrime, camera.getDistance());
@@ -73,21 +72,21 @@ public class Object3d implements Renderable {
   }
 
   public void scaleBy(final float s) {
-    points.forEach(v -> v.scaleBy(s));
+    points.forEach(v -> v.mul(s));
   }
 
   public void setColor(final Color color) {
     wires.forEach(wire -> wire.setTrueColor(color));
   }
 
-  protected int addPoint(Vector3d p) {
-    Vector3d q;
+  protected int addPoint(Vector3f p) {
+    Vector3f q;
     int index = 0;
     boolean found = false;
 
     for (int i = 0; i < points.size(); i++) {
       q = points.elementAt(i);
-      if ((q.posX == p.posX) && (q.posY == p.posY) && (q.posZ == p.posZ)) {
+      if ((q.x == p.x) && (q.y == p.y) && (q.z == p.z)) {
         index = i;
         found = true;
         break;
@@ -98,18 +97,18 @@ public class Object3d implements Renderable {
       return index;
     } else {
       points.addElement(p);
-      cameraSpacePoints.addElement(new Vector3d());
+      cameraSpacePoints.addElement(new Vector3f());
       flagsInFieldOfView.addElement(false);
       return points.size() - 1;
     }
   }
 
-  public int addWire(Vector<Vector3d> wirePoints, Color c, boolean isSolid) {
+  public int addWire(Vector<Vector3f> wirePoints, Color c, boolean isSolid) {
     //default has normal (ie only one side of surface is visible)
     return addWire(wirePoints, c, isSolid, true);
   }
 
-  public int addWire(Vector<Vector3d> wirePoints, Color c, boolean isSolid, boolean hasNormal) {
+  public int addWire(Vector<Vector3f> wirePoints, Color c, boolean isSolid, boolean hasNormal) {
     PolyLine wire;
     if (isSolid) {
       wire = new Surface(this, wirePoints.size(), c);
@@ -117,7 +116,7 @@ public class Object3d implements Renderable {
       wire = new PolyLine(this, wirePoints.size(), c);
     }
 
-    for (Vector3d wirePoint : wirePoints) {
+    for (Vector3f wirePoint : wirePoints) {
       int pointIndex = this.addPoint(wirePoint);
       wire.addPoint(pointIndex);
     }
@@ -130,7 +129,7 @@ public class Object3d implements Renderable {
     return wires.size() - 1;
   }
 
-  public void addTile(Vector3d[] corners, Color c, boolean isSolid, boolean isConcave) {
+  public void addTile(Vector3f[] corners, Color c, boolean isSolid, boolean isConcave) {
     /*
      * special case of the above - we are passed four
      * points and make two triangles to tessalate the
@@ -139,11 +138,11 @@ public class Object3d implements Renderable {
      * makes tile either concave or convex.
      */
 
-    Vector<Vector3d> wire1 = new Vector<>();
-    Vector<Vector3d> wire2 = new Vector<>();
+    Vector<Vector3f> wire1 = new Vector<>();
+    Vector<Vector3f> wire2 = new Vector<>();
 
-    float h1 = corners[0].posZ + corners[2].posZ;
-    float h2 = corners[1].posZ + corners[3].posZ;
+    float h1 = corners[0].z + corners[2].z;
+    float h2 = corners[1].z + corners[3].z;
 
     if (h1 < h2 && isConcave || h1 > h2 && !isConcave) {
 
@@ -177,10 +176,10 @@ public class Object3d implements Renderable {
 
   public static void clone(Object3d from, Object3d to) {
     for (PolyLine fromWire : from.wires) {
-      Vector<Vector3d> toWire = new Vector<>();
+      Vector<Vector3f> toWire = new Vector<>();
       for (int k : fromWire.points) {
-        Vector3d v = from.points.elementAt(k);
-        toWire.addElement(new Vector3d(v));
+        Vector3f v = from.points.elementAt(k);
+        toWire.addElement(new Vector3f(v));
       }
 
       boolean hasNorm = (fromWire.normal != null);

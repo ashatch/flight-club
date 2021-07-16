@@ -8,10 +8,9 @@
 package org.flightclub.engine.core.geometry;
 
 import org.flightclub.engine.camera.Camera;
-import org.flightclub.engine.camera.CameraMan;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.Graphics;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.camera.Camera.BACKGROUND;
 import static org.flightclub.engine.camera.Camera.BACKGROUND_B;
@@ -29,7 +28,7 @@ public class PolyLine {
 
   public boolean isSolid = false;
 
-  public Vector3d normal;
+  public Vector3f normal;
 
   private int nextIndex = 0;
 
@@ -54,15 +53,15 @@ public class PolyLine {
     nextIndex++;
   }
 
-  public boolean isBackFace(final Vector3d eye) {
+  public boolean isBackFace(final Vector3f eye) {
     if (normal == null) {
       return false;
     }
 
     setNormal();
 
-    Vector3d p = object3d.points.elementAt(points[0]);
-    Vector3d ray = p.minus(eye);
+    Vector3f p = object3d.points.elementAt(points[0]);
+    Vector3f ray = new Vector3f(p).sub(eye);
 
     return normal.dot(ray) >= 0;
   }
@@ -72,20 +71,20 @@ public class PolyLine {
       return;
     }
 
-    Vector3d[] ps = new Vector3d[3];
+    Vector3f[] ps = new Vector3f[3];
     for (int i = 0; i < 3; i++) {
       ps[i] = object3d.points.elementAt(points[i]);
     }
 
-    Vector3d e1 = ps[0].minus(ps[1]);
-    Vector3d e2 = ps[2].minus(ps[1]);
+    Vector3f e1 = new Vector3f(ps[0]).sub(ps[1]);
+    Vector3f e2 = new Vector3f(ps[2]).sub(ps[1]);
 
-    normal = new Vector3d(e1).cross(e2).makeUnit();
+    normal = new Vector3f(e1).cross(e2).normalize();
   }
 
-  public void draw(Graphics g, Camera camera) {
-    Vector3d a;
-    Vector3d b;
+  public void draw(final Graphics g, final Camera camera) {
+    Vector3f a;
+    Vector3f b;
 
     if (numPoints <= 1) {
       return;
@@ -100,7 +99,7 @@ public class PolyLine {
       boolean inFieldOfView2 = object3d.flagsInFieldOfView.elementAt(points[i + 1]);
 
       if (inFieldOfView1 && inFieldOfView2) {
-        g.drawLine((int) a.posY, (int) a.posZ, (int) b.posY, (int) b.posZ);
+        g.drawLine((int) a.y, (int) a.z, (int) b.y, (int) b.z);
       }
     }
   }
@@ -113,8 +112,8 @@ public class PolyLine {
     apparentColor = trueColor.mul(light);
 
     //fogging
-    Vector3d p = object3d.cameraSpacePoints.elementAt(points[0]);
-    return foggyColor(p.posX, apparentColor);
+    Vector3f p = object3d.cameraSpacePoints.elementAt(points[0]);
+    return foggyColor(p.x, apparentColor);
   }
 
 

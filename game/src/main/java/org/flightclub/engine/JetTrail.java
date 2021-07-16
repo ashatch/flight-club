@@ -9,8 +9,8 @@ package org.flightclub.engine;
 
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.math.Vector3d;
 import org.flightclub.engine.models.Tail;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.BACKGROUND_LAYER;
 
@@ -36,14 +36,14 @@ public class JetTrail extends FlyingDot {
     //set flag so camera will follow my cuts when in mode 1
     //(see glider.gotoNextLiftSource)
     super(app, sky, SPEED, TURN_RADIUS);
-    super.init(new Vector3d(x, y, ALTITUDE));
-    vector.posY = SPEED;
+    super.init(new Vector3f(x, y, ALTITUDE));
+    vector.y = SPEED;
   }
 
   void makeFlyX() {
     //override the default of flying down y axix
-    vector.posX = -SPEED;
-    vector.posY = 0;
+    vector.x = -SPEED;
+    vector.y = 0;
   }
 
   @Override
@@ -55,13 +55,13 @@ public class JetTrail extends FlyingDot {
 
   void checkBounds() {
     if (buzzThis != null) {
-      Vector3d t = new Vector3d(buzzThis.vectorP.posX, buzzThis.vectorP.posY + TURN_RADIUS, 0);
-      if (vectorP.posX > buzzThis.vectorP.posX + RANGE
-          || vectorP.posX < buzzThis.vectorP.posX - RANGE) {
+      Vector3f t = new Vector3f(buzzThis.vectorP.x, buzzThis.vectorP.y + TURN_RADIUS, 0);
+      if (vectorP.x > buzzThis.vectorP.x + RANGE
+          || vectorP.x < buzzThis.vectorP.x - RANGE) {
         moveManager.setTargetPoint(t);
       }
-      if (vectorP.posY > buzzThis.vectorP.posY + RANGE
-          || vectorP.posY < buzzThis.vectorP.posY - RANGE) {
+      if (vectorP.y > buzzThis.vectorP.y + RANGE
+          || vectorP.y < buzzThis.vectorP.y - RANGE) {
         moveManager.setTargetPoint(t);
       }
     }

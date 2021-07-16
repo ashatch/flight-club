@@ -9,22 +9,17 @@ package org.flightclub.awt.enginetest;
 import java.util.Vector;
 import org.flightclub.engine.GameLoopTarget;
 import org.flightclub.engine.GameRenderer;
-import org.flightclub.engine.MouseOrbitCamera;
 import org.flightclub.engine.camera.Camera;
-import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.GameEnvironment;
 import org.flightclub.engine.core.Graphics;
 import org.flightclub.engine.core.RenderContext;
 import org.flightclub.engine.core.RenderManager;
 import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
-import org.flightclub.engine.events.EventManager;
 import org.flightclub.engine.events.KeyEvent;
-import org.flightclub.engine.events.MouseTracker;
 import org.flightclub.engine.keyboard.KeyboardState;
-import org.flightclub.engine.math.Vector3d;
-import org.flightclub.engine.models.GliderShape;
 import org.flightclub.engine.models.UnitCube;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,22 +38,16 @@ public class TestGame implements GameLoopTarget, GameRenderer {
       final Camera camera,
       final RenderManager renderManager,
       final KeyboardState keyboardState,
-      final GameEnvironment gameEnvironment,
-      final MouseTracker mouseTracker
+      final GameEnvironment gameEnvironment
   ) {
     this.camera = camera.withLightRay(-3, 2, 3);
     this.renderManager = renderManager;
     this.keyboardState = keyboardState;
     this.gameEnvironment = gameEnvironment;
 
-    final GliderShape someGlider = new GliderShape(Color.BLUE);
-    this.renderManager.add(someGlider);
     this.renderManager.add(new UnitCube(1, true));
-    camera.setEye(1, 1, 0);
+    camera.setEye(0, 10, 0);
     camera.setFocus(0, 0, 0);
-    someGlider.updateShadow((posX, posY) -> -0.2f);
-
-    this.addGameObject(new MouseOrbitCamera(this.camera, mouseTracker, 0.5f).withSensitivity(1f));
   }
 
   public void addGameObject(final UpdatableGameObject gameObject) {
@@ -75,9 +64,13 @@ public class TestGame implements GameLoopTarget, GameRenderer {
 
   private void processKeyboardState() {
     if (this.keyboardState.isKeyDown(KeyEvent.VK_UP)) {
-      camera.getEye().add(new Vector3d(0, -0.1, 0));
+      camera.getEye().add(new Vector3f(0, -0.1f, 0));
     } else if (this.keyboardState.isKeyDown(KeyEvent.VK_DOWN)) {
-      camera.getEye().add(new Vector3d(0, +0.1, 0));
+      camera.getEye().add(new Vector3f(0, +0.1f, 0));
+    } else if (this.keyboardState.isKeyDown(KeyEvent.VK_LEFT)) {
+      camera.getEye().add(new Vector3f(0.1f, 0, 0));
+    } else if (this.keyboardState.isKeyDown(KeyEvent.VK_RIGHT)) {
+      camera.getEye().add(new Vector3f(-0.1f, 0, 0));
     }
   }
 

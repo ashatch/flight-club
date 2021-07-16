@@ -14,5 +14,6 @@ java {
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("org.joml:joml:1.10.0")
     implementation(project(":game"))
 }

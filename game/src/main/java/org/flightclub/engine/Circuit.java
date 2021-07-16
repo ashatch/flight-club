@@ -7,7 +7,7 @@
 
 package org.flightclub.engine;
 
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 /**
  * A list of points to fly round when ridge soaring.
@@ -16,22 +16,22 @@ import org.flightclub.engine.math.Vector3d;
  */
 public class Circuit {
   private final Hill hill;
-  private final Vector3d[] points;
+  private final Vector3f[] points;
   private int numPoints = 0;
   private int next = 0;
-  private final Vector3d fallLine;
+  private final Vector3f fallLine;
 
   public Circuit(
       final Hill hill,
-      final Vector3d fallLine,
+      final Vector3f fallLine,
       final int n
   ) {
     this.hill = hill;
-    points = new Vector3d[n];
+    points = new Vector3f[n];
     this.fallLine = fallLine;
   }
 
-  public Vector3d getFallLine() {
+  public Vector3f getFallLine() {
     return fallLine;
   }
 
@@ -45,23 +45,23 @@ public class Circuit {
     }
   }
 
-  void add(final Vector3d inP) {
+  void add(final Vector3f inP) {
     // hills build circuits using their local coords
     points[numPoints] = inP;
     numPoints++;
   }
 
-  Vector3d next() {
-    Vector3d p = points[next];
+  Vector3f next() {
+    Vector3f p = points[next];
     next++;
     if (next > numPoints - 1) {
       next = 0;
     }
 
     //transform from local to global coords
-    Vector3d q = new Vector3d();
-    q.posX = p.posX + hill.x0;
-    q.posY = p.posY + hill.y0;
+    Vector3f q = new Vector3f();
+    q.x = p.x + hill.x0;
+    q.y = p.y + hill.y0;
 
     return q;
   }

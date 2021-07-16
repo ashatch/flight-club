@@ -30,7 +30,7 @@ import org.flightclub.engine.keyboard.GameControl;
 import org.flightclub.engine.keyboard.KeyboardState;
 import org.flightclub.engine.keyboard.SkyControl;
 import org.flightclub.engine.keyboard.UserGliderController;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -162,12 +162,12 @@ public class XcGame implements GameLoopTarget, GameRenderer {
   void launchGaggle() {
     for (int i = 0; i < gaggle.size(); i++) {
       Glider glider = gaggle.elementAt(i);
-      glider.takeOff(new Vector3d(4 - i, 4 - i, (float) 1.5));
+      glider.takeOff(new Vector3f(4 - i, 4 - i, (float) 1.5));
     }
   }
 
   void launchUser() {
-    userGlider.takeOff(new Vector3d(4 - 4 - 1, 4 - 6, (float) 1.8));
+    userGlider.takeOff(new Vector3f(4 - 4 - 1, 4 - 6, (float) 1.8));
     time = 0;
   }
 
@@ -260,13 +260,13 @@ public class XcGame implements GameLoopTarget, GameRenderer {
 
   private void updateSlider(final float delta) {
     if (slider != null) {
-      slider.setValue(2.0f * userGlider.vector.posZ / (delta * timeMultiplier));
+      slider.setValue(2.0f * userGlider.vector.z / (delta * timeMultiplier));
     }
   }
 
   private void updateCompass() {
     if (compass != null) {
-      compass.setArrow(userGlider.vector.posX, userGlider.vector.posY);
+      compass.setArrow(userGlider.vector.x, userGlider.vector.y);
     }
   }
 

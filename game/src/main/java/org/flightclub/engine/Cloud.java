@@ -14,17 +14,17 @@ import org.flightclub.engine.core.UpdatableGameObject;
 import org.flightclub.engine.core.UpdateContext;
 import org.flightclub.engine.core.geometry.Object3dWithShadow;
 import org.flightclub.engine.core.geometry.Tools3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public class Cloud implements CameraSubject, UpdatableGameObject {
   final XcGame app;
   final Object3dWithShadow object3d;
   private final Sky sky;
-  Vector3d projection;
+  Vector3f projection;
   final float maxRadius;
   final boolean solid = true;
   final Color color;
-  final Vector3d[] corners = new Vector3d[8];
+  final Vector3f[] corners = new Vector3f[8];
   final boolean inForeGround;
   ThermalTrigger trigger = null;
 
@@ -61,7 +61,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     inApp.renderManager.add(object3d);
 
     for (int i = 0; i < 8; i++) {
-      corners[i] = new Vector3d();
+      corners[i] = new Vector3f();
     }
 
     //units of time - model minutes
@@ -72,7 +72,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     age = (float) 0.1; //small but non zero
     //ds = Sky.getWind()/app.getFrameRate();
     myRnd = (float) (Tools3d.rnd(0, 1)); //for camera angle
-    projection = new Vector3d(x, y, sky.getCloudBase());
+    projection = new Vector3f(x, y, sky.getCloudBase());
 
     /*
      * cloud strength measured in multiples of glider (min) sink rate
@@ -91,8 +91,8 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     app.addGameObject(this);
 
     //add to lift profile ?
-    inForeGround = (projection.posX < Landscape.TILE_WIDTH / 2f
-        && projection.posX > -Landscape.TILE_WIDTH / 2f);
+    inForeGround = (projection.x < Landscape.TILE_WIDTH / 2f
+        && projection.x > -Landscape.TILE_WIDTH / 2f);
 
     if (inForeGround) {
       this.sky.addCloud(this);
@@ -111,7 +111,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   }
 
   private void buildSurfaces() {
-    Vector<Vector3d> wire;
+    Vector<Vector3f> wire;
 
     //front
     wire = new Vector<>();
@@ -141,7 +141,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
     object3d.addWireWithShadow(wire, color, solid, true);
 
     //top - use a convex tile
-    Vector3d[] topCorners = new Vector3d[4];
+    Vector3f[] topCorners = new Vector3f[4];
 
     topCorners[0] = corners[1];
     topCorners[1] = corners[2];
@@ -170,21 +170,21 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
 
   }
 
-  public boolean isUnder(final Vector3d inP) {
+  public boolean isUnder(final Vector3f inP) {
     // only compute lift if within bounding box
 
     //if (age > t_nose + t_mature) return false;
 
-    if (inP.posX > projection.posX + LIFT_FN_OUTER) {
+    if (inP.x > projection.x + LIFT_FN_OUTER) {
       return false;
     }
-    if (inP.posX < projection.posX - LIFT_FN_OUTER) {
+    if (inP.x < projection.x - LIFT_FN_OUTER) {
       return false;
     }
-    if (inP.posY > getY(inP.posZ) + LIFT_FN_OUTER) {
+    if (inP.y > getY(inP.z) + LIFT_FN_OUTER) {
       return false;
     }
-    if (inP.posY < getY(inP.posZ) - LIFT_FN_OUTER) {
+    if (inP.y < getY(inP.z) - LIFT_FN_OUTER) {
       return false;
     }
 
@@ -203,8 +203,8 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
       return;
     }
 
-    projection.posY += this.sky.getWind() * context.deltaTime() * context.timeMultiplier() / 2.0f;
-    projection.posZ = this.sky.getCloudBase();
+    projection.y += this.sky.getWind() * context.deltaTime() * context.timeMultiplier() / 2.0f;
+    projection.z = this.sky.getCloudBase();
     setCorners();
     object3d.updateShadow(app.landscape);
   }
@@ -248,7 +248,7 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
   }
 
   void setCorners() {
-    Vector3d v = new Vector3d();
+    Vector3f v = new Vector3f();
     float radius = getRadius();
     float radiusBase = getRadiusBase(radius);
 
@@ -300,61 +300,61 @@ public class Cloud implements CameraSubject, UpdatableGameObject {
       final float r,
       final double _a,
       final double _b,
-      final Vector3d v
+      final Vector3f v
   ) {
     //convert degrees to radians, a - theta, b -landa
     double a = _a * (Math.PI / 180);
     double b = _b * (Math.PI / 180);
 
-    v.posX = (float) (r * Math.cos(b) * Math.cos(a));
-    v.posY = (float) (r * Math.cos(b) * Math.sin(a));
-    v.posZ = (float) (r * Math.sin(b));
+    v.x = (float) (r * Math.cos(b) * Math.cos(a));
+    v.y = (float) (r * Math.cos(b) * Math.sin(a));
+    v.z = (float) (r * Math.sin(b));
 
     //wind slope - wind blows cloud tops downwind
-    v.posY += windSlope * v.posZ;
+    v.y += windSlope * v.z;
   }
 
   @Override
-  public Vector3d getFocus() {
-    return new Vector3d(projection.posX, projection.posY + 2, (float) 1);
+  public Vector3f getFocus() {
+    return new Vector3f(projection.x, projection.y + 2, (float) 1);
   }
 
   @Override
-  public Vector3d getEye() {
+  public Vector3f getEye() {
     int dx;
-    if (projection.posX > 0) {
+    if (projection.x > 0) {
       dx = 1;
     } else {
       dx = -1;
     }
     if (myRnd > 0.7) {
-      return new Vector3d(projection.posX + 3 * dx, projection.posY - 3, (float) 0.1);
+      return new Vector3f(projection.x + 3 * dx, projection.y - 3, (float) 0.1);
     } else if (myRnd > 0.3) {
-      return new Vector3d(projection.posX + dx, projection.posY - 5, (float) 1.5);
+      return new Vector3f(projection.x + dx, projection.y - 5, (float) 1.5);
     } else {
-      return new Vector3d(projection.posX, projection.posY - (float) 2.5, (float) 1.2);
+      return new Vector3f(projection.x, projection.y - (float) 2.5, (float) 1.2);
     }
   }
 
   float getX() {
     //no cross wind
-    return projection.posX;
+    return projection.x;
   }
 
   float getY(final float z) {
     float d = this.sky.getCloudBase() - z;
-    return projection.posY - d * windSlope;
+    return projection.y - d * windSlope;
   }
 
-  float getLift(final Vector3d inP) {
+  float getLift(final Vector3f inP) {
     // lift is a function of r (dist from thermal center)
 
-    float dx = projection.posX - inP.posX;
-    float dy = getY(inP.posZ) - inP.posY;
+    float dx = projection.x - inP.x;
+    float dy = getY(inP.z) - inP.y;
     float r = (float) Math.sqrt(dx * dx + dy * dy);
     float lift;
 
-    if (inP.posZ > this.sky.getCloudBase()) {
+    if (inP.z > this.sky.getCloudBase()) {
       return 0;
     }
     //if (age > t_nose + t_mature) return 1;

@@ -16,7 +16,7 @@ package org.flightclub.engine.camera;
 import org.flightclub.engine.Landscape;
 import org.flightclub.engine.core.GameMode;
 import org.flightclub.engine.core.GameModeHolder;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public class CameraMan {
   /* number of steps we accelerate over */
@@ -38,10 +38,10 @@ public class CameraMan {
   private int cutCount = 0;
   private int cut2Count = 0;
 
-  private Vector3d deye;
-  private Vector3d dfocus;
-  private Vector3d eyeGoto;
-  private Vector3d focusGoto;
+  private Vector3f deye;
+  private Vector3f dfocus;
+  private Vector3f eyeGoto;
+  private Vector3f focusGoto;
 
   /* steps to glide between POVs */
   public static final int CUT_LEN = 75;
@@ -81,16 +81,16 @@ public class CameraMan {
       if (subject1 != null && user) {
         camera.setFocus(subject1.getFocus());
         camera.focusOffset(0, PLAN_Y_OFFSET);
-        camera.setEye(new Vector3d(Landscape.TILE_WIDTH / 2f, camera.getFocus().posY, PLAN_H));
+        camera.setEye(new Vector3f(Landscape.TILE_WIDTH / 2f, camera.getFocus().y, PLAN_H));
         cameraSubject = subject1;
       } else if (subject2 != null) {
         camera.setFocus(subject2.getFocus());
         camera.focusOffset(0, PLAN_Y_OFFSET);
-        camera.setEye(new Vector3d(Landscape.TILE_WIDTH / 2f, camera.getFocus().posY, PLAN_H));
+        camera.setEye(new Vector3f(Landscape.TILE_WIDTH / 2f, camera.getFocus().y, PLAN_H));
         cameraSubject = subject2;
       } else {
-        camera.setFocus(new Vector3d(0, Landscape.TILE_WIDTH, 0));
-        camera.setEye(new Vector3d(10, Landscape.TILE_WIDTH, PLAN_H));
+        camera.setFocus(new Vector3f(0, Landscape.TILE_WIDTH, 0));
+        camera.setEye(new Vector3f(10, Landscape.TILE_WIDTH, PLAN_H));
         cameraSubject = null;
       }
       cutCount = 0;
@@ -126,11 +126,11 @@ public class CameraMan {
   void followSubject() {
     //add in movement of our subject
     if (mode != CameraMode.PLAN) {
-      Vector3d eyeVector = cameraSubject.getEye();
-      Vector3d focusVector = cameraSubject.getFocus();
+      Vector3f eyeVector = cameraSubject.getEye();
+      Vector3f focusVector = cameraSubject.getFocus();
 
-      Vector3d deltaEyeVector = eyeVector.minus(eyeGoto);
-      Vector3d deltaFocusVector = focusVector.minus(focusGoto);
+      Vector3f deltaEyeVector = new Vector3f(eyeVector).sub(eyeGoto);
+      Vector3f deltaFocusVector = new Vector3f(focusVector).sub(focusGoto);
 
       camera.getEye().add(deltaEyeVector);
       camera.getFocus().add(deltaFocusVector);
@@ -140,9 +140,9 @@ public class CameraMan {
       focusGoto = focusVector;
     } else {
       //track whilst maintaining a constant camera angle
-      Vector3d f = cameraSubject.getFocus();
-      f.posX = 0;
-      f.posY += PLAN_Y_OFFSET;
+      Vector3f f = cameraSubject.getFocus();
+      f.x = 0;
+      f.y += PLAN_Y_OFFSET;
       camera.moveFocus(f);
     }
   }
@@ -180,16 +180,16 @@ public class CameraMan {
     eyeGoto = cameraSubject.getEye();
     focusGoto = cameraSubject.getFocus();
 
-    deye = eyeGoto.minus(camera.getEye());
-    dfocus = focusGoto.minus(camera.getFocus());
+    deye = new Vector3f(eyeGoto).sub(camera.getEye());
+    dfocus = new Vector3f(focusGoto).sub(camera.getFocus());
 
     /*
      * eye accelerates from 0 upto velocity
      * deye over cutRamp steps, tracks at deye then
      * slows to zero over cutRamp steps. similarly for focus.
      */
-    deye.scaleBy((float) 1.0 / (cutCount - CUT_RAMP));
-    dfocus.scaleBy((float) 1.0 / (cutCount - CUT_RAMP));
+    deye.mul((float) 1.0 / (cutCount - CUT_RAMP));
+    dfocus.mul((float) 1.0 / (cutCount - CUT_RAMP));
   }
 
   /**
@@ -197,22 +197,22 @@ public class CameraMan {
    */
   @SuppressWarnings("StatementWithEmptyBody")
   void cutStep() {
-    Vector3d deyePrime = new Vector3d(deye);
-    Vector3d dfocusPrime = new Vector3d(dfocus);
+    Vector3f deyePrime = new Vector3f(deye);
+    Vector3f dfocusPrime = new Vector3f(dfocus);
     float s;
 
     if (cutCount > CUT_LEN - CUT_RAMP) {
       //accelerating
       s = (float) (CUT_LEN - cutCount) / CUT_RAMP;
       //System.out.println("Cut acc, s: " + s);
-      deyePrime.scaleBy(s);
-      dfocusPrime.scaleBy(s);
+      deyePrime.mul(s);
+      dfocusPrime.mul(s);
     } else if (cutCount < CUT_RAMP) {
       //decelerating
       s = (float) cutCount / CUT_RAMP;
       //System.out.println("Cut dec, s: " + s);
-      deyePrime.scaleBy(s);
-      dfocusPrime.scaleBy(s);
+      deyePrime.mul(s);
+      dfocusPrime.mul(s);
     } else {
       //const speed - no need to scale
     }

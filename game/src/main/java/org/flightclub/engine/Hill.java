@@ -10,7 +10,7 @@ package org.flightclub.engine;
 import org.flightclub.engine.camera.CameraSubject;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.geometry.Object3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 import static org.flightclub.engine.core.RenderManager.DEFAULT_LAYER;
 
@@ -135,7 +135,7 @@ public class Hill implements CameraSubject {
     float y1;
     float y2;
 
-    Vector3d[] corners = new Vector3d[4];
+    Vector3f[] corners = new Vector3f[4];
 
     if (orientation == Orientation.X) {
       x1 = x0 + i;
@@ -151,15 +151,15 @@ public class Hill implements CameraSubject {
 
     //TODO make getZ transform to i/j coords
     if (orientation == Orientation.X) {
-      corners[0] = new Vector3d(x1, y1, getZ(i, j));
-      corners[1] = new Vector3d(x1, y2, getZ(i, j - tileWidth));
-      corners[2] = new Vector3d(x2, y2, getZ(i + tileWidth, j - tileWidth));
-      corners[3] = new Vector3d(x2, y1, getZ(i + tileWidth, j));
+      corners[0] = new Vector3f(x1, y1, getZ(i, j));
+      corners[1] = new Vector3f(x1, y2, getZ(i, j - tileWidth));
+      corners[2] = new Vector3f(x2, y2, getZ(i + tileWidth, j - tileWidth));
+      corners[3] = new Vector3f(x2, y1, getZ(i + tileWidth, j));
     } else {
-      corners[0] = new Vector3d(x1, y1, getZ(i, j - tileWidth));
-      corners[1] = new Vector3d(x1, y2, getZ(i + tileWidth, j - tileWidth));
-      corners[2] = new Vector3d(x2, y2, getZ(i + tileWidth, j));
-      corners[3] = new Vector3d(x2, y1, getZ(i, j));
+      corners[0] = new Vector3f(x1, y1, getZ(i, j - tileWidth));
+      corners[1] = new Vector3f(x1, y2, getZ(i + tileWidth, j - tileWidth));
+      corners[2] = new Vector3f(x2, y2, getZ(i + tileWidth, j));
+      corners[3] = new Vector3f(x2, y1, getZ(i, j));
     }
 
     object3d.addTile(corners, color, true, true);
@@ -170,10 +170,10 @@ public class Hill implements CameraSubject {
    * soaring circuit - treat x0,y0 as origin
    */
   Circuit getCircuit() {
-    final Vector3d fallLine = orientation == Orientation.X
+    final Vector3f fallLine = orientation == Orientation.X
         //default fall line - climb one unit -> move north (+y) one unit
-        ? new Vector3d(0, 1, 0)
-        : new Vector3d(-1, 0, 0);
+        ? new Vector3f(0, 1, 0)
+        : new Vector3f(-1, 0, 0);
 
     final Circuit circuit = new Circuit(this, fallLine, 2);
 
@@ -185,31 +185,31 @@ public class Hill implements CameraSubject {
     }
 
     if (orientation == Orientation.X) {
-      circuit.add(new Vector3d(1, -frontFace, 0));
-      circuit.add(new Vector3d(1 + spineLength, -frontFace, 0));
+      circuit.add(new Vector3f(1, -frontFace, 0));
+      circuit.add(new Vector3f(1 + spineLength, -frontFace, 0));
     } else {
-      circuit.add(new Vector3d(frontFace, 1, 0));
-      circuit.add(new Vector3d(frontFace, 1 + spineLength, 0));
+      circuit.add(new Vector3f(frontFace, 1, 0));
+      circuit.add(new Vector3f(frontFace, 1 + spineLength, 0));
     }
 
     return circuit;
   }
 
   @Override
-  public Vector3d getEye() {
+  public Vector3f getEye() {
     if (orientation == Orientation.X) {
-      return new Vector3d(x0 + 2 + spineLength, y0 - 2 - spineLength, (float) 0.8);
+      return new Vector3f(x0 + 2 + spineLength, y0 - 2 - spineLength, (float) 0.8);
     } else {
-      return new Vector3d(x0 + 2 + spineLength, y0, (float) 0.8);
+      return new Vector3f(x0 + 2 + spineLength, y0, (float) 0.8);
     }
   }
 
   @Override
-  public Vector3d getFocus() {
+  public Vector3f getFocus() {
     if (orientation == Orientation.X) {
-      return new Vector3d(x0 + (2 + spineLength) / 2f, y0, h0 / 2);
+      return new Vector3f(x0 + (2 + spineLength) / 2f, y0, h0 / 2);
     } else {
-      return new Vector3d(x0, y0 + (2 + spineLength) / 2f, h0 / 2);
+      return new Vector3f(x0, y0 + (2 + spineLength) / 2f, h0 / 2);
     }
   }
 
@@ -328,13 +328,13 @@ public class Hill implements CameraSubject {
    * lift twice sink rate close to hill, falling to zero
    * as we get further away
    */
-  float getLift(final Vector3d p) {
+  float getLift(final Vector3f p) {
     float lmax = -3 * Glider.SINK_RATE;
     float dh = (float) 0.1;
     //if (p.z > maxH + (float) 0.2) return 0;
-    if (p.posY < y0) {
-      float z = getHeight(p.posX, p.posY);
-      float h = p.posZ - z;
+    if (p.y < y0) {
+      float z = getHeight(p.x, p.y);
+      float h = p.z - z;
       //System.out.println("ground: " + z);
       if (h < dh) {
         return lmax;

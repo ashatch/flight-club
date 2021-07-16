@@ -7,10 +7,10 @@
 
 package org.flightclub.engine.camera;
 
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 public interface CameraSubject {
-  Vector3d getEye();
+  Vector3f getEye();
 
-  Vector3d getFocus();
+  Vector3f getFocus();
 }

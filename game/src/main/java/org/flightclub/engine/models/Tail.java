@@ -11,7 +11,7 @@ import java.util.Vector;
 import org.flightclub.engine.XcGame;
 import org.flightclub.engine.core.Color;
 import org.flightclub.engine.core.geometry.Object3d;
-import org.flightclub.engine.math.Vector3d;
+import org.joml.Vector3f;
 
 /*
  * a tail of length n may be attached to a flying dot
@@ -19,7 +19,7 @@ import org.flightclub.engine.math.Vector3d;
 public class Tail extends Object3d {
   final int length;
   final Color color;
-  private Vector3d[] tail;
+  private Vector3f[] tail;
   public int wireEvery = 4;    //default add a wire for every 5 points
 
   public Tail(XcGame theApp, int length, Color color, int layer) {
@@ -29,14 +29,14 @@ public class Tail extends Object3d {
     this.color = color;
   }
 
-  public void init(Vector3d p) {
-    tail = new Vector3d[length];
+  public void init(Vector3f p) {
+    tail = new Vector3f[length];
 
     for (int i = 0; i < length; i++) {
-      tail[i] = new Vector3d(p.posX, p.posY - (float) i / 1000, p.posZ);
+      tail[i] = new Vector3f(p.x, p.y - (float) i / 1000, p.z);
     }
 
-    Vector<Vector3d> tailWire = new Vector<>();
+    Vector<Vector3f> tailWire = new Vector<>();
     int j = 0;
     for (int i = wireEvery; i < length; i++) {
       if (j < 2) {
@@ -53,7 +53,7 @@ public class Tail extends Object3d {
     }
   }
 
-  public void moveTo(Vector3d newP) {
+  public void moveTo(Vector3f newP) {
     //newP is the current position
     for (int i = 0; i < length - 1; i++) {
       int j = length - 1 - i;
@@ -67,7 +67,7 @@ public class Tail extends Object3d {
    * has landed and we move it to a new position
    * to resume play
    */
-  public void reset(Vector3d newP) {
+  public void reset(Vector3f newP) {
     for (int i = 0; i < length - 1; i++) {
       tail[i].set(newP);
     }
