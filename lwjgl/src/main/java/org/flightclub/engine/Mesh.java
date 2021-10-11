@@ -1,4 +1,4 @@
-package org.flightclub;
+package org.flightclub.engine;
 
 import org.lwjgl.system.MemoryUtil;
 

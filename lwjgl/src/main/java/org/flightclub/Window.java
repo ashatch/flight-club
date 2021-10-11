@@ -6,12 +6,11 @@ import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import java.nio.IntBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.function.Supplier;
+import org.flightclub.engine.GameItem;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -70,12 +69,6 @@ public abstract class Window {
 
   private boolean resized = false;
 
-  protected ShaderProgram shaderProgram;
-//  protected Mesh mesh;
-  private static final float FOV = (float) Math.toRadians(60.0f);
-  private static final float Z_NEAR = 0.01f;
-  private static final float Z_FAR = 1000.f;
-  private Transformation transformation;
 
   protected List<GameItem> gameItems = new ArrayList<>();
 
@@ -86,79 +79,6 @@ public abstract class Window {
     initImGui();
     imGuiGlfw.init(handle, true);
     imGuiGl3.init(glslVersion);
-
-    try {
-
-      shaderProgram = new ShaderProgram();
-      shaderProgram.createVertexShader(loadResource("/vertex.vs"));
-      shaderProgram.createFragmentShader(loadResource("/fragment.fs"));
-      shaderProgram.link();
-
-      shaderProgram.createUniform("projectionMatrix");
-      shaderProgram.createUniform("worldMatrix");
-
-      float[] positions = new float[]{
-          // VO
-          -0.5f,  0.5f,  0.5f,
-          // V1
-          -0.5f, -0.5f,  0.5f,
-          // V2
-          0.5f, -0.5f,  0.5f,
-          // V3
-          0.5f,  0.5f,  0.5f,
-          // V4
-          -0.5f,  0.5f, -0.5f,
-          // V5
-          0.5f,  0.5f, -0.5f,
-          // V6
-          -0.5f, -0.5f, -0.5f,
-          // V7
-          0.5f, -0.5f, -0.5f,
-      };
-      float[] colours = new float[]{
-          0.5f, 0.0f, 0.0f,
-          0.0f, 0.5f, 0.0f,
-          0.0f, 0.0f, 0.5f,
-          0.0f, 0.5f, 0.5f,
-          0.5f, 0.0f, 0.0f,
-          0.0f, 0.5f, 0.0f,
-          0.0f, 0.0f, 0.5f,
-          0.0f, 0.5f, 0.5f,
-      };
-      int[] indices = new int[]{
-          // Front face
-          0, 1, 3, 3, 1, 2,
-          // Top Face
-          4, 0, 3, 5, 4, 3,
-          // Right face
-          3, 2, 7, 5, 3, 7,
-          // Left face
-          6, 1, 0, 6, 0, 4,
-          // Bottom face
-          2, 1, 6, 2, 6, 7,
-          // Back face
-          7, 6, 4, 7, 4, 5,
-      };
-
-      Mesh cube = new Mesh(positions, colours, indices);
-      GameItem cubeGameItem = new GameItem(cube);
-      cubeGameItem.setPosition(0, 0, -5);
-      cubeGameItem.setRotation(2, 2, 2);
-      cubeGameItem.setScale(1.0f);
-      gameItems.add(cubeGameItem);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-  }
-
-  private String loadResource(final String path) {
-    return new Scanner(
-        Objects.requireNonNull(this.getClass().getResourceAsStream(path)),
-        StandardCharsets.UTF_8
-    )
-        .useDelimiter("\\A")
-        .next();
   }
 
   public void launch(final Supplier<Configuration> configurationSupplier) {
@@ -256,7 +176,7 @@ public abstract class Window {
     ImGui.createContext();
   }
 
-  protected void updateState(float deltaTimeSeconds) {
+  protected void updateState(final float deltaTimeSeconds) {
   }
 
   protected final void run() {

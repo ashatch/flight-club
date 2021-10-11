@@ -1,4 +1,4 @@
-package org.flightclub;
+package org.flightclub.engine;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -14,11 +14,21 @@ public class Transformation {
     projectionMatrix = new Matrix4f();
   }
 
-  public final Matrix4f getProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
+  public final Matrix4f getProjectionMatrix(
+      final float fov,
+      final float width,
+      final float height,
+      final float zNear,
+      final float zFar
+  ) {
     return projectionMatrix.setPerspective(fov, width / height, zNear, zFar);
   }
 
-  public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
+  public Matrix4f getWorldMatrix(
+      final Vector3f offset,
+      final Vector3f rotation,
+      final float scale
+  ) {
     return worldMatrix.translation(offset).
         rotateX((float)Math.toRadians(rotation.x)).
         rotateY((float)Math.toRadians(rotation.y)).

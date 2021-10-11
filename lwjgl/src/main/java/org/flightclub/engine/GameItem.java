@@ -1,4 +1,4 @@
-package org.flightclub;
+package org.flightclub.engine;
 
 import org.joml.Vector3f;
 
@@ -12,7 +12,7 @@ public class GameItem {
 
   private final Vector3f rotation;
 
-  public GameItem(Mesh mesh) {
+  public GameItem(final Mesh mesh) {
     this.mesh = mesh;
     position = new Vector3f();
     scale = 1;
@@ -23,7 +23,11 @@ public class GameItem {
     return position;
   }
 
-  public void setPosition(float x, float y, float z) {
+  public void setPosition(
+      final float x,
+      final float y,
+      final float z
+  ) {
     this.position.x = x;
     this.position.y = y;
     this.position.z = z;
@@ -33,7 +37,7 @@ public class GameItem {
     return scale;
   }
 
-  public void setScale(float scale) {
+  public void setScale(final float scale) {
     this.scale = scale;
   }
 
@@ -41,7 +45,11 @@ public class GameItem {
     return rotation;
   }
 
-  public void setRotation(float x, float y, float z) {
+  public void setRotation(
+      final float x,
+      final float y,
+      final float z
+  ) {
     this.rotation.x = x;
     this.rotation.y = y;
     this.rotation.z = z;

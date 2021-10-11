@@ -1,4 +1,4 @@
-package org.flightclub;
+package org.flightclub.engine;
 
 
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class ShaderProgram {
     uniforms = new HashMap<>();
   }
 
-  public void createUniform(String uniformName) throws Exception {
+  public void createUniform(final String uniformName) throws Exception {
     int uniformLocation = glGetUniformLocation(programId, uniformName);
     if (uniformLocation < 0) {
       throw new Exception("Could not find uniform:" + uniformName);
@@ -54,23 +54,23 @@ public class ShaderProgram {
     uniforms.put(uniformName, uniformLocation);
   }
 
-  public void setUniform(String uniformName, Matrix4f value) {
+  public void setUniform(final String uniformName, final Matrix4f value) {
     // Dump the matrix into a float buffer
-    try (MemoryStack stack = MemoryStack.stackPush()) {
+    try (final MemoryStack stack = MemoryStack.stackPush()) {
       glUniformMatrix4fv(uniforms.get(uniformName), false,
           value.get(stack.mallocFloat(16)));
     }
   }
 
-  public void createVertexShader(String shaderCode) throws Exception {
+  public void createVertexShader(final String shaderCode) throws Exception {
     vertexShaderId = createShader(shaderCode, GL_VERTEX_SHADER);
   }
 
-  public void createFragmentShader(String shaderCode) throws Exception {
+  public void createFragmentShader(final String shaderCode) throws Exception {
     fragmentShaderId = createShader(shaderCode, GL_FRAGMENT_SHADER);
   }
 
-  protected int createShader(String shaderCode, int shaderType) throws Exception {
+  protected int createShader(final String shaderCode, final int shaderType) throws Exception {
     int shaderId = glCreateShader(shaderType);
     if (shaderId == 0) {
       throw new Exception("Error creating shader. Type: " + shaderType);

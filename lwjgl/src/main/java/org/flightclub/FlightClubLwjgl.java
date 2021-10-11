@@ -3,6 +3,12 @@ package org.flightclub;
 import imgui.ImGui;
 import imgui.app.Configuration;
 import java.util.function.Supplier;
+import org.flightclub.engine.GameItem;
+import org.flightclub.engine.Mesh;
+import org.flightclub.engine.ShaderProgram;
+import org.flightclub.engine.Transformation;
+import org.flightclub.meshes.CubeMesh;
+import org.flightclub.shaders.StandardShader;
 import org.joml.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +20,11 @@ public class FlightClubLwjgl extends Window {
 
   private static final float Z_FAR = 1000.f;
 
+  protected ShaderProgram shaderProgram;
   private Transformation transformation;
 
   private static final Logger LOG = LoggerFactory.getLogger(FlightClubLwjgl.class);
+  private GameItem cubeGameItem;
 
   public void launch(final Supplier<Configuration> configurationSupplier) {
     init(configurationSupplier.get());
@@ -35,6 +43,28 @@ public class FlightClubLwjgl extends Window {
   protected void setup() {
     LOG.info("Setting up");
     transformation = new Transformation();
+
+    try {
+      shaderProgram = new StandardShader();
+
+      final Mesh cube = new CubeMesh();
+      this.cubeGameItem = new GameItem(cube);
+      cubeGameItem.setPosition(0, 0, -5);
+      cubeGameItem.setRotation(2, 2, 2);
+      cubeGameItem.setScale(1.0f);
+      gameItems.add(cubeGameItem);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  protected void updateState(final float deltaTimeSeconds) {
+    this.cubeGameItem.getRotation().add(
+        30f * deltaTimeSeconds,
+        30f * deltaTimeSeconds,
+        30f * deltaTimeSeconds
+    );
   }
 
   @Override
@@ -44,11 +74,16 @@ public class FlightClubLwjgl extends Window {
 
   public void render(
       final ShaderProgram shaderProgram
-//      final Mesh mesh
   ) {
     shaderProgram.bind();
 
-    final Matrix4f projectionMatrix = this.transformation.getProjectionMatrix(FOV, 1024, 768, Z_NEAR, Z_FAR);
+    final Matrix4f projectionMatrix = this.transformation.getProjectionMatrix(
+        FOV,
+        windowSize.x,
+        windowSize.y,
+        Z_NEAR,
+        Z_FAR);
+
     shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
     gameItems.forEach(gameItem -> {
@@ -56,23 +91,10 @@ public class FlightClubLwjgl extends Window {
           gameItem.getPosition(),
           gameItem.getRotation(),
           gameItem.getScale()
-//          new Vector3f(0, 0, -5),
-//          new Vector3f(2, 10, 0),
-//          1.0f
       );
       shaderProgram.setUniform("worldMatrix", worldMatrix);
       gameItem.getMesh().render();
     });
-
-    // Draw the mesh
-//    glBindVertexArray(mesh.getVaoId());
-//    glEnableVertexAttribArray(0);
-//    glEnableVertexAttribArray(1);
-//    glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
-//
-//    // Restore state
-//    glDisableVertexAttribArray(0);
-//    glBindVertexArray(0);
 
     shaderProgram.unbind();
   }
