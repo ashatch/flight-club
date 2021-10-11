@@ -4,16 +4,8 @@ import imgui.ImGui;
 import imgui.app.Configuration;
 import java.util.function.Supplier;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class FlightClubLwjgl extends Window {
   private static final float FOV = (float) Math.toRadians(60.0f);
@@ -47,30 +39,40 @@ public class FlightClubLwjgl extends Window {
 
   @Override
   public void render() {
-    this.render(this.shaderProgram, this.mesh);
+    this.render(this.shaderProgram);
   }
 
-  public void render(ShaderProgram shaderProgram, Mesh mesh) {
+  public void render(
+      final ShaderProgram shaderProgram
+//      final Mesh mesh
+  ) {
     shaderProgram.bind();
 
-    Matrix4f projectionMatrix = this.transformation.getProjectionMatrix(FOV, 1024, 768, Z_NEAR, Z_FAR);
+    final Matrix4f projectionMatrix = this.transformation.getProjectionMatrix(FOV, 1024, 768, Z_NEAR, Z_FAR);
     shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
-    Matrix4f worldMatrix = transformation.getWorldMatrix(
-        new Vector3f(0, 0, -10),
-        new Vector3f(0, 0, 0),
-        1.0f);
-    shaderProgram.setUniform("worldMatrix", worldMatrix);
+    gameItems.forEach(gameItem -> {
+      final Matrix4f worldMatrix = transformation.getWorldMatrix(
+          gameItem.getPosition(),
+          gameItem.getRotation(),
+          gameItem.getScale()
+//          new Vector3f(0, 0, -5),
+//          new Vector3f(2, 10, 0),
+//          1.0f
+      );
+      shaderProgram.setUniform("worldMatrix", worldMatrix);
+      gameItem.getMesh().render();
+    });
 
     // Draw the mesh
-    glBindVertexArray(mesh.getVaoId());
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
-
-    // Restore state
-    glDisableVertexAttribArray(0);
-    glBindVertexArray(0);
+//    glBindVertexArray(mesh.getVaoId());
+//    glEnableVertexAttribArray(0);
+//    glEnableVertexAttribArray(1);
+//    glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
+//
+//    // Restore state
+//    glDisableVertexAttribArray(0);
+//    glBindVertexArray(0);
 
     shaderProgram.unbind();
   }

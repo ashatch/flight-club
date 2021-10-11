@@ -7,6 +7,8 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Supplier;
@@ -69,11 +71,13 @@ public abstract class Window {
   private boolean resized = false;
 
   protected ShaderProgram shaderProgram;
-  protected Mesh mesh;
+//  protected Mesh mesh;
   private static final float FOV = (float) Math.toRadians(60.0f);
   private static final float Z_NEAR = 0.01f;
   private static final float Z_FAR = 1000.f;
   private Transformation transformation;
+
+  protected List<GameItem> gameItems = new ArrayList<>();
 
   protected final void init(final Configuration config) {
     windowSize.set(config.getWidth(), config.getHeight());
@@ -93,8 +97,7 @@ public abstract class Window {
       shaderProgram.createUniform("projectionMatrix");
       shaderProgram.createUniform("worldMatrix");
 
-
-      float[] positions = new float[] {
+      float[] positions = new float[]{
           // VO
           -0.5f,  0.5f,  0.5f,
           // V1
@@ -112,7 +115,6 @@ public abstract class Window {
           // V7
           0.5f, -0.5f, -0.5f,
       };
-
       float[] colours = new float[]{
           0.5f, 0.0f, 0.0f,
           0.0f, 0.5f, 0.0f,
@@ -123,8 +125,7 @@ public abstract class Window {
           0.0f, 0.0f, 0.5f,
           0.0f, 0.5f, 0.5f,
       };
-
-      int[] indices = new int[] {
+      int[] indices = new int[]{
           // Front face
           0, 1, 3, 3, 1, 2,
           // Top Face
@@ -139,7 +140,12 @@ public abstract class Window {
           7, 6, 4, 7, 4, 5,
       };
 
-      this.mesh = new Mesh(positions, colours, indices);
+      Mesh cube = new Mesh(positions, colours, indices);
+      GameItem cubeGameItem = new GameItem(cube);
+      cubeGameItem.setPosition(0, 0, -5);
+      cubeGameItem.setRotation(2, 2, 2);
+      cubeGameItem.setScale(1.0f);
+      gameItems.add(cubeGameItem);
     } catch (Exception e) {
       e.printStackTrace();
     }
