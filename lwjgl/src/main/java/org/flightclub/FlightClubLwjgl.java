@@ -7,7 +7,7 @@ import org.flightclub.engine.GameItem;
 import org.flightclub.engine.Mesh;
 import org.flightclub.engine.ShaderProgram;
 import org.flightclub.engine.Transformation;
-import org.flightclub.meshes.CubeMesh;
+import org.flightclub.meshes.GliderMesh;
 import org.flightclub.shaders.StandardShader;
 import org.joml.Matrix4f;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class FlightClubLwjgl extends Window {
   private Transformation transformation;
 
   private static final Logger LOG = LoggerFactory.getLogger(FlightClubLwjgl.class);
-  private GameItem cubeGameItem;
+  private GameItem gliderGameItem;
 
   public void launch(final Supplier<Configuration> configurationSupplier) {
     init(configurationSupplier.get());
@@ -47,12 +47,12 @@ public class FlightClubLwjgl extends Window {
     try {
       shaderProgram = new StandardShader();
 
-      final Mesh cube = new CubeMesh();
-      this.cubeGameItem = new GameItem(cube);
-      cubeGameItem.setPosition(0, 0, -5);
-      cubeGameItem.setRotation(2, 2, 2);
-      cubeGameItem.setScale(1.0f);
-      gameItems.add(cubeGameItem);
+      final Mesh gliderMesh = new GliderMesh();
+      this.gliderGameItem = new GameItem(gliderMesh);
+      gliderGameItem.setPosition(0, 0, -5);
+      gliderGameItem.setRotation(2, 2, 2);
+      gliderGameItem.setScale(1.0f);
+      gameItems.add(gliderGameItem);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -60,7 +60,7 @@ public class FlightClubLwjgl extends Window {
 
   @Override
   protected void updateState(final float deltaTimeSeconds) {
-    this.cubeGameItem.getRotation().add(
+    this.gliderGameItem.getRotation().add(
         30f * deltaTimeSeconds,
         30f * deltaTimeSeconds,
         30f * deltaTimeSeconds
