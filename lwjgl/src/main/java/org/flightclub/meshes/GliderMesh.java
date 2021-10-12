@@ -28,6 +28,14 @@ public class GliderMesh extends Mesh {
             0.3f, 0.4f, 0.3f,
             0.3f, 0.4f, 0.3f,
         },
+        new float[] {
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        },
         new int[]{
             0, 1, 2,
             0, 2, 3,

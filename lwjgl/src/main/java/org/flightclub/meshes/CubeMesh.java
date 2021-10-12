@@ -31,6 +31,15 @@ public class CubeMesh extends Mesh {
             0.0f, 0.5f, 0.0f,
             0.0f, 0.0f, 0.5f,
             0.0f, 0.5f, 0.5f,
+        }, new float[]{
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
+            0f, 0f, 1f,
         },
         new int[]{
             // Front face

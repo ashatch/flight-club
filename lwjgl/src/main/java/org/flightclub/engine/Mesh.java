@@ -31,13 +31,21 @@ public class Mesh {
 
   private final int colourVboId;
 
+  private final int normalVboId;
+
   private final int idxVboId;
 
   private final int vertexCount;
 
-  public Mesh(float[] positions, float[] colours, int[] indices) {
+  public Mesh(
+      final float[] positions,
+      final float[] colours,
+      final float[] normals,
+      final int[] indices
+  ) {
     FloatBuffer posBuffer = null;
     FloatBuffer colourBuffer = null;
+    FloatBuffer vecNormalsBuffer = null;
     IntBuffer indicesBuffer = null;
     try {
       vertexCount = indices.length;
@@ -63,6 +71,15 @@ public class Mesh {
       glEnableVertexAttribArray(1);
       glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
+      // Vertex normals VBO
+      normalVboId = glGenBuffers();
+      vecNormalsBuffer = MemoryUtil.memAllocFloat(normals.length);
+      vecNormalsBuffer.put(normals).flip();
+      glBindBuffer(GL_ARRAY_BUFFER, normalVboId);
+      glBufferData(GL_ARRAY_BUFFER, vecNormalsBuffer, GL_STATIC_DRAW);
+      glEnableVertexAttribArray(2);
+      glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
+
       // Index VBO
       idxVboId = glGenBuffers();
       indicesBuffer = MemoryUtil.memAllocInt(indices.length);
@@ -78,6 +95,9 @@ public class Mesh {
       }
       if (colourBuffer != null) {
         MemoryUtil.memFree(colourBuffer);
+      }
+      if (vecNormalsBuffer != null) {
+        MemoryUtil.memFree(vecNormalsBuffer);
       }
       if (indicesBuffer != null) {
         MemoryUtil.memFree(indicesBuffer);

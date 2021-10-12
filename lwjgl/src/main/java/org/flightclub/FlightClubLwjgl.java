@@ -10,6 +10,7 @@ import org.flightclub.engine.Transformation;
 import org.flightclub.meshes.GliderMesh;
 import org.flightclub.shaders.StandardShader;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,7 @@ public class FlightClubLwjgl extends Window {
 
     try {
       shaderProgram = new StandardShader();
+      shaderProgram.setUniform("lightPos", new Vector3f(-10, 0, 0));
 
       final Mesh gliderMesh = new GliderMesh();
       this.gliderGameItem = new GameItem(gliderMesh);
