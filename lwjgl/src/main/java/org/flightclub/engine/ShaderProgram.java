@@ -68,6 +68,10 @@ public class ShaderProgram {
     glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z);
   }
 
+  public void setUniform3f(final String uniformName, final float[] value) {
+    glUniform3f(uniforms.get(uniformName), value[0], value[1], value[2]);
+  }
+
   public void createVertexShader(final String shaderCode) throws Exception {
     vertexShaderId = createShader(shaderCode, GL_VERTEX_SHADER);
   }

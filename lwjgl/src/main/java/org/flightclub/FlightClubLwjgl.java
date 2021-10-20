@@ -10,7 +10,6 @@ import org.flightclub.engine.Transformation;
 import org.flightclub.meshes.GliderMesh;
 import org.flightclub.shaders.StandardShader;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +25,9 @@ public class FlightClubLwjgl extends Window {
 
   private static final Logger LOG = LoggerFactory.getLogger(FlightClubLwjgl.class);
   private GameItem gliderGameItem;
+
+  private final float[] gliderAngle = new float[3];
+  private final float[] lightPosition = new float[]{-1, 1, 0};
 
   public void launch(final Supplier<Configuration> configurationSupplier) {
     init(configurationSupplier.get());
@@ -47,7 +49,7 @@ public class FlightClubLwjgl extends Window {
 
     try {
       shaderProgram = new StandardShader();
-      shaderProgram.setUniform("lightPos", new Vector3f(-10, 0, 0));
+      this.updateLightPosition();
 
       final Mesh gliderMesh = new GliderMesh();
       this.gliderGameItem = new GameItem(gliderMesh);
@@ -60,13 +62,23 @@ public class FlightClubLwjgl extends Window {
     }
   }
 
+  private void updateLightPosition() {
+    shaderProgram.setUniform3f("lightPos", this.lightPosition);
+  }
+
+  private void updateGliderRotation() {
+    this.gliderGameItem.setRotation(this.gliderAngle[0], this.gliderAngle[1], this.gliderAngle[2]);
+    //    this.gliderGameItem.getRotation().add(
+    //        30f * deltaTimeSeconds,
+    //        30f * deltaTimeSeconds,
+    //        30f * deltaTimeSeconds
+    //    );
+  }
+
   @Override
   protected void updateState(final float deltaTimeSeconds) {
-    this.gliderGameItem.getRotation().add(
-        30f * deltaTimeSeconds,
-        30f * deltaTimeSeconds,
-        30f * deltaTimeSeconds
-    );
+    this.updateGliderRotation();
+    this.updateLightPosition();
   }
 
   @Override
@@ -103,7 +115,11 @@ public class FlightClubLwjgl extends Window {
 
   @Override
   public void renderGUI() {
-    ImGui.showDemoWindow();
+    //ImGui.showDemoWindow();
+    ImGui.begin("Scene");
+    ImGui.sliderFloat3("Glider angle", gliderAngle, 0f, 360f);
+    ImGui.sliderFloat3("Light position", lightPosition, -10f, 10f);
+    ImGui.end();
   }
 
   public static void main(final String[] args) {
