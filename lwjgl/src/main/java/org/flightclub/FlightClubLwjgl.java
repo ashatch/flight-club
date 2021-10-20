@@ -91,22 +91,21 @@ public class FlightClubLwjgl extends Window {
   ) {
     shaderProgram.bind();
 
-    final Matrix4f projectionMatrix = this.transformation.getProjectionMatrix(
+    final Matrix4f projectionMatrix = transformation.getProjectionMatrix(
         FOV,
-        windowSize.x,
-        windowSize.y,
+        this.windowSize.x,
+        this.windowSize.y,
         Z_NEAR,
         Z_FAR);
 
     shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+    final Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+
+    shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
     gameItems.forEach(gameItem -> {
-      final Matrix4f worldMatrix = transformation.getWorldMatrix(
-          gameItem.getPosition(),
-          gameItem.getRotation(),
-          gameItem.getScale()
-      );
-      shaderProgram.setUniform("worldMatrix", worldMatrix);
+      final Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
+      shaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
       gameItem.getMesh().render();
     });
 

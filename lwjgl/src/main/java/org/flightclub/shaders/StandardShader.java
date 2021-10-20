@@ -13,7 +13,7 @@ public class StandardShader extends ShaderProgram {
     link();
 
     createUniform("projectionMatrix");
-    createUniform("worldMatrix");
+    createUniform("modelViewMatrix");
     createUniform("lightPos");
   }
 }

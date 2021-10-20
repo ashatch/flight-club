@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import org.flightclub.engine.Camera;
 import org.flightclub.engine.GameItem;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
@@ -69,6 +70,7 @@ public abstract class Window {
 
   private boolean resized = false;
 
+  final protected Camera camera = new Camera();
 
   protected List<GameItem> gameItems = new ArrayList<>();
 
