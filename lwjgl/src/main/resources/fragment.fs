@@ -9,8 +9,9 @@ uniform vec3 lightPos;
 
 void main()
 {
-    vec3 to_light_source  = normalize(lightPos - mvVertexPos);
-    float diffusion = max(dot(mvVertexNormal, to_light_source), 0.0);
+    vec3 light_direction = lightPos - mvVertexPos;
+    vec3 to_light_source  = normalize(light_direction);
+    float diffuseFactor = max(dot(mvVertexNormal, to_light_source ), 0.0);
 
-	fragColor = diffusion * vec4(exColour, 1.0);
+	fragColor = diffuseFactor * vec4(exColour, 1.0);
 }

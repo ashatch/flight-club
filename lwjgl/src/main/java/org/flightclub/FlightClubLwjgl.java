@@ -27,7 +27,7 @@ public class FlightClubLwjgl extends Window {
   private GameItem gliderGameItem;
 
   private final float[] gliderAngle = new float[3];
-  private final float[] lightPosition = new float[]{-1, 1, 0};
+  private final float[] lightPosition = new float[]{-1, 10, -5};
 
   public void launch(final Supplier<Configuration> configurationSupplier) {
     init(configurationSupplier.get());
@@ -49,7 +49,6 @@ public class FlightClubLwjgl extends Window {
 
     try {
       shaderProgram = new StandardShader();
-      this.updateLightPosition();
 
       final Mesh gliderMesh = new GliderMesh();
       this.gliderGameItem = new GameItem(gliderMesh);
@@ -60,10 +59,6 @@ public class FlightClubLwjgl extends Window {
     } catch (Exception e) {
       e.printStackTrace();
     }
-  }
-
-  private void updateLightPosition() {
-    shaderProgram.setUniform3f("lightPos", this.lightPosition);
   }
 
   private void updateGliderRotation() {
@@ -78,7 +73,6 @@ public class FlightClubLwjgl extends Window {
   @Override
   protected void updateState(final float deltaTimeSeconds) {
     this.updateGliderRotation();
-    this.updateLightPosition();
   }
 
   @Override
@@ -97,6 +91,8 @@ public class FlightClubLwjgl extends Window {
         this.windowSize.y,
         Z_NEAR,
         Z_FAR);
+
+    shaderProgram.setUniform3f("lightPos", this.lightPosition);
 
     shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     final Matrix4f viewMatrix = transformation.getViewMatrix(camera);
